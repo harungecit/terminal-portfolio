@@ -17,7 +17,9 @@ const translations = {
     'about.description': 'Passionate about building scalable and maintainable web applications.',
     'about.experience': 'Experienced in both frontend and backend development.',
     'contact.title': 'Contact Information:',
+    'tools.title': 'Tools Information:',
     'skills.notFound': 'Category not found. Available categories:',
+    'tools.notFound': 'Category not found. Available categories:',
     'command.not.found': 'Command not found. Type "help" for available commands.',
   },
   tr: {
@@ -27,7 +29,9 @@ const translations = {
     'about.description': 'Ölçeklenebilir ve sürdürülebilir web uygulamaları geliştirmeye tutkulu.',
     'about.experience': 'Frontend ve backend geliştirmede deneyimli.',
     'contact.title': 'İletişim Bilgileri:',
+    'tools.title': 'Kullanılan Araçlar:',
     'skills.notFound': 'Kategori bulunamadı. Mevcut kategoriler:',
+    'tools.notFound': 'Kategori bulunamadı. Mevcut kategoriler:',
     'command.not.found': 'Komut bulunamadı. Mevcut komutları görmek için "yardim" yazın.',
   }
 };

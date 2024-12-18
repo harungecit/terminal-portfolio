@@ -1,7 +1,7 @@
 export const skills = [
   {
     category: 'Backend',
-    items: ['PHP', 'Laravel', 'CodeIgniter', 'Zend', 'Node.js'],
+    items: ['PHP', 'Laravel', 'CodeIgniter', 'Zend Framework', 'Node.js'],
   },
   {
     category: 'Frontend',
@@ -13,7 +13,7 @@ export const skills = [
   },
   {
     category: 'DevOps',
-    items: ['Docker', 'Kubernetes', 'NGINX', 'Ubuntu', 'Debian'],
+    items: ['Docker', 'Kubernetes', 'NGINX', 'Ubuntu', 'Debian', 'Git', 'GitHub Actions', 'FrankenPHP'],
   },
   {
     category: 'Cloud',

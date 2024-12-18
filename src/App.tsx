@@ -1,11 +1,18 @@
+import React from 'react';
 import Terminal from './components/terminal/Terminal';
+import Footer from './components/Footer';
 import { LanguageProvider } from './contexts/LanguageContext';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <LanguageProvider>
-      <Terminal />
-    </LanguageProvider>
+      <div className="flex flex-col min-h-screen">
+        <main className="flex-grow">
+            <LanguageProvider>
+              <Terminal />
+            </LanguageProvider>
+        </main>
+        <Footer />
+    </div>
   );
 }
 

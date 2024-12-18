@@ -1,7 +1,12 @@
 {
   "name": "terminal-portfolio",
+  "description": "Terminal Portfolio",
+  "author": "Harun Geçit (https://github.com/harungecit)",
+  "license": "MIT",
+  "repository": "https://github.com/harungecit/terminal-portfolio.git",
+  "bugs": {},
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,9 +15,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "lucide-react": "^0.344.0",
+    "react-icons": "^5.4.0",
     "react-simple-typewriter": "^5.0.1"
   },
   "devDependencies": {
