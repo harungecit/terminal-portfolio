@@ -30,7 +30,7 @@ export const contactCommand: Command = {
             instagram: 'https://instagram.com/harungecit.dev',
             bluesky: 'https://bsky.app/profile/harungecit.bsky.social',
             mastodon: 'https://mastodon.social/@harungecit',
-            steam: 'https://steamcommunity.com/id/harungecit',
+            steam: 'https://steamcommunity.com/id/gecitharun',
         };
 
         if (args.length > 0) {
