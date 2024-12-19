@@ -21,6 +21,8 @@ const translations = {
     'skills.notFound': 'Category not found. Available categories:',
     'tools.notFound': 'Category not found. Available categories:',
     'command.not.found': 'Command not found. Type "help" for available commands.',
+    'contact.opening': 'Opening {target}...',
+    'contact.notFound': 'Contact information for {target} not found.',
   },
   tr: {
     'welcome': 'İnteraktif portfolyoma hoş geldiniz! Mevcut komutları görmek için "yardim" yazın.',
@@ -33,6 +35,8 @@ const translations = {
     'skills.notFound': 'Kategori bulunamadı. Mevcut kategoriler:',
     'tools.notFound': 'Kategori bulunamadı. Mevcut kategoriler:',
     'command.not.found': 'Komut bulunamadı. Mevcut komutları görmek için "yardim" yazın.',
+    'contact.opening': '{target} açılıyor...',
+    'contact.notFound': '{target} için iletişim bilgisi bulunamadı.',
   }
 };
 
@@ -41,8 +45,14 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
 
-  const t = (key: string): string => {
-    return translations[language][key] || key;
+  const t = (key: string, variables?: { [key: string]: string }): string => {
+    let translation = translations[language][key] || key;
+    if (variables) {
+      Object.entries(variables).forEach(([placeholder, value]) => {
+        translation = translation.replace(`{${placeholder}}`, value);
+      });
+    }
+    return translation;
   };
 
   return (
