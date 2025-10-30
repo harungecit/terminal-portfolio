@@ -1,0 +1,26 @@
+{
+  "name": "terminal-portfolio",
+  "version": "1.0.1",
+  "description": "Interactive terminal-style portfolio website with Matrix rain effects",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build required - this is a static HTML site' && exit 0",
+    "start": "echo 'Opening index.html...' && open index.html",
+    "serve": "npx http-server -p 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harungecit/terminal-portfolio.git"
+  },
+  "keywords": [
+    "portfolio",
+    "terminal",
+    "matrix",
+    "static-site",
+    "xterm"
+  ],
+  "author": "Harun Geçit <info@harungecit.com>",
+  "license": "SEE LICENSE IN README.md",
+  "homepage": "https://harungecit.com",
+  "devDependencies": {}
+}
