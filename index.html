@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Harun Geçit - Full Stack Developer specialized in PHP, JavaScript, DevOps, and Cybersecurity">
+    <meta name="keywords" content="Full Stack Developer, PHP, Laravel, JavaScript, DevOps, Cybersecurity, Docker, Linux">
+    <meta name="author" content="Harun Geçit">
+
+    <title>Harun Geçit - Full Stack Developer</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- XTerm.js for Terminal -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Matrix Rain Background -->
+    <canvas id="matrix-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-brand glitch" data-text="$ harun@dev">$ harun@dev</div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#terminal" class="nav-link">Terminal</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="glitch" data-text="HARUN GEÇİT">HARUN GEÇİT</h1>
+                    <div class="typing-container">
+                        <span class="typing-prefix">$ </span>
+                        <span id="typed-text"></span>
+                        <span class="cursor">|</span>
+                    </div>
+                    <p class="hero-description">
+                        Full Stack Developer specializing in PHP, JavaScript, DevOps & Cybersecurity.
+                        Passionate about building scalable solutions and exploring system security.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#terminal" class="btn btn-primary">
+                            <i class="fas fa-terminal"></i>
+                            <span class="btn-text">Launch Termina<span class="blinking-cursor">l</span></span>
+                        </a>
+                        <a href="#contact" class="btn btn-secondary">
+                            <i class="fas fa-envelope"></i>
+                            Get In Touch
+                        </a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://github.com/harungecit" target="_blank" rel="noopener" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/harungecit_" target="_blank" rel="noopener" title="X (Twitter)">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://bio.link/harungecit" target="_blank" rel="noopener" title="All Links">
+                            <i class="fas fa-link"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="code-window">
+                        <div class="window-header">
+                            <span class="window-dot red"></span>
+                            <span class="window-dot yellow"></span>
+                            <span class="window-dot green"></span>
+                            <span class="window-title">server.php</span>
+                        </div>
+                        <div class="window-content">
+                            <pre><code><span class="code-comment">// System Status</span>
+<span class="code-keyword">class</span> <span class="code-class">Developer</span> {
+    <span class="code-keyword">public</span> <span class="code-variable">$name</span> = <span class="code-string">"Harun Geçit"</span>;
+    <span class="code-keyword">public</span> <span class="code-variable">$role</span> = <span class="code-string">"Full Stack Dev"</span>;
+    <span class="code-keyword">public</span> <span class="code-variable">$status</span> = <span class="code-string">"Available"</span>;
+
+    <span class="code-keyword">public function</span> <span class="code-function">getSkills</span>() {
+        <span class="code-keyword">return</span> [
+            <span class="code-string">"PHP"</span>,
+            <span class="code-string">"JavaScript"</span>,
+            <span class="code-string">"DevOps"</span>,
+            <span class="code-string">"Linux"</span>,
+            <span class="code-string">"Docker"</span>
+        ];
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Terminal Section -->
+    <section id="terminal" class="terminal-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-terminal"></i>
+                Interactive Terminal
+            </h2>
+            <p class="section-subtitle">Try some commands: <code>help</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>contact</code></p>
+
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">harun@dev:~$</span>
+                </div>
+                <div id="terminal-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-user"></i>
+                About Me
+            </h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="lead">
+                        I started my software development journey with PHP, learning hosting structures,
+                        domain and DNS concepts along the way. Throughout my university education, I participated
+                        in various student projects and took on freelance work to further develop my skills.
+                    </p>
+                    <p>
+                        In my professional career, I've worked extensively with modern frameworks such as
+                        <strong>CodeIgniter</strong>, <strong>Zend</strong>, and <strong>Laravel</strong>,
+                        along with JavaScript technologies like <strong>NodeJS</strong>, <strong>ExpressJS</strong>,
+                        and <strong>jQuery</strong>.
+                    </p>
+                    <p>
+                        To continuously improve, I've added technologies like <strong>Nginx</strong>,
+                        <strong>Docker</strong>, and <strong>AWS</strong> to my skill set. I've also learned
+                        Unix systems, bash, SSH, virtual networks, firewalls, and proxies. I frequently use
+                        Debian and Ubuntu for server-side operations, and as part of DevOps processes,
+                        I use Git for version control and automate processes with GitOps technology.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i class="fas fa-code"></i>
+                            <h3 class="stat-number" data-target="15">0</h3>
+                            <p>Years Coding</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-briefcase"></i>
+                            <h3 class="stat-number" data-target="5">0</h3>
+                            <p>Companies</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-award"></i>
+                            <h3 class="stat-number" data-target="10">0</h3>
+                            <p>Certifications</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-rocket"></i>
+                            <h3 class="stat-number" data-target="100">0</h3>
+                            <p>Projects+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-cog"></i>
+                Technical Skills
+            </h2>
+
+            <div class="skills-grid">
+                <!-- Languages -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Languages</h3>
+                    <div class="skill-bars">
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span>PHP</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="95"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span>JavaScript</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span>SQL</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="88"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info">
+                                <span>Bash Shell</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backend Frameworks -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-layer-group"></i> Backend Frameworks</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Laravel</span>
+                        <span class="skill-tag">CodeIgniter</span>
+                        <span class="skill-tag">Zend</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Express</span>
+                    </div>
+                </div>
+
+                <!-- Frontend Technologies -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-paint-brush"></i> Frontend</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">React.js</span>
+                        <span class="skill-tag">jQuery</span>
+                        <span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">Bootstrap</span>
+                        <span class="skill-tag">Vanilla JS</span>
+                    </div>
+                </div>
+
+                <!-- Databases & Data -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-database"></i> Databases & Data</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">MariaDB</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">SQLite</span>
+                        <span class="skill-tag">Elasticsearch</span>
+                        <span class="skill-tag">Firebase</span>
+                        <span class="skill-tag">Supabase</span>
+                    </div>
+                </div>
+
+                <!-- DevOps & Cloud -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-cloud"></i> DevOps & Cloud</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Podman</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">Portainer</span>
+                        <span class="skill-tag">Coolify</span>
+                        <span class="skill-tag">Dokploy</span>
+                        <span class="skill-tag">Nginx</span>
+                        <span class="skill-tag">Traefik</span>
+                        <span class="skill-tag">FrankenPHP</span>
+                        <span class="skill-tag">Caddy</span>
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">GCP</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">GitHub Actions</span>
+                        <span class="skill-tag">GitOps</span>
+                    </div>
+                </div>
+
+                <!-- APIs & Communication -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-exchange-alt"></i> APIs & Protocols</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">REST API</span>
+                        <span class="skill-tag">RESTful</span>
+                        <span class="skill-tag">GraphQL</span>
+                        <span class="skill-tag">WebSockets</span>
+                        <span class="skill-tag">SOAP</span>
+                        <span class="skill-tag">XML</span>
+                        <span class="skill-tag">JSON</span>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">OAuth 2.0</span>
+                        <span class="skill-tag">JWT</span>
+                        <span class="skill-tag">Firewall</span>
+                        <span class="skill-tag">Proxy</span>
+                        <span class="skill-tag">Cloudflare</span>
+                    </div>
+                </div>
+
+                <!-- Message Queues -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-stream"></i> Message Queues</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">RabbitMQ</span>
+                        <span class="skill-tag">Memcached</span>
+                    </div>
+                </div>
+
+                <!-- Systems & Servers -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-server"></i> Systems & Servers</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Debian</span>
+                        <span class="skill-tag">Ubuntu</span>
+                        <span class="skill-tag">CentOS</span>
+                        <span class="skill-tag">AlmaLinux</span>
+                        <span class="skill-tag">SSH</span>
+                        <span class="skill-tag">Linux</span>
+                    </div>
+                </div>
+
+                <!-- Notifications & Services -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-bell"></i> Notifications & Services</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">OneSignal</span>
+                        <span class="skill-tag">Firebase</span>
+                        <span class="skill-tag">Twilio</span>
+                        <span class="skill-tag">SendGrid</span>
+                        <span class="skill-tag">Telegram</span>
+                        <span class="skill-tag">Slack</span>
+                        <span class="skill-tag">Discord</span>
+                    </div>
+                </div>
+
+                <!-- Tools & IDEs -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-tools"></i> Tools & IDEs</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PhpStorm</span>
+                        <span class="skill-tag">VS Code</span>
+                        <span class="skill-tag">Claude Code</span>
+                        <span class="skill-tag">GitHub Copilot</span>
+                        <span class="skill-tag">Gemini</span>
+                        <span class="skill-tag">Navicat</span>
+                        <span class="skill-tag">DBeaver</span>
+                        <span class="skill-tag">Composer</span>
+                        <span class="skill-tag">NPM</span>
+                        <span class="skill-tag">Yarn</span>
+                        <span class="skill-tag">AAPanel</span>
+                    </div>
+                </div>
+
+                <!-- Project Management -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-tasks"></i> Project Management</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Asana</span>
+                        <span class="skill-tag">Trello</span>
+                        <span class="skill-tag">ClickUp</span>
+                    </div>
+                </div>
+
+                <!-- Design & Multimedia -->
+                <div class="skill-category">
+                    <h3><i class="fas fa-palette"></i> Design & Multimedia</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Canva</span>
+                        <span class="skill-tag">Photoshop</span>
+                        <span class="skill-tag">Premiere Pro</span>
+                        <span class="skill-tag">CapCut</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-briefcase"></i>
+                Work Experience
+            </h2>
+
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">July 2022 - Present</div>
+                    <div class="timeline-content">
+                        <h3>Full Stack Developer</h3>
+                        <h4>USTEK RFID ELEKTRONIK YAZILIM A.Ş.</h4>
+                        <ul>
+                            <li>Developing with Zend Framework, Laravel, NodeJS, and ExpressJS</li>
+                            <li>Producing RFID technologies for textile tracking, inventory management, and HR technologies</li>
+                            <li>Using PostgreSQL, Debian, Nginx, and PHP 8.x</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span>Laravel</span>
+                            <span>NodeJS</span>
+                            <span>PostgreSQL</span>
+                            <span>Nginx</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Apr 2022 - Present</div>
+                    <div class="timeline-content">
+                        <h3>Software Advisor</h3>
+                        <h4>CatchPad Smart Training Platform</h4>
+                        <ul>
+                            <li>Developing with Laravel, Python, TensorFlow, NodeJS and Alpine</li>
+                            <li>Producing AI-supported exercise technologies</li>
+                            <li>Developing detailed statistics, analyses and reports</li>
+                            <li>Building compatible technologies across web, mobile and hardware layers</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span>Laravel</span>
+                            <span>Python</span>
+                            <span>TensorFlow</span>
+                            <span>AI/ML</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">March 2021 - July 2022</div>
+                    <div class="timeline-content">
+                        <h3>Full Stack Developer</h3>
+                        <h4>Gourmeturca.com</h4>
+                        <ul>
+                            <li>Developed cargo company integrations (DHL, FedEx, UPS)</li>
+                            <li>API integrations to Oracle Netsuite ERP system</li>
+                            <li>Designed and developed reward and referral programs</li>
+                            <li>Developed React Native Webview applications for e-commerce</li>
+                            <li>Stock system live update and export service</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span>Laravel</span>
+                            <span>React Native</span>
+                            <span>Oracle Netsuite</span>
+                            <span>REST API</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">May 2020 - Jan 2021</div>
+                    <div class="timeline-content">
+                        <h3>Full Stack Developer</h3>
+                        <h4>Sadıkoğulları Teknoloji İletişim Yazılım Tic. Ltd. Şti.</h4>
+                        <ul>
+                            <li>Developed sentiment analysis applications for schools</li>
+                            <li>Implemented Docker environment for server installation</li>
+                            <li>Developed corporate web solutions and e-commerces</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span>PHP</span>
+                            <span>Docker</span>
+                            <span>E-commerce</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item" data-aos="fade-up">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Jan 2011 - Aug 2019</div>
+                    <div class="timeline-content">
+                        <h3>Full Stack Developer / Freelance</h3>
+                        <h4>Self-Employed</h4>
+                        <ul>
+                            <li>Developed corporate websites and e-commerce sites</li>
+                            <li>Created templates and plugins for WordPress, Opencart, Jitsi, Drupal</li>
+                            <li>Server setup, DNS, network configuration, and virtualization</li>
+                        </ul>
+                        <div class="tech-stack">
+                            <span>PHP</span>
+                            <span>WordPress</span>
+                            <span>Server Admin</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-folder-open"></i>
+                Featured Projects
+            </h2>
+
+            <div class="projects-grid">
+                <div class="project-card" data-aos="fade-up">
+                    <div class="project-header">
+                        <i class="fas fa-universal-access"></i>
+                    </div>
+                    <h3>BRAISLATOR</h3>
+                    <p>
+                        An innovative application for instant translation of Turkish texts into Braille
+                        for visually impaired individuals. Features real-time speech-to-text translation
+                        support, available both online and offline.
+                    </p>
+                    <div class="project-tech">
+                        <span>JavaScript</span>
+                        <span>Speech-to-Text</span>
+                        <span>Braille</span>
+                        <span>PWA</span>
+                    </div>
+                    <div class="project-year">April 2019</div>
+                </div>
+
+                <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="project-header">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>E-commerce Platform</h3>
+                    <p>
+                        Full-featured e-commerce platform with cargo integrations (DHL, FedEx, UPS),
+                        stock management, barcode system, and Oracle Netsuite ERP integration.
+                    </p>
+                    <div class="project-tech">
+                        <span>Laravel</span>
+                        <span>React Native</span>
+                        <span>Oracle API</span>
+                        <span>REST API</span>
+                    </div>
+                    <div class="project-year">2021-2022</div>
+                </div>
+
+                <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="project-header">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <h3>RFID Tracking System</h3>
+                    <p>
+                        Enterprise RFID solution for textile tracking, inventory management,
+                        and personnel identification with HR integration capabilities.
+                    </p>
+                    <div class="project-tech">
+                        <span>Laravel</span>
+                        <span>PostgreSQL</span>
+                        <span>RFID</span>
+                        <span>IoT</span>
+                    </div>
+                    <div class="project-year">2022-Present</div>
+                </div>
+
+                <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="project-header">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Training Platform</h3>
+                    <p>
+                        Smart training platform with AI-supported exercises, detailed analytics,
+                        and cross-platform compatibility (web, mobile, hardware).
+                    </p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>TensorFlow</span>
+                        <span>Laravel</span>
+                        <span>AI/ML</span>
+                    </div>
+                    <div class="project-year">2022-Present</div>
+                </div>
+
+                <div class="project-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="project-header">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>DevTools Platform</h3>
+                    <p>
+                        Comprehensive developer tools platform featuring various utilities
+                        for developers including code formatters, converters, generators,
+                        and other productivity tools.
+                    </p>
+                    <div class="project-tech">
+                        <span>Web Tools</span>
+                        <span>Utilities</span>
+                        <span>Developer Tools</span>
+                    </div>
+                    <div class="project-year">2024-Present</div>
+                    <a href="https://devtools.harungecit.dev/" target="_blank" class="project-link">
+                        <i class="fas fa-external-link-alt"></i> Visit Project
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-envelope"></i>
+                Get In Touch
+            </h2>
+            <p class="section-subtitle">Feel free to reach out for collaborations or just a friendly chat!</p>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Location</h3>
+                        <p>Istanbul, Türkiye</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <a href="mailto:info@harungecit.com">info@harungecit.com</a>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fab fa-whatsapp"></i>
+                        <h3>WhatsApp</h3>
+                        <a href="https://wa.me/908503033954" target="_blank">0850 303 39 54</a>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>Website</h3>
+                        <a href="https://harungecit.com" target="_blank">harungecit.com</a>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="topic">Topic</label>
+                            <select id="topic" name="topic" required>
+                                <option value="">Select a topic...</option>
+                                <option value="project">Project Collaboration</option>
+                                <option value="job">Job Opportunity</option>
+                                <option value="consultation">Consultation</option>
+                                <option value="support">Technical Support</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="consent" name="consent" required>
+                                <span>I agree to the processing of my personal data in accordance with KVKK/GDPR regulations. <a href="#" class="privacy-link">Privacy Policy</a></span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="social-links-large">
+                <a href="https://github.com/harungecit" target="_blank" rel="noopener" class="social-card">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener" class="social-card">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <a href="https://x.com/harungecit_" target="_blank" rel="noopener" class="social-card">
+                    <i class="fab fa-x-twitter"></i>
+                    <span>X</span>
+                </a>
+                <a href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener" class="social-card">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://echo.harungecit.dev/" target="_blank" rel="noopener" class="social-card">
+                    <i class="fas fa-blog"></i>
+                    <span>Blog</span>
+                </a>
+                <a href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit" target="_blank" rel="noopener" class="social-card">
+                    <i class="fas fa-download"></i>
+                    <span>Download CV</span>
+                </a>
+                <a href="https://bio.link/harungecit" target="_blank" rel="noopener" class="social-card">
+                    <i class="fas fa-link"></i>
+                    <span>All Links</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> Harun Geçit. All rights reserved.</p>
+            <p class="footer-version">Version 1.0.1</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/terminal.js"></script>
+</body>
+</html>
