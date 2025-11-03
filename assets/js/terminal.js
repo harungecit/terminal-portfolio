@@ -34,34 +34,62 @@
         // Detect mobile device and adjust terminal settings
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 
+        // Dark theme configuration
+        const darkTheme = {
+            background: '#141829',
+            foreground: '#e0e0e0',
+            cursor: '#00ff41',
+            cursorAccent: '#00ff41',
+            selection: 'rgba(0, 255, 65, 0.3)',
+            black: '#0a0e27',
+            red: '#ff3838',
+            green: '#00ff41',
+            yellow: '#ffa500',
+            blue: '#00f0ff',
+            magenta: '#b026ff',
+            cyan: '#00f0ff',
+            white: '#e0e0e0',
+            brightBlack: '#606060',
+            brightRed: '#ff6b6b',
+            brightGreen: '#51ff51',
+            brightYellow: '#ffbd2e',
+            brightBlue: '#51f0ff',
+            brightMagenta: '#d451ff',
+            brightCyan: '#51f0ff',
+            brightWhite: '#ffffff'
+        };
+
+        // Light theme configuration - optimized for readability
+        const lightTheme = {
+            background: '#fefefe',
+            foreground: '#1a1a1a',
+            cursor: '#00b330',
+            cursorAccent: '#00b330',
+            selection: 'rgba(0, 179, 48, 0.3)',
+            black: '#1a1a1a',
+            red: '#cc0000',
+            green: '#00b330',
+            yellow: '#996600',
+            blue: '#0066cc',
+            magenta: '#8800cc',
+            cyan: '#0099cc',
+            white: '#4a4a4a',
+            brightBlack: '#606060',
+            brightRed: '#ff0000',
+            brightGreen: '#00cc33',
+            brightYellow: '#cc7700',
+            brightBlue: '#0080ff',
+            brightMagenta: '#aa00cc',
+            brightCyan: '#00aacc',
+            brightWhite: '#1a1a1a'
+        };
+
         const term = new Terminal({
             cursorBlink: true,
             cursorStyle: 'block',
             fontFamily: '"Fira Code", "Share Tech Mono", monospace',
             fontSize: isMobileDevice ? 11 : 14,
-            theme: {
-                background: '#141829',
-                foreground: '#e0e0e0',
-                cursor: '#00ff41',
-                cursorAccent: '#00ff41',
-                selection: 'rgba(0, 255, 65, 0.3)',
-                black: '#0a0e27',
-                red: '#ff3838',
-                green: '#00ff41',
-                yellow: '#ffa500',
-                blue: '#00f0ff',
-                magenta: '#b026ff',
-                cyan: '#00f0ff',
-                white: '#e0e0e0',
-                brightBlack: '#606060',
-                brightRed: '#ff6b6b',
-                brightGreen: '#51ff51',
-                brightYellow: '#ffbd2e',
-                brightBlue: '#51f0ff',
-                brightMagenta: '#d451ff',
-                brightCyan: '#51f0ff',
-                brightWhite: '#ffffff'
-            },
+            theme: darkTheme,
             allowProposedApi: true,
             scrollback: isMobileDevice ? 500 : 1000
         });
@@ -503,12 +531,16 @@ Example: \x1b[1;32msocial github\x1b[0m`;
             lumos: (args) => {
                 document.body.classList.add('light-mode');
                 localStorage.setItem('theme', 'light');
+                // Apply light theme to terminal
+                term.options.theme = lightTheme;
                 return '\x1b[1;33m✨ Lumos! ✨\x1b[0m\r\n\x1b[1;36mLight mode activated. The wand tip ignites!\x1b[0m';
             },
 
             nox: (args) => {
                 document.body.classList.remove('light-mode');
                 localStorage.setItem('theme', 'dark');
+                // Apply dark theme to terminal
+                term.options.theme = darkTheme;
                 return '\x1b[1;35m🌙 Nox! 🌙\x1b[0m\r\n\x1b[1;36mDark mode restored. The light extinguishes.\x1b[0m';
             },
 
@@ -615,18 +647,36 @@ Example: \x1b[1;32msocial github\x1b[0m`;
             }
             historyIndex = commandHistory.length;
 
-            // Parse command and arguments
-            const parts = trimmed.split(' ');
-            const cmd = parts[0];
-            const args = parts.slice(1);
+            // Check for multi-word commands first
+            // Try matching the full input or progressively shorter prefixes
+            let matchedCmd = null;
+            let args = [];
 
-            // Execute command
-            if (commands[cmd]) {
-                const output = commands[cmd](args);
-                // Convert \n to \r\n for proper terminal display
-                return output.replace(/\n/g, '\r\n');
+            // Check for exact matches in commands object
+            if (commands[trimmed]) {
+                matchedCmd = trimmed;
+                args = [];
             } else {
-                return `\x1b[1;31mCommand not found:\x1b[0m ${cmd}\r\nType '\x1b[1;32mhelp\x1b[0m' to see available commands.`;
+                // Try to find multi-word commands by checking progressively
+                const words = trimmed.split(' ');
+                for (let i = words.length; i > 0; i--) {
+                    const potentialCmd = words.slice(0, i).join(' ');
+                    if (commands[potentialCmd]) {
+                        matchedCmd = potentialCmd;
+                        args = words.slice(i);
+                        break;
+                    }
+                }
+            }
+
+            // Execute command if found
+            if (matchedCmd && commands[matchedCmd]) {
+                const output = commands[matchedCmd](args);
+                // Convert \n to \r\n for proper terminal display
+                return output ? output.replace(/\n/g, '\r\n') : '';
+            } else {
+                const firstWord = trimmed.split(' ')[0];
+                return `\x1b[1;31mCommand not found:\x1b[0m ${firstWord}\r\nType '\x1b[1;32mhelp\x1b[0m' to see available commands.`;
             }
         }
 
@@ -741,6 +791,7 @@ Example: \x1b[1;32msocial github\x1b[0m`;
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             document.body.classList.add('light-mode');
+            term.options.theme = lightTheme;
         }
 
         // Show welcome box only on desktop

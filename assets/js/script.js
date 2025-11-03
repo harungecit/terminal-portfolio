@@ -222,11 +222,20 @@ const skillsObserver = new IntersectionObserver((entries) => {
             skillsObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.3 });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-const skillsSection = document.querySelector('.skills-section');
-if (skillsSection) {
-    skillsObserver.observe(skillsSection);
+// Observe each skill category individually for better mobile support
+const skillCategories = document.querySelectorAll('.skill-category');
+if (skillCategories.length > 0) {
+    skillCategories.forEach(category => {
+        skillsObserver.observe(category);
+    });
+} else {
+    // Fallback to observing the entire section
+    const skillsSection = document.querySelector('.skills-section');
+    if (skillsSection) {
+        skillsObserver.observe(skillsSection);
+    }
 }
 
 // ================================
@@ -599,3 +608,168 @@ function addHoverSounds() {
 setTimeout(addHoverSounds, 1000);
 
 console.log('%c⚡ Website fully loaded and optimized!', 'color: #00ff41; font-size: 14px; font-weight: bold;');
+
+// ================================
+// Screensaver - Idle Detection
+// ================================
+let idleTimer = null;
+let screensaverActive = false;
+const IDLE_TIME = 60000; // 1 minute in milliseconds
+
+// Create screensaver element
+const screensaver = document.createElement('div');
+screensaver.id = 'screensaver';
+screensaver.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0a0e27;
+    z-index: 10000;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+`;
+
+const screensaverCanvas = document.createElement('canvas');
+screensaverCanvas.id = 'screensaver-canvas';
+screensaverCanvas.style.cssText = `
+    width: 100%;
+    height: 100%;
+`;
+screensaver.appendChild(screensaverCanvas);
+
+// Add hint text
+const screensaverHint = document.createElement('div');
+screensaverHint.style.cssText = `
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--neon-green);
+    font-family: var(--font-code);
+    font-size: 1rem;
+    text-align: center;
+    opacity: 0.7;
+    animation: fadeInOut 2s infinite;
+`;
+screensaverHint.textContent = 'Press any key or move mouse to continue...';
+screensaver.appendChild(screensaverHint);
+
+document.body.appendChild(screensaver);
+
+// Matrix rain for screensaver
+let screensaverInterval = null;
+function startScreensaver() {
+    if (screensaverActive) return;
+
+    screensaverActive = true;
+    screensaver.style.display = 'block';
+
+    // Fade in
+    setTimeout(() => {
+        screensaver.style.opacity = '1';
+    }, 10);
+
+    // Initialize canvas
+    const canvas = screensaverCanvas;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/~ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+    const charArray = chars.split('');
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+
+    const drops = [];
+    for (let i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -100;
+    }
+
+    function drawMatrix() {
+        ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#00ff41';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = charArray[Math.floor(Math.random() * charArray.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    screensaverInterval = setInterval(drawMatrix, 33);
+
+    console.log('%c💤 Screensaver activated!', 'color: #00ff41; font-size: 12px;');
+}
+
+function stopScreensaver() {
+    if (!screensaverActive) return;
+
+    screensaverActive = false;
+
+    // Fade out
+    screensaver.style.opacity = '0';
+
+    setTimeout(() => {
+        screensaver.style.display = 'none';
+        if (screensaverInterval) {
+            clearInterval(screensaverInterval);
+            screensaverInterval = null;
+        }
+    }, 500);
+
+    console.log('%c👋 Screensaver deactivated!', 'color: #00ff41; font-size: 12px;');
+}
+
+function resetIdleTimer() {
+    // Stop screensaver if active
+    if (screensaverActive) {
+        stopScreensaver();
+    }
+
+    // Clear existing timer
+    if (idleTimer) {
+        clearTimeout(idleTimer);
+    }
+
+    // Set new timer
+    idleTimer = setTimeout(startScreensaver, IDLE_TIME);
+}
+
+// Listen for user activity
+const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
+activityEvents.forEach(event => {
+    document.addEventListener(event, resetIdleTimer, { passive: true });
+});
+
+// Resize screensaver canvas on window resize
+window.addEventListener('resize', () => {
+    if (screensaverActive && screensaverCanvas) {
+        screensaverCanvas.width = window.innerWidth;
+        screensaverCanvas.height = window.innerHeight;
+    }
+});
+
+// Add fadeInOut animation for hint text
+const screensaverStyle = document.createElement('style');
+screensaverStyle.innerHTML = `
+    @keyframes fadeInOut {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 0.3; }
+    }
+`;
+document.head.appendChild(screensaverStyle);
+
+// Start idle timer
+resetIdleTimer();
+
+console.log('%c⏰ Screensaver will activate after 1 minute of inactivity', 'color: #00f0ff; font-size: 12px;');
