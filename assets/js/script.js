@@ -260,18 +260,14 @@ document.querySelectorAll('.project-card').forEach(card => {
 });
 
 // ================================
-// Contact Form Handler
+// Contact Form Handler (Netlify Forms)
 // ================================
 const contactForm = document.getElementById('contact-form');
 
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(contactForm);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const topic = formData.get('topic');
-    const message = formData.get('message');
     const consent = formData.get('consent');
 
     // Check consent
@@ -280,21 +276,38 @@ contactForm.addEventListener('submit', (e) => {
         return;
     }
 
-    // Get topic text
-    const topicSelect = document.getElementById('topic');
-    const topicText = topicSelect.options[topicSelect.selectedIndex].text;
+    // Get the submit button
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const originalButtonHTML = submitButton.innerHTML;
 
-    // Create mailto link
-    const mailtoLink = `mailto:info@harungecit.com?subject=${encodeURIComponent(`[${topicText}] Contact from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topicText}\n\nMessage:\n${message}\n\n---\nConsent: User agreed to KVKK/GDPR data processing.`)}`;
+    // Disable button and show loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
 
-    // Open default email client
-    window.location.href = mailtoLink;
+    try {
+        // Submit to Netlify Forms
+        const response = await fetch('/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(formData).toString()
+        });
 
-    // Show success message
-    alert('Opening your email client...');
-
-    // Reset form
-    contactForm.reset();
+        if (response.ok) {
+            // Success
+            alert('Thank you! Your message has been sent successfully. I will get back to you soon.');
+            contactForm.reset();
+        } else {
+            // Error
+            throw new Error('Form submission failed');
+        }
+    } catch (error) {
+        console.error('Form submission error:', error);
+        alert('Oops! There was an error sending your message. Please try again or contact me directly at info@harungecit.com');
+    } finally {
+        // Re-enable button
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonHTML;
+    }
 });
 
 // ================================
