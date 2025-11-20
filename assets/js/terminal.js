@@ -1,7 +1,7 @@
 // ================================
 // Terminal - Initialize when ready
 // ================================
-(function() {
+(function () {
     'use strict';
 
     // Wait for DOM and libraries to load
@@ -112,11 +112,295 @@
         let currentLine = '';
         let commandHistory = [];
         let historyIndex = -1;
+        let isBusy = false; // Prevent input during async operations
 
-        // Use shorter prompt on mobile
-        const prompt = isMobileDevice
-            ? '\x1b[1;32m$\x1b[0m '
-            : '\x1b[1;32m┌──[\x1b[1;36mharun@dev\x1b[1;32m]\r\n└─\x1b[1;32m$\x1b[0m ';
+        // ================================
+        // File System
+        // ================================
+        const fileSystem = {
+            '~': {
+                type: 'dir',
+                children: {
+                    'about.txt': { type: 'file', content: 'Harun Geçit - Full Stack Developer\r\nLocation: Istanbul, Türkiye\r\nExperience: 15+ years' },
+                    'contact.txt': { type: 'file', content: 'Email: info@harungecit.com\r\nWhatsApp: 0850 303 39 54\r\nWebsite: https://harungecit.com' },
+                    'projects': {
+                        type: 'dir',
+                        children: {
+                            'braislator.txt': { type: 'file', content: 'BRAISLATOR: Turkish to Braille translator with speech-to-text support.' },
+                            'ecommerce.txt': { type: 'file', content: 'E-commerce Platform: Full-featured platform with ERP integration.' },
+                            'rfid.txt': { type: 'file', content: 'RFID Tracking System: Enterprise textile tracking solution.' },
+                            'ai-training.txt': { type: 'file', content: 'AI Training Platform: Smart training with AI-supported exercises.' },
+                            'devtools.txt': { type: 'file', content: 'DevTools Platform: Developer utilities and tools.\r\nLink: https://devtools.harungecit.dev/' }
+                        }
+                    },
+                    'skills': {
+                        type: 'dir',
+                        children: {
+                            'languages.md': { type: 'file', content: '# Languages\r\n- PHP\r\n- JavaScript\r\n- SQL\r\n- Bash Shell' },
+                            'backend.md': { type: 'file', content: '# Backend\r\n- Laravel\r\n- CodeIgniter\r\n- Zend\r\n- Node.js\r\n- Express.js' },
+                            'frontend.md': { type: 'file', content: '# Frontend\r\n- React.js\r\n- jQuery\r\n- Tailwind CSS\r\n- Bootstrap' },
+                            'devops.md': { type: 'file', content: '# DevOps\r\n- Docker\r\n- Kubernetes\r\n- Nginx\r\n- AWS\r\n- GCP' }
+                        }
+                    },
+                    'README.md': { type: 'file', content: '# Harun Geçit Portfolio\r\nWelcome to my interactive terminal portfolio!\r\nTry commands like "ls", "cd", "cat", "snake", "weather", "top", "chat".' }
+                }
+            }
+        };
+
+        let currentPath = ['~'];
+
+        function getDir(pathArray) {
+            let current = fileSystem['~'];
+            for (let i = 1; i < pathArray.length; i++) {
+                current = current.children[pathArray[i]];
+            }
+            return current;
+        }
+
+        function getPrompt() {
+            const pathStr = currentPath.length === 1 ? '~' : '~/' + currentPath.slice(1).join('/');
+            if (isMobileDevice) return `\x1b[1;32m${pathStr} $\x1b[0m `;
+            return `\x1b[1;32m┌──[\x1b[1;36mharun@dev\x1b[1;32m]-[\x1b[1;37m${pathStr}\x1b[1;32m]\r\n└─\x1b[1;32m$\x1b[0m `;
+        }
+
+        // ================================
+        // Snake Game State
+        // ================================
+        let gameInterval = null;
+        let gameMode = false;
+        let snake = [];
+        let food = {};
+        let direction = 'right';
+        let score = 0;
+        const gameWidth = 40;
+        const gameHeight = 20;
+
+        function startSnakeGame() {
+            gameMode = true;
+            score = 0;
+            direction = 'right';
+            snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+            spawnFood();
+
+            term.clear();
+            term.write('\x1b[?25l'); // Hide cursor
+
+            gameInterval = setInterval(gameLoop, 100);
+        }
+
+        function stopSnakeGame() {
+            gameMode = false;
+            clearInterval(gameInterval);
+            term.write('\x1b[?25h'); // Show cursor
+            term.clear();
+            term.write(`\r\n\x1b[1;32mGame Over! Score: ${score}\x1b[0m\r\n`);
+            writePrompt();
+        }
+
+        function spawnFood() {
+            food = {
+                x: Math.floor(Math.random() * gameWidth),
+                y: Math.floor(Math.random() * gameHeight)
+            };
+            // Make sure food doesn't spawn on snake
+            for (let segment of snake) {
+                if (segment.x === food.x && segment.y === food.y) {
+                    spawnFood();
+                    break;
+                }
+            }
+        }
+
+        function gameLoop() {
+            // Move snake
+            const head = { ...snake[0] };
+            switch (direction) {
+                case 'up': head.y--; break;
+                case 'down': head.y++; break;
+                case 'left': head.x--; break;
+                case 'right': head.x++; break;
+            }
+
+            // Check collisions
+            if (head.x < 0 || head.x >= gameWidth || head.y < 0 || head.y >= gameHeight) {
+                stopSnakeGame();
+                return;
+            }
+
+            for (let segment of snake) {
+                if (head.x === segment.x && head.y === segment.y) {
+                    stopSnakeGame();
+                    return;
+                }
+            }
+
+            snake.unshift(head);
+
+            // Check food
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                spawnFood();
+            } else {
+                snake.pop();
+            }
+
+            renderGame();
+        }
+
+        function renderGame() {
+            let output = '\x1b[H'; // Move cursor to top-left
+
+            // Top border
+            output += '\x1b[1;36m+' + '-'.repeat(gameWidth) + '+\x1b[0m\r\n';
+
+            for (let y = 0; y < gameHeight; y++) {
+                output += '\x1b[1;36m|\x1b[0m';
+                for (let x = 0; x < gameWidth; x++) {
+                    let char = ' ';
+
+                    if (x === food.x && y === food.y) {
+                        char = '\x1b[1;31m*\x1b[0m'; // Food
+                    } else {
+                        for (let i = 0; i < snake.length; i++) {
+                            if (snake[i].x === x && snake[i].y === y) {
+                                char = i === 0 ? '\x1b[1;32mO\x1b[0m' : '\x1b[1;32mo\x1b[0m'; // Head vs Body
+                                break;
+                            }
+                        }
+                    }
+                    output += char;
+                }
+                output += '\x1b[1;36m|\x1b[0m\r\n';
+            }
+
+            // Bottom border
+            output += '\x1b[1;36m+' + '-'.repeat(gameWidth) + '+\x1b[0m\r\n';
+            output += `Score: ${score}  (Press 'q' to quit)`;
+
+            term.write(output);
+        }
+
+        // ================================
+        // System Monitor (top)
+        // ================================
+        let monitorInterval = null;
+        let monitorMode = false;
+
+        function startMonitor() {
+            monitorMode = true;
+            term.clear();
+            term.write('\x1b[?25l'); // Hide cursor
+            monitorInterval = setInterval(renderMonitor, 1000);
+            renderMonitor();
+        }
+
+        function stopMonitor() {
+            monitorMode = false;
+            clearInterval(monitorInterval);
+            term.write('\x1b[?25h'); // Show cursor
+            term.clear();
+            writePrompt();
+        }
+
+        function renderMonitor() {
+            const now = new Date().toTimeString().split(' ')[0];
+            const cpu = (Math.random() * 30 + 10).toFixed(1);
+            const mem = (Math.random() * 40 + 20).toFixed(1);
+            const tasks = 42;
+            const running = 1;
+
+            let output = '\x1b[H'; // Move to top
+            output += `\x1b[1;37mtop - ${now} up 15 days,  1 user,  load average: 0.15, 0.10, 0.05\x1b[0m\r\n`;
+            output += `Tasks: \x1b[1;32m${tasks} total\x1b[0m,   \x1b[1;32m${running} running\x1b[0m,  \x1b[1;32m${tasks - running} sleeping\x1b[0m\r\n`;
+            output += `%Cpu(s): \x1b[1;32m${cpu} us\x1b[0m,  \x1b[1;32m${(Math.random() * 5).toFixed(1)} sy\x1b[0m,  \x1b[1;32m${(100 - cpu).toFixed(1)} id\x1b[0m\r\n`;
+            output += `MiB Mem : \x1b[1;32m16384.0 total\x1b[0m, \x1b[1;33m${(163.84 * mem).toFixed(1)} free\x1b[0m, \x1b[1;32m${(163.84 * (100 - mem)).toFixed(1)} used\x1b[0m\r\n`;
+            output += '\r\n';
+            output += '\x1b[7m  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND     \x1b[0m\r\n';
+
+            const processes = [
+                { pid: 1, user: 'root', cmd: 'init', cpu: 0.1, mem: 0.1 },
+                { pid: 101, user: 'harun', cmd: 'php-fpm', cpu: 5.2, mem: 4.5 },
+                { pid: 102, user: 'harun', cmd: 'laravel-worker', cpu: 4.8, mem: 8.2 },
+                { pid: 103, user: 'harun', cmd: 'node-server', cpu: 3.5, mem: 6.1 },
+                { pid: 104, user: 'harun', cmd: 'postgres', cpu: 2.1, mem: 5.5 },
+                { pid: 105, user: 'harun', cmd: 'nginx', cpu: 1.5, mem: 2.3 },
+                { pid: 106, user: 'harun', cmd: 'docker-daemon', cpu: 1.2, mem: 3.8 },
+                { pid: 107, user: 'harun', cmd: 'vscode-server', cpu: 0.8, mem: 4.2 },
+                { pid: 108, user: 'harun', cmd: 'zsh', cpu: 0.1, mem: 0.5 },
+                { pid: 109, user: 'harun', cmd: 'git', cpu: 0.0, mem: 0.2 }
+            ];
+
+            processes.forEach(p => {
+                const cpuVal = (p.cpu + Math.random() - 0.5).toFixed(1);
+                const memVal = (p.mem + Math.random() - 0.5).toFixed(1);
+                output += `\x1b[1;32m${p.pid.toString().padStart(5)} ${p.user.padEnd(8)}  20   0  ${(Math.random() * 100000).toFixed(0).padStart(6)}  ${(Math.random() * 10000).toFixed(0).padStart(5)}   ${(Math.random() * 5000).toFixed(0).padStart(4)} S   ${cpuVal}   ${memVal}   0:00.00 ${p.cmd}\x1b[0m\r\n`;
+            });
+
+            output += '\r\n\x1b[1;36mPress \'q\' to exit system monitor\x1b[0m';
+            term.write(output);
+        }
+
+        // ================================
+        // Chatbot State
+        // ================================
+        let chatMode = false;
+        let isBotTyping = false;
+
+        function startChat() {
+            chatMode = true;
+            term.write('\r\n\x1b[1;35m[Chat Mode Activated]\x1b[0m\r\n');
+            term.write('Type "bye" to exit.\r\n');
+            botReply("Hello! I'm Harun's digital assistant. How can I help you today?");
+        }
+
+        function stopChat() {
+            chatMode = false;
+            term.write('\r\n\x1b[1;35m[Chat Mode Deactivated]\x1b[0m\r\n');
+            writePrompt();
+        }
+
+        function botReply(msg) {
+            isBotTyping = true;
+            term.write('\r\n\x1b[1;36mBot:\x1b[0m ');
+
+            let i = 0;
+            const typingInterval = setInterval(() => {
+                term.write(msg[i]);
+                i++;
+                if (i >= msg.length) {
+                    clearInterval(typingInterval);
+                    isBotTyping = false;
+                    term.write('\r\n\x1b[1;32mYou:\x1b[0m ');
+                }
+            }, 30);
+        }
+
+        function processChat(input) {
+            const lower = input.toLowerCase();
+
+            if (lower === 'bye' || lower === 'exit' || lower === 'quit') {
+                stopChat();
+                return;
+            }
+
+            let response = "I'm not sure I understand. Try asking about 'projects', 'skills', 'contact', or just say 'hello'.";
+
+            if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
+                response = "Hi there! Feel free to ask me about Harun's work or skills.";
+            } else if (lower.includes('project') || lower.includes('work')) {
+                response = "Harun has worked on many cool projects like BRAISLATOR, an E-commerce platform, and an RFID tracking system. Type 'projects' in the main terminal to see more.";
+            } else if (lower.includes('skill') || lower.includes('stack') || lower.includes('tech')) {
+                response = "Harun is a Full Stack wizard! He knows PHP, Laravel, JavaScript, React, Node.js, and DevOps tools like Docker and Kubernetes.";
+            } else if (lower.includes('contact') || lower.includes('email') || lower.includes('reach')) {
+                response = "You can reach Harun at info@harungecit.com or via WhatsApp at 0850 303 39 54.";
+            } else if (lower.includes('about') || lower.includes('who')) {
+                response = "Harun is a Full Stack Developer with over 15 years of experience, based in Istanbul.";
+            } else if (lower.includes('help')) {
+                response = "I can tell you about 'projects', 'skills', 'contact', 'about', or just chat!";
+            }
+
+            botReply(response);
+        }
 
         // ================================
         // Command Database
@@ -139,6 +423,20 @@
                     '\x1b[1;32mdate\x1b[0m - Display current date and time',
                     '\x1b[1;32mhistory\x1b[0m - Show command history',
                     '\x1b[1;32mclear\x1b[0m - Clear terminal screen',
+                    '',
+                    '\x1b[1;35m📂 File System:\x1b[0m',
+                    '\x1b[1;32mls\x1b[0m - List directory contents',
+                    '\x1b[1;32mcd [dir]\x1b[0m - Change directory',
+                    '\x1b[1;32mpwd\x1b[0m - Print working directory',
+                    '\x1b[1;32mcat [file]\x1b[0m - Read file content',
+                    '',
+                    '\x1b[1;33m🎮 Games:\x1b[0m',
+                    '\x1b[1;32msnake\x1b[0m - Play Snake game',
+                    '',
+                    '\x1b[1;35m📊 System:\x1b[0m',
+                    '\x1b[1;32mtop\x1b[0m - System monitor',
+                    '\x1b[1;32mweather [city]\x1b[0m - Check weather forecast',
+                    '\x1b[1;32mchat\x1b[0m - Chat with AI assistant',
                     '',
                     '\x1b[1;35m🪄 Magic Spells:\x1b[0m',
                     '\x1b[1;32mlumos\x1b[0m - Light mode (wand-lighting charm)',
@@ -321,15 +619,17 @@ Example: \x1b[1;32msocial github\x1b[0m`;
             },
 
             ip: (args) => {
-                // This will be handled asynchronously
+                isBusy = true;
                 fetch('https://api.ipify.org?format=json')
                     .then(response => response.json())
                     .then(data => {
                         term.write(`\r\n\x1b[1;36mYour IP Address:\x1b[0m ${data.ip}\r\n`);
+                        isBusy = false;
                         writePrompt();
                     })
                     .catch(error => {
                         term.write(`\r\n\x1b[1;31mError:\x1b[0m Unable to fetch IP address\r\n`);
+                        isBusy = false;
                         writePrompt();
                     });
                 return '\x1b[1;33mFetching your IP address...\x1b[0m';
@@ -630,6 +930,112 @@ Example: \x1b[1;32msocial github\x1b[0m`;
                 const effect = effects[Math.floor(Math.random() * effects.length)];
                 setTimeout(effect, 100);
                 return '';
+            },
+
+            // File System Commands
+            ls: (args) => {
+                const dir = getDir(currentPath);
+                const items = Object.keys(dir.children).map(name => {
+                    const item = dir.children[name];
+                    if (item.type === 'dir') return `\x1b[1;34m${name}/\x1b[0m`;
+                    return `\x1b[1;32m${name}\x1b[0m`;
+                });
+                return items.join('  ');
+            },
+
+            cd: (args) => {
+                if (!args || args.length === 0) {
+                    currentPath = ['~'];
+                    return '';
+                }
+
+                const target = args[0];
+
+                if (target === '..') {
+                    if (currentPath.length > 1) {
+                        currentPath.pop();
+                    }
+                    return '';
+                }
+
+                if (target === '~') {
+                    currentPath = ['~'];
+                    return '';
+                }
+
+                const dir = getDir(currentPath);
+                if (dir.children[target] && dir.children[target].type === 'dir') {
+                    currentPath.push(target);
+                    return '';
+                }
+
+                return `\x1b[1;31mcd: no such file or directory: ${target}\x1b[0m`;
+            },
+
+            pwd: (args) => {
+                return '/' + currentPath.slice(1).join('/');
+            },
+
+            cat: (args) => {
+                if (!args || args.length === 0) return '\x1b[1;31mUsage: cat <filename>\x1b[0m';
+
+                const target = args[0];
+                const dir = getDir(currentPath);
+
+                if (dir.children[target]) {
+                    if (dir.children[target].type === 'file') {
+                        return dir.children[target].content;
+                    }
+                    return `\x1b[1;31mcat: ${target}: Is a directory\x1b[0m`;
+                }
+
+                return `\x1b[1;31mcat: ${target}: No such file or directory\x1b[0m`;
+            },
+
+            snake: (args) => {
+                startSnakeGame();
+                return '';
+            },
+
+            top: (args) => {
+                startMonitor();
+                return '';
+            },
+
+
+            weather: (args) => {
+                const city = args.join(' ');
+                const displayCity = city || 'your location';
+                term.write(`\r\n\x1b[1;33mFetching weather for ${displayCity}...\x1b[0m\r\n\r\n`);
+
+                isBusy = true;
+                const encodedCity = city ? encodeURIComponent(city) : '';
+                const url = encodedCity ? `https://wttr.in/${encodedCity}?format=3` : 'https://wttr.in/?format=3';
+
+                fetch(url)
+                    .then(res => {
+                        if (!res.ok) throw new Error('City not found');
+                        return res.text();
+                    })
+                    .then(data => {
+                        term.write(`\x1b[1;36m${data.trim()}\x1b[0m\r\n`);
+                        isBusy = false;
+                        writePrompt();
+                    })
+                    .catch(err => {
+                        term.write(`\r\n\x1b[1;31mError: Unable to fetch weather data for "${displayCity}".\x1b[0m\r\n`);
+                        term.write(`\x1b[1;33mTip: Try "weather Istanbul" or "weather London"\x1b[0m\r\n`);
+                        isBusy = false;
+                        writePrompt();
+                    });
+
+                return '';
+            },
+
+
+            chat: (args) => {
+                startChat();
+                return '';
             }
         };
 
@@ -684,7 +1090,7 @@ Example: \x1b[1;32msocial github\x1b[0m`;
         // Terminal Input Handling
         // ================================
         function writePrompt() {
-            term.write('\r\n' + prompt);
+            term.write('\r\n' + getPrompt());
             // Add extra lines to prevent prompt from being hidden
             setTimeout(() => {
                 term.scrollToBottom();
@@ -692,6 +1098,60 @@ Example: \x1b[1;32msocial github\x1b[0m`;
         }
 
         term.onData(data => {
+            // Handle Game Mode
+            if (gameMode) {
+                const code = data.charCodeAt(0);
+                if (data === 'q' || code === 3) { // q or Ctrl+C
+                    stopSnakeGame();
+                    return;
+                }
+
+                if (data === '\x1b[A' && direction !== 'down') direction = 'up';
+                else if (data === '\x1b[B' && direction !== 'up') direction = 'down';
+                else if (data === '\x1b[D' && direction !== 'right') direction = 'left';
+                else if (data === '\x1b[C' && direction !== 'left') direction = 'right';
+                else if (data === 'w' && direction !== 'down') direction = 'up';
+                else if (data === 's' && direction !== 'up') direction = 'down';
+                else if (data === 'a' && direction !== 'right') direction = 'left';
+                else if (data === 'd' && direction !== 'left') direction = 'right';
+
+                return;
+            }
+
+            // Handle Monitor Mode
+            if (monitorMode) {
+                const code = data.charCodeAt(0);
+                if (data === 'q' || code === 3) { // q or Ctrl+C
+                    stopMonitor();
+                }
+                return;
+            }
+
+            // Handle Chat Mode
+            if (chatMode) {
+                if (isBotTyping) return; // Block input while typing
+
+                const code = data.charCodeAt(0);
+
+                if (code === 13) { // Enter
+                    term.write('\r\n');
+                    processChat(currentLine);
+                    currentLine = '';
+                } else if (code === 127) { // Backspace
+                    if (currentLine.length > 0) {
+                        currentLine = currentLine.slice(0, -1);
+                        term.write('\b \b');
+                    }
+                } else if (code >= 32 && code < 127) {
+                    currentLine += data;
+                    term.write(data);
+                }
+                return;
+            }
+
+            // Block input if terminal is busy
+            if (isBusy) return;
+
             const code = data.charCodeAt(0);
 
             // Enter
@@ -700,8 +1160,7 @@ Example: \x1b[1;32msocial github\x1b[0m`;
                 const output = processCommand(currentLine);
                 if (output !== null) {
                     term.write(output);
-                    // Add extra blank lines after output
-                    term.write('\r\n\r\n\r\n\r\n');
+                    term.write('\r\n');
                 }
                 currentLine = '';
                 writePrompt();
@@ -719,11 +1178,11 @@ Example: \x1b[1;32msocial github\x1b[0m`;
             // Up Arrow
             else if (data === '\x1b[A') {
                 if (historyIndex > 0) {
-                    term.write('\r' + prompt);
+                    term.write('\r' + getPrompt());
                     for (let i = 0; i < currentLine.length; i++) {
                         term.write(' ');
                     }
-                    term.write('\r' + prompt);
+                    term.write('\r' + getPrompt());
                     historyIndex--;
                     currentLine = commandHistory[historyIndex];
                     term.write(currentLine);
@@ -732,11 +1191,11 @@ Example: \x1b[1;32msocial github\x1b[0m`;
             // Down Arrow
             else if (data === '\x1b[B') {
                 if (historyIndex < commandHistory.length) {
-                    term.write('\r' + prompt);
+                    term.write('\r' + getPrompt());
                     for (let i = 0; i < currentLine.length; i++) {
                         term.write(' ');
                     }
-                    term.write('\r' + prompt);
+                    term.write('\r' + getPrompt());
                     historyIndex++;
                     if (historyIndex >= commandHistory.length) {
                         currentLine = '';
