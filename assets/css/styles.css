@@ -879,33 +879,101 @@ body {
     background: var(--secondary-bg);
 }
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
+/* Swiper Projects Carousel */
+.projects-swiper {
+    width: 100%;
+    padding: 2rem 0 4rem;
 }
 
-.project-card {
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 255, 65, 0.2);
-    transition: var(--transition);
-    position: relative;
-    opacity: 0;
-    transform: translateY(50px);
+.projects-swiper .swiper-slide {
+    height: auto;
+    transition: all 0.5s ease;
+    opacity: 0.4;
+    filter: blur(2px) brightness(0.5) saturate(0.6);
+    transform: scale(0.85);
 }
 
-.project-card.aos-animate {
+.projects-swiper .swiper-slide-active {
     opacity: 1;
-    transform: translateY(0);
+    filter: none;
+    transform: scale(1);
+    z-index: 2;
 }
 
-.project-card:hover {
+.projects-swiper .swiper-slide-prev,
+.projects-swiper .swiper-slide-next {
+    opacity: 0.55;
+    filter: blur(1px) brightness(0.6) saturate(0.7);
+    transform: scale(0.9);
+    z-index: 1;
+}
+
+/* Project Card */
+.project-card {
+    background: linear-gradient(145deg, var(--card-bg), rgba(0, 255, 65, 0.03));
+    border: 1px solid rgba(0, 255, 65, 0.2);
+    border-radius: 16px;
+    padding: 1.75rem;
+    height: 100%;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s ease;
+    box-sizing: border-box;
+}
+
+.swiper-slide-active .project-card {
     border-color: var(--neon-green);
-    box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
-    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 255, 65, 0.1);
+}
+
+.swiper-slide-active .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 255, 65, 0.15);
+}
+
+/* Swiper Navigation */
+.projects-swiper .swiper-button-prev,
+.projects-swiper .swiper-button-next {
+    width: 50px;
+    height: 50px;
+    background: rgba(10, 14, 39, 0.95);
+    border: 2px solid var(--neon-green);
+    border-radius: 50%;
+    color: var(--neon-green);
+    transition: var(--transition);
+}
+
+.projects-swiper .swiper-button-prev:after,
+.projects-swiper .swiper-button-next:after {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.projects-swiper .swiper-button-prev:hover,
+.projects-swiper .swiper-button-next:hover {
+    background: var(--neon-green);
+    color: var(--primary-bg);
+    box-shadow: var(--glow-green);
+}
+
+/* Swiper Pagination */
+.projects-swiper .swiper-pagination {
+    bottom: 0;
+}
+
+.projects-swiper .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: rgba(0, 255, 65, 0.3);
+    opacity: 1;
+    transition: var(--transition);
+}
+
+.projects-swiper .swiper-pagination-bullet-active {
+    background: var(--neon-green);
+    box-shadow: 0 0 15px var(--neon-green);
+    transform: scale(1.2);
 }
 
 .project-header {
@@ -947,10 +1015,21 @@ body {
     font-size: 0.9rem;
 }
 
+.project-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.project-links .project-link {
+    margin-top: 0;
+}
+
 .project-link {
     display: inline-block;
     margin-top: 1rem;
-    padding: 0.5rem 1rem;
+    padding: 0.4rem 0.8rem;
     background: var(--gradient-secondary);
     color: var(--primary-bg);
     text-decoration: none;
@@ -1219,9 +1298,14 @@ body {
         display: flex;
     }
 
-    .skills-grid,
-    .projects-grid {
+    .skills-grid {
         grid-template-columns: 1fr;
+    }
+
+    /* Swiper Tablet */
+    .project-card {
+        padding: 1.5rem;
+        min-height: 360px;
     }
 
     .contact-info {
@@ -1286,6 +1370,41 @@ body {
         width: 40px;
         height: 40px;
         font-size: 1.2rem;
+    }
+
+    /* Swiper Mobile */
+    .projects-swiper .swiper-slide {
+        width: 85%;
+        max-width: 320px;
+    }
+
+    .project-card {
+        padding: 1.25rem;
+        min-height: 350px;
+    }
+
+    .project-header {
+        font-size: 2.5rem;
+    }
+
+    .project-card h3 {
+        font-size: 1.15rem;
+    }
+
+    .projects-swiper .swiper-button-prev,
+    .projects-swiper .swiper-button-next {
+        width: 40px;
+        height: 40px;
+    }
+
+    .projects-swiper .swiper-button-prev:after,
+    .projects-swiper .swiper-button-next:after {
+        font-size: 1rem;
+    }
+
+    .projects-swiper .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
     }
 
     .social-links-large {

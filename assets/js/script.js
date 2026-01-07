@@ -786,3 +786,58 @@ document.head.appendChild(screensaverStyle);
 resetIdleTimer();
 
 console.log('%c⏰ Screensaver will activate after 1 minute of inactivity', 'color: #00f0ff; font-size: 12px;');
+
+// ================================
+// Projects Carousel - Swiper.js
+// ================================
+const projectsSwiper = new Swiper('.projects-swiper', {
+    slidesPerView: 3,
+    centeredSlides: true,
+    spaceBetween: 30,
+    loop: true,
+    loopAdditionalSlides: 3,
+    speed: 500,
+    grabCursor: true,
+    watchSlidesProgress: true,
+    slideToClickedSlide: true,
+    autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    },
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
+    keyboard: {
+        enabled: true,
+    },
+    breakpoints: {
+        0: {
+            slidesPerView: 1.2,
+            spaceBetween: 15,
+            centeredSlides: true,
+        },
+        480: {
+            slidesPerView: 1.5,
+            spaceBetween: 20,
+            centeredSlides: true,
+        },
+        768: {
+            slidesPerView: 2,
+            spaceBetween: 25,
+            centeredSlides: true,
+        },
+        1024: {
+            slidesPerView: 3,
+            spaceBetween: 30,
+            centeredSlides: true,
+        },
+    },
+});
+
+console.log('%c🎠 Swiper Carousel initialized!', 'color: #00ff41;');
