@@ -818,18 +818,18 @@ const projectsSwiper = new Swiper('.projects-swiper', {
     },
     breakpoints: {
         0: {
-            slidesPerView: 1.2,
-            spaceBetween: 15,
-            centeredSlides: true,
-        },
-        480: {
-            slidesPerView: 1.5,
+            slidesPerView: 1,
             spaceBetween: 20,
             centeredSlides: true,
         },
+        600: {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            centeredSlides: true,
+        },
         768: {
-            slidesPerView: 2,
-            spaceBetween: 25,
+            slidesPerView: 1.5,
+            spaceBetween: 30,
             centeredSlides: true,
         },
         1024: {
