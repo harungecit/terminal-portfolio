@@ -121,7 +121,7 @@
             '~': {
                 type: 'dir',
                 children: {
-                    'about.txt': { type: 'file', content: 'Harun Geçit - Full Stack Developer\r\nLocation: Istanbul, Türkiye\r\nExperience: 15+ years' },
+                    'about.txt': { type: 'file', content: 'Harun Geçit - Software Architect & Full Stack Developer\r\nRoles: DevOps Engineer, System Admin, Cyber Security, Software Advisor, Blog Writer\r\nLocation: Istanbul, Türkiye\r\nExperience: 15+ years' },
                     'contact.txt': { type: 'file', content: 'Email: info@harungecit.com\r\nWhatsApp: 0850 303 39 54\r\nWebsite: https://harungecit.com' },
                     'projects': {
                         type: 'dir',
@@ -136,9 +136,10 @@
                     'skills': {
                         type: 'dir',
                         children: {
-                            'languages.md': { type: 'file', content: '# Languages\r\n- PHP\r\n- JavaScript\r\n- SQL\r\n- Bash Shell' },
-                            'backend.md': { type: 'file', content: '# Backend\r\n- Laravel\r\n- CodeIgniter\r\n- Zend\r\n- Node.js\r\n- Express.js' },
-                            'frontend.md': { type: 'file', content: '# Frontend\r\n- React.js\r\n- jQuery\r\n- Tailwind CSS\r\n- Bootstrap' },
+                            'languages.md': { type: 'file', content: '# Languages\r\n- PHP\r\n- JavaScript\r\n- Go\r\n- SQL\r\n- Bash Shell' },
+                            'laravel.md': { type: 'file', content: '# Laravel Ecosystem\r\n- Laravel\r\n- Livewire\r\n- Inertia.js\r\n- Filament\r\n- Nova\r\n- Forge\r\n- Vapor\r\n- Horizon\r\n- Sanctum' },
+                            'backend.md': { type: 'file', content: '# Backend\r\n- CodeIgniter\r\n- Zend\r\n- Node.js\r\n- Express.js\r\n- Gin (Go)' },
+                            'frontend.md': { type: 'file', content: '# Frontend\r\n- React.js\r\n- Alpine.js\r\n- Inertia.js\r\n- Livewire\r\n- Tailwind CSS\r\n- Bootstrap' },
                             'devops.md': { type: 'file', content: '# DevOps\r\n- Docker\r\n- Kubernetes\r\n- Nginx\r\n- AWS\r\n- GCP' }
                         }
                     },
@@ -341,41 +342,109 @@
         }
 
         // ================================
-        // Chatbot State
+        // AI Chatbot State (Puter.js)
         // ================================
         let chatMode = false;
         let isBotTyping = false;
+        let chatHistory = [];
+
+        const HARUN_CONTEXT = `You are Harun Geçit's AI assistant on his portfolio website terminal. Be friendly, helpful, and concise.
+
+About Harun:
+- Software Architect with 15+ years of experience
+- Based in Istanbul, Turkey
+- Roles: Full Stack Developer, DevOps Engineer, System Administrator, Cybersecurity Specialist, Software Advisor, Technical Blog Writer
+
+Technical Skills:
+- Languages: PHP, JavaScript, Go, SQL, Bash
+- Laravel Ecosystem Expert: Laravel, Livewire, Inertia.js, Filament, Nova, Forge, Vapor, Horizon, Sanctum
+- Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS
+- Backend: CodeIgniter, Zend, Node.js, Express.js, Gin (Go)
+- DevOps: Docker, Kubernetes, Nginx, AWS, GCP, GitOps
+- Databases: PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch
+
+Current Work:
+- Full Stack Developer at USTEK RFID (2022-Present) - RFID technologies for textile tracking
+- Software Advisor at CatchPad (2022-Present) - AI-supported training platform
+
+Contact:
+- Email: info@harungecit.com
+- WhatsApp: 0850 303 39 54
+- Website: harungecit.com
+- Blog: echo.harungecit.dev
+
+Keep responses brief (2-3 sentences max) since this is a terminal interface. Answer in the same language the user writes.`;
 
         function startChat() {
             chatMode = true;
-            term.write('\r\n\x1b[1;35m[Chat Mode Activated]\x1b[0m\r\n');
-            term.write('Type "bye" to exit.\r\n');
-            botReply("Hello! I'm Harun's digital assistant. How can I help you today?");
+            chatHistory = [];
+            term.write('\r\n\x1b[1;35m╔═══════════════════════════════════════════════╗\x1b[0m\r\n');
+            term.write('\x1b[1;35m║\x1b[0m  \x1b[1;36m🤖 AI Chat\x1b[0m \x1b[1;33m(Gemini 2.0 Flash Lite via Puter.js)\x1b[0m \x1b[1;35m║\x1b[0m\r\n');
+            term.write('\x1b[1;35m╚═══════════════════════════════════════════════╝\x1b[0m\r\n');
+            term.write('\x1b[1;90mType "bye" to exit.\x1b[0m\r\n\r\n');
+            botReply("Hello! I'm Harun's AI assistant. How can I help you today?");
         }
 
         function stopChat() {
             chatMode = false;
+            chatHistory = [];
             term.write('\r\n\x1b[1;35m[Chat Mode Deactivated]\x1b[0m\r\n');
             writePrompt();
         }
 
+        // Word wrap function for terminal
+        function wrapText(text, maxWidth = 70) {
+            const lines = [];
+            const paragraphs = text.split('\n');
+
+            for (const paragraph of paragraphs) {
+                if (paragraph.length <= maxWidth) {
+                    lines.push(paragraph);
+                    continue;
+                }
+
+                const words = paragraph.split(' ');
+                let currentLine = '';
+
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length <= maxWidth) {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    } else {
+                        if (currentLine) lines.push(currentLine);
+                        currentLine = word;
+                    }
+                }
+                if (currentLine) lines.push(currentLine);
+            }
+
+            return lines.join('\n');
+        }
+
         function botReply(msg) {
             isBotTyping = true;
-            term.write('\r\n\x1b[1;36mBot:\x1b[0m ');
+
+            // Wrap text to fit terminal width
+            const wrappedMsg = wrapText(msg, 65);
+
+            term.write('\r\n\x1b[1;36m🤖 AI:\x1b[0m ');
 
             let i = 0;
             const typingInterval = setInterval(() => {
-                term.write(msg[i]);
+                if (wrappedMsg[i] === '\n') {
+                    term.write('\r\n     ');
+                } else {
+                    term.write(wrappedMsg[i]);
+                }
                 i++;
-                if (i >= msg.length) {
+                if (i >= wrappedMsg.length) {
                     clearInterval(typingInterval);
                     isBotTyping = false;
-                    term.write('\r\n\x1b[1;32mYou:\x1b[0m ');
+                    term.write('\r\n\r\n\x1b[1;32m👤 You:\x1b[0m ');
                 }
-            }, 30);
+            }, 20);
         }
 
-        function processChat(input) {
+        async function processChat(input) {
             const lower = input.toLowerCase();
 
             if (lower === 'bye' || lower === 'exit' || lower === 'quit') {
@@ -383,23 +452,77 @@
                 return;
             }
 
-            let response = "I'm not sure I understand. Try asking about 'projects', 'skills', 'contact', or just say 'hello'.";
+            // Show thinking indicator
+            term.write('\r\n\x1b[1;90m⏳ Thinking...\x1b[0m');
 
-            if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) {
-                response = "Hi there! Feel free to ask me about Harun's work or skills.";
-            } else if (lower.includes('project') || lower.includes('work')) {
-                response = "Harun has worked on many cool projects like BRAISLATOR, an E-commerce platform, and an RFID tracking system. Type 'projects' in the main terminal to see more.";
-            } else if (lower.includes('skill') || lower.includes('stack') || lower.includes('tech')) {
-                response = "Harun is a Full Stack wizard! He knows PHP, Laravel, JavaScript, React, Node.js, and DevOps tools like Docker and Kubernetes.";
-            } else if (lower.includes('contact') || lower.includes('email') || lower.includes('reach')) {
-                response = "You can reach Harun at info@harungecit.com or via WhatsApp at 0850 303 39 54.";
-            } else if (lower.includes('about') || lower.includes('who')) {
-                response = "Harun is a Full Stack Developer with over 15 years of experience, based in Istanbul.";
-            } else if (lower.includes('help')) {
-                response = "I can tell you about 'projects', 'skills', 'contact', 'about', or just chat!";
+            try {
+                // Check if Puter.js is available
+                if (typeof puter === 'undefined' || !puter.ai) {
+                    throw new Error('Puter.js not loaded');
+                }
+
+                // Simple prompt with context (more reliable than messages array)
+                const prompt = `${HARUN_CONTEXT}\n\nUser: ${input}\n\nAssistant:`;
+
+                // Call Puter.js AI with timeout
+                const timeoutPromise = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Timeout')), 15000)
+                );
+
+                const aiPromise = puter.ai.chat(prompt, {
+                    model: 'gemini-2.0-flash-lite'
+                });
+
+                const response = await Promise.race([aiPromise, timeoutPromise]);
+
+                // Debug: log response to console
+                console.log('Puter AI Response:', response);
+
+                // Extract message - Puter.js returns string directly or object
+                let aiMessage;
+                if (typeof response === 'string') {
+                    aiMessage = response;
+                } else if (response?.message?.content) {
+                    aiMessage = response.message.content;
+                } else if (response?.content) {
+                    aiMessage = response.content;
+                } else if (response?.text) {
+                    aiMessage = response.text;
+                } else {
+                    aiMessage = String(response);
+                }
+
+                // Clean up the message
+                aiMessage = aiMessage.trim();
+                if (!aiMessage) throw new Error('Empty response');
+
+                // Add to history
+                chatHistory.push({ role: 'user', content: input });
+                chatHistory.push({ role: 'assistant', content: aiMessage });
+
+                // Clear thinking indicator and show response
+                term.write('\r\x1b[K');
+                botReply(aiMessage);
+
+            } catch (error) {
+                console.error('AI Chat Error:', error);
+                term.write('\r\x1b[K');
+
+                // Fallback responses
+                let fallbackResponse = `Connection issue: ${error.message}. Try again or type 'bye' to exit.`;
+
+                if (lower.includes('merhaba') || lower.includes('selam') || lower.includes('hello') || lower.includes('hi')) {
+                    fallbackResponse = "Hello! I'm Harun's assistant. I can help you with information about projects, skills, or contact details.";
+                } else if (lower.includes('proje') || lower.includes('project')) {
+                    fallbackResponse = "Harun has worked on projects like BRAISLATOR (Braille translator), E-commerce platforms, and RFID tracking systems.";
+                } else if (lower.includes('laravel')) {
+                    fallbackResponse = "Harun is a Laravel ecosystem expert! He uses Livewire, Inertia.js, Filament, Nova, Forge, and Vapor.";
+                } else if (lower.includes('iletişim') || lower.includes('contact') || lower.includes('email')) {
+                    fallbackResponse = "You can reach Harun at info@harungecit.com or via WhatsApp at 0850 303 39 54.";
+                }
+
+                botReply(fallbackResponse);
             }
-
-            botReply(response);
         }
 
         // ================================
@@ -436,7 +559,7 @@
                     '\x1b[1;35m📊 System:\x1b[0m',
                     '\x1b[1;32mtop\x1b[0m - System monitor',
                     '\x1b[1;32mweather [city]\x1b[0m - Check weather forecast',
-                    '\x1b[1;32mchat\x1b[0m - Chat with AI assistant',
+                    '\x1b[1;32mchat\x1b[0m - Chat with Gemini AI (Puter.js)',
                     '',
                     '\x1b[1;35m🪄 Magic Spells:\x1b[0m',
                     '\x1b[1;32mlumos\x1b[0m - Light mode (wand-lighting charm)',
@@ -460,13 +583,17 @@
 \x1b[1;36mABOUT ME:\x1b[0m
 
 \x1b[1;32mName:\x1b[0m        Harun Geçit
-\x1b[1;32mRole:\x1b[0m        Full Stack Developer
+\x1b[1;32mTitle:\x1b[0m       \x1b[1;33mSoftware Architect\x1b[0m
 \x1b[1;32mLocation:\x1b[0m    Istanbul, Türkiye
 \x1b[1;32mExperience:\x1b[0m  15+ years in software development
 
-I started my journey with PHP and worked with modern frameworks
-like Laravel, CodeIgniter, Zend, along with JavaScript technologies
-such as Node.js, Express.js, and jQuery.
+\x1b[1;35mRoles:\x1b[0m
+  • Full Stack Developer    • DevOps Engineer
+  • System Administrator    • Cyber Security
+  • Software Advisor        • Technical Blog Writer
+
+Passionate about the \x1b[1;31mLaravel Ecosystem\x1b[0m and building scalable systems.
+Expert in PHP, JavaScript, Go, SQL, and Bash.
 
 \x1b[1;33m"Continually adding value to myself and recognizing there is
  still much to learn."\x1b[0m
@@ -476,13 +603,17 @@ such as Node.js, Express.js, and jQuery.
 \x1b[1;36mTECHNICAL SKILLS:\x1b[0m
 
 \x1b[1;33m▸ Languages\x1b[0m
-  PHP, JavaScript, SQL, Bash Shell
+  PHP, JavaScript, Go, SQL, Bash Shell
+
+\x1b[1;31m▸ Laravel Ecosystem\x1b[0m
+  Laravel, Livewire, Inertia.js, Filament, Nova
+  Forge, Vapor, Horizon, Sanctum, Passport
 
 \x1b[1;33m▸ Backend\x1b[0m
-  Laravel, CodeIgniter, Zend, Node.js, Express.js
+  CodeIgniter, Zend, Node.js, Express.js, Gin (Go)
 
 \x1b[1;33m▸ Frontend\x1b[0m
-  React.js, jQuery, Tailwind CSS, Bootstrap
+  React.js, Alpine.js, Inertia.js, Tailwind CSS, Bootstrap
 
 \x1b[1;33m▸ Databases\x1b[0m
   PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch

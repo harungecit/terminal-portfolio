@@ -49,12 +49,13 @@ window.addEventListener('resize', () => {
 // ================================
 const typedTextElement = document.getElementById('typed-text');
 const textArray = [
+    'Software Architect',
+    'Laravel Ecosystem Expert',
     'Full Stack Developer',
-    'PHP Specialist',
-    'JavaScript Developer',
     'DevOps Engineer',
-    'Linux Enthusiast',
-    'Cybersecurity Explorer'
+    'System Administrator',
+    'Cybersecurity Specialist',
+    'Technical Blog Writer'
 ];
 let textArrayIndex = 0;
 let charIndex = 0;
@@ -425,12 +426,13 @@ window.addEventListener('keydown', (e) => {
 // Console Easter Egg
 // ================================
 console.log('%c🚀 Welcome to Harun Geçit\'s Portfolio!', 'color: #00ff41; font-size: 20px; font-weight: bold;');
-console.log('%c👨‍💻 Full Stack Developer | PHP | JavaScript | DevOps', 'color: #00f0ff; font-size: 14px;');
+console.log('%c🏛️ Software Architect | Laravel Ecosystem Expert | Full Stack Developer', 'color: #00f0ff; font-size: 14px;');
 console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff41;');
 console.log('%c\n📦 Tech Stack:', 'color: #b026ff; font-size: 14px; font-weight: bold;');
-console.log('%c   • Frontend: React.js, Tailwind CSS, XTerm.js', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Backend: PHP (Laravel, CodeIgniter), Node.js (Express)', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • DevOps: Docker, Kubernetes, Nginx, Cloudflare', 'color: #00f0ff; font-size: 12px;');
+console.log('%c   • Languages: PHP, JavaScript, Go, SQL, Bash', 'color: #00f0ff; font-size: 12px;');
+console.log('%c   • Laravel: Livewire, Inertia.js, Filament, Nova, Forge, Vapor', 'color: #00f0ff; font-size: 12px;');
+console.log('%c   • Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS', 'color: #00f0ff; font-size: 12px;');
+console.log('%c   • DevOps: Docker, Kubernetes, Nginx, AWS, GCP', 'color: #00f0ff; font-size: 12px;');
 console.log('%c   • Database: PostgreSQL, MySQL, MongoDB, Redis', 'color: #00f0ff; font-size: 12px;');
 console.log('%c\n💼 Interested in working together?', 'color: #ffa500; font-size: 14px; font-weight: bold;');
 console.log('%c   📧 info@harungecit.com', 'color: #00ff41; font-size: 12px;');
