@@ -392,51 +392,19 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
             writePrompt();
         }
 
-        // Word wrap function for terminal
-        function wrapText(text, maxWidth = 70) {
-            const lines = [];
-            const paragraphs = text.split('\n');
-
-            for (const paragraph of paragraphs) {
-                if (paragraph.length <= maxWidth) {
-                    lines.push(paragraph);
-                    continue;
-                }
-
-                const words = paragraph.split(' ');
-                let currentLine = '';
-
-                for (const word of words) {
-                    if ((currentLine + ' ' + word).trim().length <= maxWidth) {
-                        currentLine = (currentLine + ' ' + word).trim();
-                    } else {
-                        if (currentLine) lines.push(currentLine);
-                        currentLine = word;
-                    }
-                }
-                if (currentLine) lines.push(currentLine);
-            }
-
-            return lines.join('\n');
-        }
-
         function botReply(msg) {
             isBotTyping = true;
-
-            // Wrap text to fit terminal width
-            const wrappedMsg = wrapText(msg, 65);
-
             term.write('\r\n\x1b[1;36m🤖 AI:\x1b[0m ');
 
             let i = 0;
             const typingInterval = setInterval(() => {
-                if (wrappedMsg[i] === '\n') {
-                    term.write('\r\n     ');
+                if (msg[i] === '\n') {
+                    term.write('\r\n');
                 } else {
-                    term.write(wrappedMsg[i]);
+                    term.write(msg[i]);
                 }
                 i++;
-                if (i >= wrappedMsg.length) {
+                if (i >= msg.length) {
                     clearInterval(typingInterval);
                     isBotTyping = false;
                     term.write('\r\n\r\n\x1b[1;32m👤 You:\x1b[0m ');
