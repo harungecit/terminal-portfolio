@@ -23,7 +23,7 @@
     <!-- Swiper.js for Carousel -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
-    <link rel="stylesheet" href="assets/css/styles.css?v=15.0">
+    <link rel="stylesheet" href="assets/css/styles.css?v=15.1">
 </head>
 <body>
     <!-- Matrix Rain Background -->
@@ -832,7 +832,7 @@
                         <div class="form-group checkbox-group">
                             <label class="checkbox-label">
                                 <input type="checkbox" id="consent" name="consent" required>
-                                <span>I agree to the processing of my personal data in accordance with KVKK/GDPR regulations. <a href="#" class="privacy-link">Privacy Policy</a></span>
+                                <span>I agree to the processing of my personal data in accordance with KVKK/GDPR regulations. <a href="#" class="privacy-link" id="privacy-link">Privacy Policy</a></span>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-primary">
@@ -881,11 +881,56 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Privacy Policy / Gizlilik Politikası</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h4>KVKK / GDPR Compliance</h4>
+                <p>This website collects personal data through the contact form for the purpose of responding to your inquiries. The data collected includes:</p>
+                <ul>
+                    <li>Name</li>
+                    <li>Email address</li>
+                    <li>Phone number (optional)</li>
+                    <li>Message content</li>
+                    <li>IP address and location data (for security purposes)</li>
+                </ul>
+
+                <h4>Data Usage</h4>
+                <p>Your personal data will be used solely for:</p>
+                <ul>
+                    <li>Responding to your inquiries</li>
+                    <li>Communication regarding potential collaborations or job opportunities</li>
+                    <li>Security and fraud prevention</li>
+                </ul>
+
+                <h4>Data Retention</h4>
+                <p>Your data will be retained for as long as necessary to fulfill the purposes outlined above, or as required by law.</p>
+
+                <h4>Your Rights</h4>
+                <p>Under KVKK (Turkish Personal Data Protection Law) and GDPR, you have the right to:</p>
+                <ul>
+                    <li>Access your personal data</li>
+                    <li>Request correction of inaccurate data</li>
+                    <li>Request deletion of your data</li>
+                    <li>Object to processing of your data</li>
+                    <li>Data portability</li>
+                </ul>
+
+                <h4>Contact</h4>
+                <p>For any privacy-related inquiries, please contact: <a href="mailto:info@harungecit.com">info@harungecit.com</a></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <p>&copy; <span id="current-year"></span> Harun Geçit. All rights reserved.</p>
-            <p class="footer-version">Version 15.0</p>
+            <p class="footer-version">Version 15.1</p>
         </div>
     </footer>
 
@@ -893,7 +938,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="assets/js/script.js?v=15.0"></script>
-    <script src="assets/js/terminal.js?v=15.0"></script>
+    <script src="assets/js/script.js?v=15.1"></script>
+    <script src="assets/js/terminal.js?v=15.1"></script>
 </body>
 </html>

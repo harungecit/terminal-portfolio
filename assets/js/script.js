@@ -315,7 +315,10 @@ async function getVisitorInfo() {
         if (data.location?.timezone) info.push(`Timezone: ${data.location.timezone}`);
         if (data.network?.autonomous_system?.organization) info.push(`ISP: ${data.network.autonomous_system.organization}`);
 
-        return info.length > 0 ? `\n\n--- Visitor Info ---\n${info.join('\n')}` : '';
+        if (info.length > 0) {
+            return '\r\n\r\n========== Visitor Info ==========\r\n' + info.join('\r\n') + '\r\n==================================';
+        }
+        return '';
     } catch (error) {
         console.log('Could not fetch visitor info');
         return '';
@@ -412,6 +415,41 @@ contactForm.addEventListener('submit', async (e) => {
         submitButton.innerHTML = originalButtonHTML;
     }
 });
+
+// ================================
+// Privacy Policy Modal
+// ================================
+const privacyLink = document.getElementById('privacy-link');
+const privacyModal = document.getElementById('privacy-modal');
+const modalClose = document.getElementById('modal-close');
+
+if (privacyLink && privacyModal) {
+    privacyLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        privacyModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    modalClose.addEventListener('click', () => {
+        privacyModal.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    privacyModal.addEventListener('click', (e) => {
+        if (e.target === privacyModal) {
+            privacyModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && privacyModal.classList.contains('active')) {
+            privacyModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+}
 
 // ================================
 // Parallax Effect for Hero Section
