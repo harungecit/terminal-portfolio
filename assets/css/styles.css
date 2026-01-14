@@ -558,49 +558,52 @@ body {
 #terminal-container {
     height: 500px;
     padding: 1rem;
-    padding-bottom: 4px;
     overflow: hidden;
 }
 
-/* XTerm scrollbar styling */
-.xterm-viewport {
-    overflow-y: auto !important;
+/* XTerm container - make room for scrollbar */
+.xterm {
+    position: relative;
 }
 
+/* XTerm viewport - the scrollable area */
+.xterm-viewport {
+    right: 0 !important;
+    overflow-y: scroll !important;
+    z-index: 10;
+}
+
+/* Scrollbar styling */
 .xterm-viewport::-webkit-scrollbar {
-    width: 10px;
+    width: 12px;
+    background: var(--secondary-bg);
 }
 
 .xterm-viewport::-webkit-scrollbar-track {
     background: var(--secondary-bg);
+    border-radius: 0;
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb {
     background: var(--neon-green);
-    border-radius: 5px;
-    border: 2px solid var(--secondary-bg);
-    cursor: pointer;
+    border-radius: 6px;
+    border: 3px solid var(--secondary-bg);
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb:hover {
     background: var(--neon-cyan);
 }
 
-/* Terminal content margin for scrollbar space */
-.xterm-rows {
-    margin-right: 12px !important;
-}
-
-/* Prevent prompt from being hidden at bottom */
+/* Terminal text area - leave space for scrollbar */
 .xterm-screen {
-    padding-bottom: 100px !important;
+    padding-right: 14px !important;
+    padding-bottom: 50px !important;
 }
 
 @media (max-width: 768px) {
     #terminal-container {
         height: 400px;
         padding: 0.5rem;
-        padding-bottom: 4px;
         font-size: 12px;
     }
 
@@ -609,15 +612,12 @@ body {
     }
 
     .xterm-viewport::-webkit-scrollbar {
-        width: 8px;
-    }
-
-    .xterm-rows {
-        margin-right: 10px !important;
+        width: 10px;
     }
 
     .xterm-screen {
-        padding-bottom: 80px !important;
+        padding-right: 12px !important;
+        padding-bottom: 40px !important;
     }
 }
 
