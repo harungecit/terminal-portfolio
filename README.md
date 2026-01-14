@@ -1,22 +1,27 @@
 # 🚀 Terminal Portfolio - Harun Geçit
 
-Interactive terminal-style portfolio website featuring a cyberpunk aesthetic with Matrix rain effects, functional terminal emulator, and modern animations.
+Interactive terminal-style portfolio website featuring a cyberpunk aesthetic with Matrix rain effects, functional terminal emulator, AI chat integration, and modern animations.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://harungecit.github.io/terminal-portfolio)
-[![Version](https://img.shields.io/badge/version-1.0.1-blue)]()
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://harungecit.com)
+[![Version](https://img.shields.io/badge/version-15.4-blue)]()
 [![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)]()
 
 ## ✨ Features
 
 - **🌧️ Matrix Rain Background**: Animated Matrix-style rain effect using Canvas API
 - **💻 Interactive Terminal**: Fully functional Linux-style terminal emulator powered by XTerm.js
+- **🤖 AI Chat**: Gemini 2.0 Flash integration via Puter.js for intelligent conversations
+- **🪄 Harry Potter Spells**: Magic commands including Lumos (light mode), Nox (dark mode), Accio, and more
+- **🎮 Games**: Built-in Snake game playable in terminal
+- **📊 System Monitor**: Simulated `top` command with process information
+- **🌤️ Weather**: Real-time weather information via wttr.in
 - **⚡ Glitch Effects**: Cyberpunk-inspired glitch animations and visual effects
-- **🎨 Modern UI**: Neon green, cyan, and purple color scheme with dark theme
-- **📱 Responsive Design**: Mobile-first approach with hamburger menu
+- **🎨 Theme Support**: Light/Dark mode with smooth transitions
+- **📱 Responsive Design**: Mobile-first approach with touch support
 - **🎯 Smooth Animations**: Intersection Observer API for scroll-triggered animations
-- **📊 Stats Counter**: Animated statistics showcase
-- **🎓 Timeline**: Visual work experience timeline
-- **🎮 Easter Eggs**: Konami code support and hidden console messages
+- **📝 Contact Form**: Enhanced validation with visitor tracking (IP, location via ip.guide)
+- **🔒 Privacy Policy**: KVKK/GDPR compliant modal
+- **🎠 Project Carousel**: Swiper.js powered project showcase
 
 ## 🛠️ Technologies
 
@@ -25,26 +30,21 @@ Interactive terminal-style portfolio website featuring a cyberpunk aesthetic wit
 - **CSS3**: Custom properties, Grid, Flexbox, animations
 - **JavaScript (ES6+)**: Vanilla JavaScript for interactions
 
-### Libraries
-| Library | Purpose | Version |
-|---------|---------|---------|
+### Libraries & APIs
+| Library/API | Purpose | Version |
+|-------------|---------|---------|
 | [XTerm.js](https://xtermjs.org/) | Terminal emulator | 5.3.0 |
 | [XTerm Fit Addon](https://github.com/xtermjs/xterm.js) | Terminal responsive sizing | 0.8.0 |
+| [Swiper.js](https://swiperjs.com/) | Touch slider/carousel | 11.x |
+| [Puter.js](https://puter.com/) | AI Chat (Gemini 2.0 Flash) | v2 |
 | [Font Awesome](https://fontawesome.com/) | Icon library | 6.5.1 |
 | [Google Fonts](https://fonts.google.com/) | Fira Code, Share Tech Mono | - |
+| [wttr.in](https://wttr.in/) | Weather API | - |
+| [ip.guide](https://ip.guide/) | Visitor IP/Location info | - |
 
-### Visual Effects
-- Canvas API for Matrix rain animation
-- CSS keyframe animations
-- Glitch text effects
-- Typing animation
-- Skill bar animations
-- Scroll-triggered animations
+## 💻 Terminal Commands
 
-## Terminal Commands
-
-The interactive terminal supports the following commands:
-
+### Basic Commands
 | Command | Description |
 |---------|-------------|
 | `help` | Display all available commands |
@@ -52,24 +52,65 @@ The interactive terminal supports the following commands:
 | `skills` | View technical skills |
 | `experience` | Show work experience |
 | `projects` | List featured projects |
-| `education` | Display education background |
-| `certifications` | Show certifications |
-| `contact` | Get contact information |
-| `social` | View social media links |
+| `contact [type]` | Get contact info or open directly |
+| `social [platform]` | View/open social media links |
 | `whoami` | Who am I? |
-| `ls` | List files (simulated) |
-| `cat <file>` | Display file contents |
 | `date` | Display current date and time |
-| `uname` | Display system information |
 | `history` | Show command history |
 | `clear` | Clear terminal screen |
-| `exit` | Close terminal |
 
-**Special Commands:**
-- Arrow Up/Down: Navigate command history
-- Tab: Auto-complete commands
-- Ctrl+C: Cancel current input
-- Ctrl+L: Clear screen
+### File System Commands
+| Command | Description |
+|---------|-------------|
+| `ls` | List directory contents |
+| `cd [dir]` | Change directory |
+| `pwd` | Print working directory |
+| `cat [file]` | Read file content |
+
+### Network Commands
+| Command | Description |
+|---------|-------------|
+| `ip` | Display your IP address |
+| `ping [host]` | Ping a host (simulated) |
+| `weather [city]` | Check weather forecast |
+
+### Interactive Features
+| Command | Description |
+|---------|-------------|
+| `chat` | Start AI Chat (Gemini 2.0 Flash via Puter.js) |
+| `snake` | Play Snake game |
+| `top` | System monitor |
+
+### 🪄 Harry Potter Spells
+| Command | Description |
+|---------|-------------|
+| `lumos` | Activate light mode |
+| `nox` | Activate dark mode |
+| `accio [section]` | Scroll to page section |
+| `expecto patronum` | Conjure a protective charm |
+| `riddikulus` | Banish fears with laughter |
+
+### Fun Commands
+| Command | Description |
+|---------|-------------|
+| `hack [target]` | Hollywood-style hacking simulation |
+| `matrix` | Enter the Matrix |
+| `coffee` | Brew some coffee |
+| `sudo` | Try it and see what happens |
+
+### Hidden Easter Eggs
+| Command | Description |
+|---------|-------------|
+| `xyzzy` | Classic adventure game reference |
+| `konami` | Konami code tribute |
+| `starwars` | Star Wars scroll |
+
+### Keyboard Shortcuts
+- **Arrow Up/Down**: Navigate command history
+- **Tab**: Auto-complete commands
+- **Ctrl+C**: Cancel current input
+- **Ctrl+L**: Clear screen
+- **q**: Exit games/monitors
 
 ## 📁 Project Structure
 
@@ -80,174 +121,124 @@ terminal-portfolio/
 ├── .gitignore                 # Git ignore rules
 └── assets/
     ├── css/
-    │   └── styles.css         # All styles and animations
+    │   └── styles.css         # All styles (1700+ lines)
+    │                          # - CSS variables & themes
+    │                          # - Matrix animation styles
+    │                          # - Terminal styling
+    │                          # - Responsive breakpoints
+    │                          # - Modal styles
+    │                          # - Form validation styles
+    │                          # - Custom scrollbar
     ├── js/
-    │   ├── script.js          # Main JavaScript (Matrix, animations)
-    │   └── terminal.js        # Terminal emulator logic
-    └── sounds/
-        └── button.mp3         # UI sound effects
+    │   ├── script.js          # Main JavaScript (985+ lines)
+    │   │                      # - Matrix rain animation
+    │   │                      # - Navigation & hamburger menu
+    │   │                      # - Typing animation
+    │   │                      # - Stats counter
+    │   │                      # - Scroll animations
+    │   │                      # - Contact form handler
+    │   │                      # - Form validation (email, phone)
+    │   │                      # - Privacy modal
+    │   │                      # - Swiper carousel init
+    │   │                      # - ip.guide integration
+    │   └── terminal.js        # Terminal emulator (1400+ lines)
+    │                          # - XTerm.js configuration
+    │                          # - Command processing
+    │                          # - File system simulation
+    │                          # - Snake game
+    │                          # - System monitor (top)
+    │                          # - AI Chat (Puter.js)
+    │                          # - Weather integration
+    │                          # - Harry Potter spells
+    │                          # - Easter eggs
+    └── images/                # Image assets
 ```
 
-## 🚀 Quick Start
+## 🎨 Theming
 
-### 1. Clone the Repository
+### Dark Mode (Default)
+```css
+:root {
+    --primary-bg: #0a0e27;
+    --secondary-bg: #1a1f3a;
+    --neon-green: #00ff41;
+    --neon-cyan: #00f0ff;
+    --neon-purple: #b026ff;
+}
+```
+
+### Light Mode (Lumos)
+```css
+body.light-mode {
+    --primary-bg: #f5f5f5;
+    --secondary-bg: #ffffff;
+    --neon-green: #00b330;
+    --neon-cyan: #0099cc;
+    --neon-purple: #8800cc;
+}
+```
+
+Toggle between modes using:
+- Terminal command: `lumos` / `nox`
+- Persists in localStorage
+
+## 📝 Contact Form Features
+
+- **Fields**: Name, Email, Phone (optional), Topic, Message
+- **Validation**:
+  - Email: RFC 5322 compliant, length checks, domain validation
+  - Phone: International format, 7-15 digits
+  - Real-time validation on blur
+- **Visitor Tracking**: Appends IP, country, city, timezone via ip.guide
+- **KVKK/GDPR**: Privacy policy modal with consent checkbox
+- **Netlify Forms**: Backend integration
+
+## 🚀 Deployment
+
+### Netlify (Recommended)
+- Auto-deploys from GitHub
+- Form handling built-in
+- Custom domain support
+
+### GitHub Pages
 ```bash
-git clone https://github.com/harungecit/terminal-portfolio.git
-cd terminal-portfolio
+# Settings → Pages → Source: main branch
+# Live at: https://username.github.io/terminal-portfolio
 ```
-
-### 2. Run Locally
-
-**Option A: Direct Browser**
-```bash
-# Simply open index.html in your browser
-open index.html  # macOS
-start index.html # Windows
-xdg-open index.html # Linux
-```
-
-**Option B: VS Code Live Server**
-```bash
-# Install Live Server extension in VS Code
-# Right-click on index.html → "Open with Live Server"
-```
-
-**Option C: Python Server**
-```bash
-# Python 3
-python -m http.server 8000
-# Visit: http://localhost:8000
-```
-
-**Option D: Node.js HTTP Server**
-```bash
-# Install http-server globally
-npm install -g http-server
-
-# Run server
-http-server
-# Visit: http://localhost:8080
-```
-
-### 3. GitHub Pages Deployment
-
-The site is automatically deployed via GitHub Pages. To deploy your own:
-1. Go to repository Settings → Pages
-2. Select branch `main` and folder `/` (root)
-3. Click Save
-4. Your site will be live at `https://yourusername.github.io/terminal-portfolio`
 
 ## 🌐 Browser Support
 
-| Browser | Status | Notes |
-|---------|--------|-------|
-| Chrome/Edge | ✅ Full Support | Recommended |
-| Firefox | ✅ Full Support | All features working |
-| Safari | ✅ Full Support | Including iOS Safari |
-| Opera | ✅ Full Support | Chromium-based |
+| Browser | Status |
+|---------|--------|
+| Chrome/Edge | ✅ Full Support |
+| Firefox | ✅ Full Support |
+| Safari | ✅ Full Support |
+| Opera | ✅ Full Support |
 
-**Requirements**: JavaScript must be enabled for full functionality.
+## 📊 Performance
 
-## 🎨 Customization Guide
-
-### Color Scheme
-Edit CSS variables in `assets/css/styles.css`:
-```css
-:root {
-    --primary-bg: #0a0e27;      /* Dark blue background */
-    --neon-green: #00ff41;      /* Matrix green */
-    --neon-cyan: #00f0ff;       /* Accent cyan */
-    --neon-purple: #b026ff;     /* Accent purple */
-    --neon-pink: #ff006e;       /* Accent pink */
-}
-```
-
-### Matrix Rain Effect
-Control animation speed in `assets/js/script.js`:
-```javascript
-// Lower = faster, Higher = slower
-setInterval(drawMatrix, 33); // Default: ~30fps
-```
-
-### Typing Text Animation
-Update text array in `assets/js/script.js`:
-```javascript
-const textArray = [
-    'Full Stack Developer',
-    'PHP Specialist',
-    'DevOps Engineer',
-    'Your Custom Text...'
-];
-```
-
-### Terminal Commands
-Add custom commands in `assets/js/terminal.js`:
-```javascript
-commands: {
-    'yourcommand': () => 'Your custom output'
-}
-```
-
-## ⚡ Performance
-
-- **60fps** Matrix rain animation using `requestAnimationFrame`
-- **Intersection Observer API** for efficient scroll animations
-- **Debounced resize events** to prevent excessive calculations
-- **Lazy loading** for images and assets
+- **60fps** Matrix rain using `requestAnimationFrame`
+- **Intersection Observer** for scroll animations
+- **Lazy loading** for Puter.js (loads only when chat is opened)
+- **Custom scrollbars** styled to match theme
 - **Optimized CSS** with GPU-accelerated transforms
 
-## 🎮 Easter Eggs
+## 🔄 Recent Updates (v15.4)
 
-Try these hidden features:
-
-1. **🎯 Konami Code**: Press `↑ ↑ ↓ ↓ ← → ← → B A` for a surprise
-2. **🔍 Console Messages**: Open DevTools console (`F12`) for hidden messages
-3. **⚠️ Sudo Command**: Try typing `sudo` in the terminal
-4. **📜 Terminal History**: Use arrow keys ↑↓ to navigate command history
-
-## 📸 Screenshots
-
-![Terminal Portfolio Hero](https://via.placeholder.com/800x400/0a0e27/00ff41?text=Terminal+Portfolio)
-*Interactive terminal with Matrix rain background*
-
-## 🔧 Tech Stack Summary
-
-```javascript
-const portfolio = {
-    frontend: ['HTML5', 'CSS3', 'JavaScript ES6+'],
-    libraries: ['XTerm.js', 'Font Awesome'],
-    features: [
-        'Matrix Rain Animation',
-        'Interactive Terminal',
-        'Glitch Effects',
-        'Responsive Design',
-        'Easter Eggs'
-    ],
-    deployment: 'GitHub Pages',
-    performance: '⚡ 60fps animations'
-};
-```
-
-## 🤝 Contributing
-
-This is a personal portfolio project. However, if you find any bugs or have suggestions:
-
-1. Open an issue
-2. Fork the repo
-3. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-4. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
-
-## 📄 License
-
-Copyright © 2025 **Harun Geçit**. All rights reserved.
-
-This project is for personal portfolio use. Feel free to fork and customize for your own use, but please provide attribution.
+- ✅ Puter.js AI Chat integration (Gemini 2.0 Flash)
+- ✅ Dynamic Puter.js loading (prevents 401 on page load)
+- ✅ Turkish character support in chat
+- ✅ Phone field in contact form
+- ✅ Enhanced email/phone validation
+- ✅ Visitor info tracking (ip.guide)
+- ✅ Privacy policy modal
+- ✅ Site-wide custom scrollbar
+- ✅ Contact form layout improvements
+- ✅ Swiper.js project carousel
 
 ## 👨‍💻 Author
 
-**Harun Geçit** - Full Stack Developer
+**Harun Geçit** - Software Architect & Full Stack Developer
 
 - 🌐 Website: [harungecit.com](https://harungecit.com)
 - 📧 Email: [info@harungecit.com](mailto:info@harungecit.com)
@@ -258,12 +249,9 @@ This project is for personal portfolio use. Feel free to fork and customize for 
 - 📝 Blog: [echo.harungecit.dev](https://echo.harungecit.dev)
 - 🔗 All Links: [bio.link/harungecit](https://bio.link/harungecit)
 
-## 🙏 Acknowledgments
+## 📄 License
 
-- **Terminal Emulator**: [XTerm.js](https://xtermjs.org/)
-- **Icons**: [Font Awesome](https://fontawesome.com/)
-- **Fonts**: [Google Fonts](https://fonts.google.com/) (Fira Code, Share Tech Mono)
-- **Inspiration**: Matrix movie, cyberpunk aesthetics, terminal interfaces
+Copyright © 2025 **Harun Geçit**. All rights reserved.
 
 ---
 
