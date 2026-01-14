@@ -566,6 +566,11 @@ body {
     scrollbar-color: var(--neon-green) var(--secondary-bg);
 }
 
+/* Prevent content from being hidden under scrollbar */
+.xterm-rows {
+    padding-right: 15px !important;
+}
+
 /* Prevent prompt from being hidden at bottom */
 .xterm-screen {
     padding-bottom: 100px !important;
