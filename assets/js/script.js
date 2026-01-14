@@ -989,11 +989,12 @@ console.log('%c🎠 Swiper Carousel initialized!', 'color: #00ff41;');
 // ================================
 const blogPostsContainer = document.getElementById('blog-posts');
 const RSS_URL = 'https://echo.harungecit.dev/rss.xml';
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
 
 async function loadBlogPosts() {
     try {
-        // Fetch RSS feed
-        const response = await fetch(RSS_URL);
+        // Fetch RSS feed via CORS proxy
+        const response = await fetch(CORS_PROXY + encodeURIComponent(RSS_URL));
         if (!response.ok) throw new Error('Failed to fetch RSS');
 
         const rssText = await response.text();
