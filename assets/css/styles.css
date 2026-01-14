@@ -567,12 +567,13 @@ body {
 }
 
 /* Prevent content from being hidden under scrollbar */
-.xterm-rows {
-    padding-right: 15px !important;
+.xterm {
+    padding-right: 12px !important;
 }
 
 /* Prevent prompt from being hidden at bottom */
 .xterm-screen {
+    width: calc(100% - 12px) !important;
     padding-bottom: 100px !important;
 }
 

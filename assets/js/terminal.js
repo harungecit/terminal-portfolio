@@ -410,9 +410,9 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
 
             chatMode = true;
             chatHistory = [];
-            term.write('\x1b[1;35m╔════════════════════════════════════════════╗\x1b[0m\r\n');
-            term.write('\x1b[1;35m║\x1b[0m  \x1b[1;36mAI Chat\x1b[0m \x1b[1;33m(Gemini 2.0 Flash via Puter.js)\x1b[0m \x1b[1;35m║\x1b[0m\r\n');
-            term.write('\x1b[1;35m╚════════════════════════════════════════════╝\x1b[0m\r\n');
+            term.write('\x1b[1;35m────────────────────────────────────────────\x1b[0m\r\n');
+            term.write('  \x1b[1;36mAI Chat\x1b[0m \x1b[1;33m(Gemini 2.0 Flash via Puter.js)\x1b[0m\r\n');
+            term.write('\x1b[1;35m────────────────────────────────────────────\x1b[0m\r\n');
             term.write('\x1b[1;90mType "bye" to exit.\x1b[0m\r\n\r\n');
             botReply("Hello! I'm Harun's AI assistant. How can I help you today?");
         }
