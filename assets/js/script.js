@@ -265,11 +265,106 @@ document.querySelectorAll('.project-card').forEach(card => {
 // ================================
 const contactForm = document.getElementById('contact-form');
 
+// Email validation regex (RFC 5322 compliant)
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+// Phone validation regex (international format)
+const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,4}[-\s\.]?[0-9]{1,9}$/;
+
+// Validate email
+function validateEmail(email) {
+    if (!email) return { valid: false, message: 'Email is required' };
+    if (email.length > 254) return { valid: false, message: 'Email is too long' };
+    if (!emailRegex.test(email)) return { valid: false, message: 'Please enter a valid email address' };
+
+    const parts = email.split('@');
+    if (parts[0].length > 64) return { valid: false, message: 'Email local part is too long' };
+
+    const domainParts = parts[1].split('.');
+    if (domainParts.some(part => part.length > 63)) return { valid: false, message: 'Email domain is invalid' };
+    if (domainParts[domainParts.length - 1].length < 2) return { valid: false, message: 'Email domain extension is invalid' };
+
+    return { valid: true, message: '' };
+}
+
+// Validate phone
+function validatePhone(phone) {
+    if (!phone) return { valid: true, message: '' }; // Phone is optional
+
+    const cleanPhone = phone.replace(/[\s\-\(\)\.]/g, '');
+    if (cleanPhone.length < 7) return { valid: false, message: 'Phone number is too short' };
+    if (cleanPhone.length > 15) return { valid: false, message: 'Phone number is too long' };
+    if (!phoneRegex.test(phone)) return { valid: false, message: 'Please enter a valid phone number' };
+
+    return { valid: true, message: '' };
+}
+
+// Get visitor info from ip.guide
+async function getVisitorInfo() {
+    try {
+        const response = await fetch('https://ip.guide/', {
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+
+        const info = [];
+        if (data.ip) info.push(`IP: ${data.ip}`);
+        if (data.location?.country) info.push(`Country: ${data.location.country}`);
+        if (data.location?.city) info.push(`City: ${data.location.city}`);
+        if (data.location?.timezone) info.push(`Timezone: ${data.location.timezone}`);
+        if (data.network?.autonomous_system?.organization) info.push(`ISP: ${data.network.autonomous_system.organization}`);
+
+        return info.length > 0 ? `\n\n--- Visitor Info ---\n${info.join('\n')}` : '';
+    } catch (error) {
+        console.log('Could not fetch visitor info');
+        return '';
+    }
+}
+
+// Real-time validation
+const emailInput = document.getElementById('email');
+const phoneInput = document.getElementById('phone');
+const emailError = document.getElementById('email-error');
+const phoneError = document.getElementById('phone-error');
+
+emailInput.addEventListener('blur', () => {
+    const result = validateEmail(emailInput.value);
+    emailError.textContent = result.message;
+    emailInput.classList.toggle('invalid', !result.valid);
+});
+
+phoneInput.addEventListener('blur', () => {
+    const result = validatePhone(phoneInput.value);
+    phoneError.textContent = result.message;
+    phoneInput.classList.toggle('invalid', !result.valid);
+});
+
 contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const formData = new FormData(contactForm);
     const consent = formData.get('consent');
+    const email = formData.get('email');
+    const phone = formData.get('phone');
+
+    // Validate email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+        emailError.textContent = emailValidation.message;
+        emailInput.classList.add('invalid');
+        emailInput.focus();
+        return;
+    }
+
+    // Validate phone if provided
+    const phoneValidation = validatePhone(phone);
+    if (!phoneValidation.valid) {
+        phoneError.textContent = phoneValidation.message;
+        phoneInput.classList.add('invalid');
+        phoneInput.focus();
+        return;
+    }
 
     // Check consent
     if (!consent) {
@@ -286,6 +381,11 @@ contactForm.addEventListener('submit', async (e) => {
     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
 
     try {
+        // Get visitor info and append to message
+        const visitorInfo = await getVisitorInfo();
+        const originalMessage = formData.get('message');
+        formData.set('message', originalMessage + visitorInfo);
+
         // Submit to Netlify Forms
         const response = await fetch('/', {
             method: 'POST',
@@ -297,6 +397,8 @@ contactForm.addEventListener('submit', async (e) => {
             // Success
             alert('Thank you! Your message has been sent successfully. I will get back to you soon.');
             contactForm.reset();
+            emailError.textContent = '';
+            phoneError.textContent = '';
         } else {
             // Error
             throw new Error('Form submission failed');

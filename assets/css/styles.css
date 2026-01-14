@@ -1187,6 +1187,19 @@ body {
     box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
 }
 
+.form-group input.invalid,
+.form-group input:invalid:not(:placeholder-shown):not(:focus) {
+    border-color: var(--danger);
+}
+
+.field-error {
+    display: block;
+    color: var(--danger);
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+    min-height: 1rem;
+}
+
 .checkbox-group {
     margin-bottom: 1.5rem;
 }
