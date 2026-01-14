@@ -983,3 +983,144 @@ const projectsSwiper = new Swiper('.projects-swiper', {
 });
 
 console.log('%c🎠 Swiper Carousel initialized!', 'color: #00ff41;');
+
+// ================================
+// Blog RSS Feed
+// ================================
+const blogPostsContainer = document.getElementById('blog-posts');
+const RSS_URL = 'https://echo.harungecit.dev/rss.xml';
+
+async function loadBlogPosts() {
+    try {
+        // Fetch RSS feed
+        const response = await fetch(RSS_URL);
+        if (!response.ok) throw new Error('Failed to fetch RSS');
+
+        const rssText = await response.text();
+        const parser = new DOMParser();
+        const rss = parser.parseFromString(rssText, 'application/xml');
+
+        // Check for parse errors
+        const parseError = rss.querySelector('parsererror');
+        if (parseError) throw new Error('Invalid RSS format');
+
+        // Get items
+        const items = rss.querySelectorAll('item');
+        if (items.length === 0) throw new Error('No posts found');
+
+        // Clear loading state
+        blogPostsContainer.innerHTML = '';
+
+        // Create blog cards (limit to 6 posts)
+        const maxPosts = Math.min(items.length, 6);
+        for (let i = 0; i < maxPosts; i++) {
+            const item = items[i];
+            const title = item.querySelector('title')?.textContent || 'Untitled';
+            const link = item.querySelector('link')?.textContent || '#';
+            const description = item.querySelector('description')?.textContent || '';
+            const pubDate = item.querySelector('pubDate')?.textContent || '';
+
+            // Clean description (remove HTML tags)
+            const cleanDescription = description.replace(/<[^>]*>/g, '').trim();
+            const excerpt = cleanDescription.length > 150
+                ? cleanDescription.substring(0, 150) + '...'
+                : cleanDescription;
+
+            // Format date
+            const formattedDate = pubDate
+                ? new Date(pubDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                  })
+                : '';
+
+            const slide = document.createElement('div');
+            slide.className = 'swiper-slide';
+            slide.innerHTML = `
+                <div class="blog-card">
+                    <div class="blog-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>${escapeHtml(title)}</h3>
+                    <p class="blog-excerpt">${escapeHtml(excerpt)}</p>
+                    <div class="blog-meta">
+                        <span class="blog-date">${formattedDate}</span>
+                        <a href="${escapeHtml(link)}" target="_blank" rel="noopener" class="blog-link">
+                            Read More <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            blogPostsContainer.appendChild(slide);
+        }
+
+        // Initialize blog swiper
+        initBlogSwiper();
+        console.log('%c📰 Blog posts loaded from RSS!', 'color: #00f0ff;');
+
+    } catch (error) {
+        console.error('Error loading blog posts:', error);
+        blogPostsContainer.innerHTML = `
+            <div class="swiper-slide">
+                <div class="blog-card loading-card">
+                    <div class="blog-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>Could not load posts</h3>
+                    <p>Visit the blog directly</p>
+                    <div class="blog-meta">
+                        <span></span>
+                        <a href="https://echo.harungecit.dev" target="_blank" rel="noopener" class="blog-link">
+                            Go to Blog <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        initBlogSwiper();
+    }
+}
+
+// Escape HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Initialize Blog Swiper
+function initBlogSwiper() {
+    new Swiper('.blog-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        centeredSlides: true,
+        loop: false,
+        grabCursor: true,
+        pagination: {
+            el: '.blog-swiper .swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.blog-swiper .swiper-button-next',
+            prevEl: '.blog-swiper .swiper-button-prev',
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+                centeredSlides: false,
+            },
+            1024: {
+                slidesPerView: 3,
+                spaceBetween: 30,
+                centeredSlides: false,
+            },
+        },
+    });
+}
+
+// Load blog posts when DOM is ready
+if (blogPostsContainer) {
+    loadBlogPosts();
+}
