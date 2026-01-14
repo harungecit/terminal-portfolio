@@ -540,48 +540,32 @@ body {
     overflow: hidden;
 }
 
-/* XTerm scrollbar styling */
+/* XTerm scrollbar styling - real scrollbar that takes space */
+.xterm-viewport {
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable;
+}
+
 .xterm-viewport::-webkit-scrollbar {
-    width: 10px;
+    width: 12px;
 }
 
 .xterm-viewport::-webkit-scrollbar-track {
     background: var(--secondary-bg);
-    border-radius: 4px;
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb {
     background: var(--neon-green);
-    border-radius: 4px;
-    border: 2px solid var(--secondary-bg);
+    border-radius: 6px;
+    border: 3px solid var(--secondary-bg);
 }
 
 .xterm-viewport::-webkit-scrollbar-thumb:hover {
     background: var(--neon-cyan);
-    box-shadow: 0 0 10px var(--neon-green);
-}
-
-.xterm-viewport {
-    scrollbar-width: thin;
-    scrollbar-color: var(--neon-green) var(--secondary-bg);
-}
-
-/* Prevent content from being hidden under scrollbar */
-.xterm {
-    padding-right: 12px !important;
 }
 
 /* Prevent prompt from being hidden at bottom */
 .xterm-screen {
-    width: calc(100% - 12px) !important;
-    padding-bottom: 100px !important;
-}
-
-.xterm .xterm-screen {
-    padding-bottom: 100px !important;
-}
-
-.terminal {
     padding-bottom: 100px !important;
 }
 
@@ -597,7 +581,11 @@ body {
     }
 
     .xterm-viewport::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
+    }
+
+    .xterm-viewport::-webkit-scrollbar-thumb {
+        border: 2px solid var(--secondary-bg);
     }
 
     .xterm-screen {
