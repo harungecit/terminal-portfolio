@@ -347,6 +347,27 @@
         let chatMode = false;
         let isBotTyping = false;
         let chatHistory = [];
+        let puterLoaded = false;
+
+        // Load Puter.js dynamically when needed
+        function loadPuter() {
+            return new Promise((resolve, reject) => {
+                if (puterLoaded || typeof puter !== 'undefined') {
+                    puterLoaded = true;
+                    resolve();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = 'https://js.puter.com/v2/';
+                script.onload = () => {
+                    puterLoaded = true;
+                    resolve();
+                };
+                script.onerror = () => reject(new Error('Failed to load Puter.js'));
+                document.head.appendChild(script);
+            });
+        }
 
         const HARUN_CONTEXT = `You are Harun Geçit's AI assistant on his portfolio website terminal. Be friendly, helpful, and concise.
 
@@ -375,10 +396,21 @@ Contact:
 
 Keep responses brief (2-3 sentences max) since this is a terminal interface. Answer in the same language the user writes.`;
 
-        function startChat() {
+        async function startChat() {
+            term.write('\r\n\x1b[1;90mLoading AI Chat...\x1b[0m');
+
+            try {
+                await loadPuter();
+                term.write('\r\x1b[K'); // Clear loading message
+            } catch (error) {
+                term.write('\r\x1b[K\x1b[1;31mFailed to load AI Chat. Please try again.\x1b[0m\r\n');
+                writePrompt();
+                return;
+            }
+
             chatMode = true;
             chatHistory = [];
-            term.write('\r\n\x1b[1;35m╔═══════════════════════════════════════════════╗\x1b[0m\r\n');
+            term.write('\x1b[1;35m╔═══════════════════════════════════════════════╗\x1b[0m\r\n');
             term.write('\x1b[1;35m║\x1b[0m  \x1b[1;36m🤖 AI Chat\x1b[0m \x1b[1;33m(Gemini 2.0 Flash Lite via Puter.js)\x1b[0m \x1b[1;35m║\x1b[0m\r\n');
             term.write('\x1b[1;35m╚═══════════════════════════════════════════════╝\x1b[0m\r\n');
             term.write('\x1b[1;90mType "bye" to exit.\x1b[0m\r\n\r\n');
