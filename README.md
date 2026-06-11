@@ -1,23 +1,23 @@
 # 🚀 Terminal Portfolio - Harun Geçit
 
-Interactive terminal-style portfolio website for **Harun Geçit — Full Stack Developer & AI Engineer**, featuring a cyberpunk aesthetic with Matrix rain effects, a functional terminal emulator, AI chat integration, a dedicated AI Engineering showcase (RAG, fine-tuning, multi-agent orchestration), and modern animations.
+Portfolio website for **Harun Geçit — Full Stack Developer & AI Engineer**, featuring a modern AI/SaaS dark design (glassmorphism, violet→cyan gradients, aurora glow), an interactive neural-network particle background, a functional terminal emulator, AI chat integration, a dedicated AI Engineering showcase (RAG, fine-tuning, multi-agent orchestration), and smooth animations.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://harungecit.com)
-[![Version](https://img.shields.io/badge/version-16.0-blue)]()
+[![Version](https://img.shields.io/badge/version-17.2-blue)]()
 [![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)]()
 
 ## ✨ Features
 
-- **🌧️ Matrix Rain Background**: Animated Matrix-style rain effect using Canvas API
+- **🧠 Neural Network Background**: Interactive particle network (Canvas API) that reacts to the cursor — an AI metaphor replacing the old Matrix rain
+- **💎 Modern AI/SaaS Design**: Dark glassmorphism UI with violet→cyan gradient accents, aurora ambient glow, Space Grotesk + Inter typography
 - **💻 Interactive Terminal**: Fully functional Linux-style terminal emulator powered by XTerm.js
 - **🧠 AI Engineering Section**: Dedicated showcase of RAG (pgvector), fine-tuning/PageIndex, multi-LLM orchestration, web-search agents, AI-driven SDLC and AI security
-- **🤖 AI Chat**: Gemini 2.0 Flash integration via Puter.js for intelligent conversations
+- **🤖 AI Chat**: Multi-model chat (Claude Sonnet 4.6 · Gemini 3.1 · GPT-5.4) via Puter.js with automatic fallback
 - **🪄 Harry Potter Spells**: Magic commands including Lumos (light mode), Nox (dark mode), Accio, and more
 - **🎮 Games**: Built-in Snake game playable in terminal
 - **📊 System Monitor**: Simulated `top` command with process information
 - **🌤️ Weather**: Real-time weather information via wttr.in
-- **⚡ Glitch Effects**: Cyberpunk-inspired glitch animations and visual effects
-- **🎨 Theme Support**: Light/Dark mode with smooth transitions
+- **🎨 Theme Support**: Light/Dark mode with smooth transitions (lumos/nox terminal spells)
 - **📱 Responsive Design**: Mobile-first approach with touch support
 - **🎯 Smooth Animations**: Intersection Observer API for scroll-triggered animations
 - **📝 Contact Form**: Enhanced validation with visitor tracking (IP, location via ip.guide)
@@ -37,7 +37,7 @@ Interactive terminal-style portfolio website for **Harun Geçit — Full Stack D
 | [XTerm.js](https://xtermjs.org/) | Terminal emulator | 5.3.0 |
 | [XTerm Fit Addon](https://github.com/xtermjs/xterm.js) | Terminal responsive sizing | 0.8.0 |
 | [Swiper.js](https://swiperjs.com/) | Touch slider/carousel | 11.x |
-| [Puter.js](https://puter.com/) | AI Chat (Gemini 2.0 Flash) | v2 |
+| [Puter.js](https://puter.com/) | AI Chat (Claude / Gemini / GPT, multi-model) | v2 |
 | [Font Awesome](https://fontawesome.com/) | Icon library | 6.5.1 |
 | [Google Fonts](https://fonts.google.com/) | Fira Code, Share Tech Mono | - |
 | [wttr.in](https://wttr.in/) | Weather API | - |
@@ -79,7 +79,7 @@ Interactive terminal-style portfolio website for **Harun Geçit — Full Stack D
 ### Interactive Features
 | Command | Description |
 |---------|-------------|
-| `chat` | Start AI Chat (Gemini 2.0 Flash via Puter.js) |
+| `chat` | Start AI Chat (Claude · Gemini · GPT via Puter.js) |
 | `snake` | Play Snake game |
 | `top` | System monitor |
 
@@ -123,17 +123,17 @@ terminal-portfolio/
 ├── .gitignore                 # Git ignore rules
 └── assets/
     ├── css/
-    │   └── styles.css         # All styles (1700+ lines)
-    │                          # - CSS variables & themes
-    │                          # - Matrix animation styles
+    │   └── styles.css         # All styles
+    │                          # - Design tokens & themes (violet→cyan)
+    │                          # - Glassmorphism components
     │                          # - Terminal styling
     │                          # - Responsive breakpoints
     │                          # - Modal styles
     │                          # - Form validation styles
     │                          # - Custom scrollbar
     ├── js/
-    │   ├── script.js          # Main JavaScript (985+ lines)
-    │   │                      # - Matrix rain animation
+    │   ├── script.js          # Main JavaScript
+    │   │                      # - Neural network particle background
     │   │                      # - Navigation & hamburger menu
     │   │                      # - Typing animation
     │   │                      # - Stats counter
@@ -161,22 +161,21 @@ terminal-portfolio/
 ### Dark Mode (Default)
 ```css
 :root {
-    --primary-bg: #0a0e27;
-    --secondary-bg: #1a1f3a;
-    --neon-green: #00ff41;
-    --neon-cyan: #00f0ff;
-    --neon-purple: #b026ff;
+    --bg: #07070d;
+    --violet: #8b5cf6;
+    --cyan: #22d3ee;
+    --emerald: #34d399;
+    --grad: linear-gradient(135deg, var(--violet), var(--cyan));
 }
 ```
 
 ### Light Mode (Lumos)
 ```css
 body.light-mode {
-    --primary-bg: #f5f5f5;
-    --secondary-bg: #ffffff;
-    --neon-green: #00b330;
-    --neon-cyan: #0099cc;
-    --neon-purple: #8800cc;
+    --bg: #fafafa;
+    --violet: #7c3aed;
+    --cyan: #0891b2;
+    --emerald: #059669;
 }
 ```
 
@@ -227,7 +226,7 @@ Toggle between modes using:
 
 ## 🔄 Recent Updates (v15.4)
 
-- ✅ Puter.js AI Chat integration (Gemini 2.0 Flash)
+- ✅ Puter.js AI Chat integration (multi-model with fallback)
 - ✅ Dynamic Puter.js loading (prevents 401 on page load)
 - ✅ Turkish character support in chat
 - ✅ Phone field in contact form

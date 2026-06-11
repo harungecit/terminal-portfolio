@@ -18,7 +18,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -29,16 +29,16 @@
     <!-- Swiper.js for Carousel -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
-    <link rel="stylesheet" href="assets/css/styles.css?v=16.0">
+    <link rel="stylesheet" href="assets/css/styles.css?v=17.2">
 </head>
 <body>
-    <!-- Matrix Rain Background -->
+    <!-- Neural Network Background -->
     <canvas id="matrix-canvas"></canvas>
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container">
-            <div class="nav-brand glitch" data-text="$ harun@dev">$ harun@dev</div>
+            <div class="nav-brand">harun<span class="gradient-text">@dev</span> ~ %</div>
             <ul class="nav-menu" id="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#terminal" class="nav-link">Terminal</a></li>
@@ -62,7 +62,11 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1 class="glitch" data-text="HARUN GEÇİT">HARUN GEÇİT</h1>
+                    <div class="hero-badge">
+                        <span class="pulse-dot"></span>
+                        available for new projects
+                    </div>
+                    <h1>Harun <span class="gradient-text">Geçit</span></h1>
                     <div class="typing-container">
                         <span class="typing-prefix">$ </span>
                         <span id="typed-text"></span>
@@ -142,7 +146,7 @@
                 <i class="fas fa-terminal"></i>
                 Interactive Terminal
             </h2>
-            <p class="section-subtitle">Try some commands: <code>help</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>contact</code></p>
+            <p class="section-subtitle">Try some commands: <code>help</code>, <code>ai</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>contact</code></p>
 
             <div class="terminal-window">
                 <div class="terminal-header">
@@ -1202,7 +1206,7 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; <span id="current-year"></span> Harun Geçit. All rights reserved.</p>
-            <p class="footer-version">Version 16.0</p>
+            <p class="footer-version">Version 17.2</p>
         </div>
     </footer>
 
@@ -1210,7 +1214,7 @@
     <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="assets/js/script.js?v=16.0"></script>
-    <script src="assets/js/terminal.js?v=16.0"></script>
+    <script src="assets/js/script.js?v=17.2"></script>
+    <script src="assets/js/terminal.js?v=17.2"></script>
 </body>
 </html>

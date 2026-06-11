@@ -34,54 +34,54 @@
         // Detect mobile device and adjust terminal settings
         const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-        // Dark theme configuration
+        // Dark theme configuration — violet/cyan palette (v17)
         const darkTheme = {
-            background: '#141829',
-            foreground: '#e0e0e0',
-            cursor: '#00ff41',
-            cursorAccent: '#00ff41',
-            selection: 'rgba(0, 255, 65, 0.3)',
-            black: '#0a0e27',
-            red: '#ff3838',
-            green: '#00ff41',
-            yellow: '#ffa500',
-            blue: '#00f0ff',
-            magenta: '#b026ff',
-            cyan: '#00f0ff',
-            white: '#e0e0e0',
-            brightBlack: '#606060',
-            brightRed: '#ff6b6b',
-            brightGreen: '#51ff51',
-            brightYellow: '#ffbd2e',
-            brightBlue: '#51f0ff',
-            brightMagenta: '#d451ff',
-            brightCyan: '#51f0ff',
-            brightWhite: '#ffffff'
+            background: '#0b0b14',
+            foreground: '#e4e4e7',
+            cursor: '#22d3ee',
+            cursorAccent: '#0b0b14',
+            selection: 'rgba(139, 92, 246, 0.32)',
+            black: '#27272a',
+            red: '#f87171',
+            green: '#34d399',
+            yellow: '#fbbf24',
+            blue: '#60a5fa',
+            magenta: '#a78bfa',
+            cyan: '#22d3ee',
+            white: '#e4e4e7',
+            brightBlack: '#52525b',
+            brightRed: '#fca5a5',
+            brightGreen: '#6ee7b7',
+            brightYellow: '#fcd34d',
+            brightBlue: '#93c5fd',
+            brightMagenta: '#c4b5fd',
+            brightCyan: '#67e8f9',
+            brightWhite: '#fafafa'
         };
 
         // Light theme configuration - optimized for readability
         const lightTheme = {
-            background: '#fefefe',
-            foreground: '#1a1a1a',
-            cursor: '#00b330',
-            cursorAccent: '#00b330',
-            selection: 'rgba(0, 179, 48, 0.3)',
-            black: '#1a1a1a',
-            red: '#cc0000',
-            green: '#00b330',
-            yellow: '#996600',
-            blue: '#0066cc',
-            magenta: '#8800cc',
-            cyan: '#0099cc',
-            white: '#4a4a4a',
-            brightBlack: '#606060',
-            brightRed: '#ff0000',
-            brightGreen: '#00cc33',
-            brightYellow: '#cc7700',
-            brightBlue: '#0080ff',
-            brightMagenta: '#aa00cc',
-            brightCyan: '#00aacc',
-            brightWhite: '#1a1a1a'
+            background: '#ffffff',
+            foreground: '#18181b',
+            cursor: '#0891b2',
+            cursorAccent: '#ffffff',
+            selection: 'rgba(124, 58, 237, 0.25)',
+            black: '#18181b',
+            red: '#dc2626',
+            green: '#059669',
+            yellow: '#b45309',
+            blue: '#2563eb',
+            magenta: '#7c3aed',
+            cyan: '#0891b2',
+            white: '#52525b',
+            brightBlack: '#71717a',
+            brightRed: '#ef4444',
+            brightGreen: '#10b981',
+            brightYellow: '#d97706',
+            brightBlue: '#3b82f6',
+            brightMagenta: '#8b5cf6',
+            brightCyan: '#06b6d4',
+            brightWhite: '#18181b'
         };
 
         const term = new Terminal({
@@ -350,6 +350,15 @@
         let chatHistory = [];
         let puterLoaded = false;
 
+        // Model fallback chain — newest first; null = Puter's current default
+        const AI_MODELS = [
+            { id: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6' },
+            { id: 'google/gemini-3.1-flash-lite', label: 'Gemini 3.1 Flash Lite' },
+            { id: 'gpt-5.4-nano', label: 'GPT-5.4 nano' },
+            { id: null, label: 'Puter default' }
+        ];
+        let activeModelIndex = 0; // remembers the first model that works this session
+
         // Load Puter.js dynamically when needed
         function loadPuter() {
             return new Promise((resolve, reject) => {
@@ -421,7 +430,7 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
             chatMode = true;
             chatHistory = [];
             term.write('\x1b[1;35m────────────────────────────────────────────\x1b[0m\r\n');
-            term.write('  \x1b[1;36mAI Chat\x1b[0m \x1b[1;33m(Gemini 2.0 Flash via Puter.js)\x1b[0m\r\n');
+            term.write('  \x1b[1;36mAI Chat\x1b[0m \x1b[1;33m(Claude · Gemini · GPT via Puter.js)\x1b[0m\r\n');
             term.write('\x1b[1;35m────────────────────────────────────────────\x1b[0m\r\n');
             term.write('\x1b[1;90mType "bye" to exit.\x1b[0m\r\n\r\n');
             botReply("Hello! I'm Harun's AI assistant. How can I help you today?");
@@ -454,6 +463,29 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
             }, 20);
         }
 
+        // Extract text from any Puter.js response shape (string, object, content blocks)
+        function extractAIMessage(response) {
+            if (typeof response === 'string') return response.trim();
+
+            let content = response?.message?.content ?? response?.content ?? response?.text;
+
+            // Some models (e.g. Claude) return content as an array of blocks
+            if (Array.isArray(content)) {
+                content = content.map(part => part?.text || '').join('');
+            }
+
+            return typeof content === 'string' ? content.trim() : '';
+        }
+
+        // Call a single model with a timeout
+        function callAIModel(messages, model) {
+            const options = model ? { model } : {};
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Timeout')), 12000)
+            );
+            return Promise.race([puter.ai.chat(messages, options), timeoutPromise]);
+        }
+
         async function processChat(input) {
             const lower = input.toLowerCase();
 
@@ -471,40 +503,36 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
                     throw new Error('Puter.js not loaded');
                 }
 
-                // Simple prompt with context (more reliable than messages array)
-                const prompt = `${HARUN_CONTEXT}\n\nUser: ${input}\n\nAssistant:`;
+                // Build conversation with system context + recent history
+                const messages = [
+                    { role: 'system', content: HARUN_CONTEXT },
+                    ...chatHistory.slice(-10),
+                    { role: 'user', content: input }
+                ];
 
-                // Call Puter.js AI with timeout
-                const timeoutPromise = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 15000)
-                );
+                // Try models in order, starting from the last known-good one
+                let aiMessage = '';
+                let lastError = null;
 
-                const aiPromise = puter.ai.chat(prompt, {
-                    model: 'gemini-2.0-flash-lite'
-                });
+                for (let i = activeModelIndex; i < AI_MODELS.length; i++) {
+                    const candidate = AI_MODELS[i];
+                    try {
+                        const response = await callAIModel(messages, candidate.id);
+                        aiMessage = extractAIMessage(response);
+                        if (!aiMessage) throw new Error('Empty response');
 
-                const response = await Promise.race([aiPromise, timeoutPromise]);
-
-                // Debug: log response to console
-                console.log('Puter AI Response:', response);
-
-                // Extract message - Puter.js returns string directly or object
-                let aiMessage;
-                if (typeof response === 'string') {
-                    aiMessage = response;
-                } else if (response?.message?.content) {
-                    aiMessage = response.message.content;
-                } else if (response?.content) {
-                    aiMessage = response.content;
-                } else if (response?.text) {
-                    aiMessage = response.text;
-                } else {
-                    aiMessage = String(response);
+                        if (i !== activeModelIndex) {
+                            console.log(`AI Chat: switched to fallback model "${candidate.label}"`);
+                        }
+                        activeModelIndex = i; // stick with what works
+                        break;
+                    } catch (modelError) {
+                        console.warn(`AI Chat: model "${candidate.label}" failed:`, modelError.message);
+                        lastError = modelError;
+                    }
                 }
 
-                // Clean up the message
-                aiMessage = aiMessage.trim();
-                if (!aiMessage) throw new Error('Empty response');
+                if (!aiMessage) throw lastError || new Error('All models failed');
 
                 // Add to history
                 chatHistory.push({ role: 'user', content: input });

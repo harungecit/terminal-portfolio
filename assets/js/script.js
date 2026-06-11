@@ -1,47 +1,133 @@
 // ================================
-// Matrix Rain Background Effect
+// Neural Network Particle Background
 // ================================
-const canvas = document.getElementById('matrix-canvas');
-const ctx = canvas.getContext('2d');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// Reusable neural-network renderer (used for page background + screensaver)
+function createNeuralNetwork(canvasEl, options = {}) {
+    const ctx = canvasEl.getContext('2d');
+    const density = options.density || 24000;   // px² per particle (higher = sparser)
+    const linkDist = options.linkDist || 150;
+    const maxParticles = options.maxParticles || 90;
+    const pointer = { x: null, y: null };
+    let particles = [];
+    let rafId = null;
 
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/~';
-const charArray = chars.split('');
-
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-
-const drops = [];
-for (let i = 0; i < columns; i++) {
-    drops[i] = Math.random() * -100;
-}
-
-function drawMatrix() {
-    ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#00ff41';
-    ctx.font = fontSize + 'px monospace';
-
-    for (let i = 0; i < drops.length; i++) {
-        const text = charArray[Math.floor(Math.random() * charArray.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-        drops[i]++;
+    function resize() {
+        canvasEl.width = window.innerWidth;
+        canvasEl.height = window.innerHeight;
+        init();
     }
+
+    function init() {
+        const count = Math.min(maxParticles, Math.floor((canvasEl.width * canvasEl.height) / density));
+        particles = Array.from({ length: count }, () => ({
+            x: Math.random() * canvasEl.width,
+            y: Math.random() * canvasEl.height,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.5 + 0.6,
+            // violet or cyan node
+            color: Math.random() > 0.5 ? '139, 92, 246' : '34, 211, 238'
+        }));
+    }
+
+    function drawFrame() {
+        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+        // Move particles
+        for (const p of particles) {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvasEl.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvasEl.height) p.vy *= -1;
+        }
+
+        // Connection lines
+        for (let i = 0; i < particles.length; i++) {
+            const a = particles[i];
+            for (let j = i + 1; j < particles.length; j++) {
+                const b = particles[j];
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < linkDist) {
+                    const alpha = (1 - dist / linkDist) * 0.14;
+                    ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+            }
+
+            // Pointer attraction lines — the network "reaches" toward the cursor
+            if (pointer.x !== null) {
+                const dx = a.x - pointer.x;
+                const dy = a.y - pointer.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < linkDist * 1.2) {
+                    const alpha = (1 - dist / (linkDist * 1.2)) * 0.22;
+                    ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(pointer.x, pointer.y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Nodes
+        for (const p of particles) {
+            ctx.fillStyle = `rgba(${p.color}, 0.55)`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function loop() {
+        drawFrame();
+        rafId = requestAnimationFrame(loop);
+    }
+
+    return {
+        start() {
+            resize();
+            if (prefersReducedMotion) {
+                drawFrame(); // static frame only
+            } else {
+                loop();
+            }
+        },
+        stop() {
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = null;
+        },
+        resize,
+        setPointer(x, y) {
+            pointer.x = x;
+            pointer.y = y;
+        }
+    };
 }
 
-setInterval(drawMatrix, 33);
+const bgCanvas = document.getElementById('matrix-canvas');
+const bgNetwork = createNeuralNetwork(bgCanvas);
+bgNetwork.start();
 
-// Resize canvas on window resize
+document.addEventListener('mousemove', (e) => {
+    bgNetwork.setPointer(e.clientX, e.clientY);
+});
+
+document.addEventListener('mouseleave', () => {
+    bgNetwork.setPointer(null, null);
+});
+
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    bgNetwork.resize();
 });
 
 // ================================
@@ -119,7 +205,7 @@ window.addEventListener('scroll', () => {
     navLinks.forEach(link => {
         link.style.color = '';
         if (link.getAttribute('href') === `#${current}`) {
-            link.style.color = 'var(--neon-green)';
+            link.style.color = 'var(--accent)';
         }
     });
 });
@@ -465,58 +551,6 @@ window.addEventListener('scroll', () => {
 });
 
 // ================================
-// Glitch Effect Enhancement
-// ================================
-const glitchElements = document.querySelectorAll('.glitch');
-
-glitchElements.forEach(element => {
-    setInterval(() => {
-        if (Math.random() > 0.95) {
-            element.style.textShadow = `
-                ${Math.random() * 10 - 5}px 0 var(--neon-cyan),
-                ${Math.random() * 10 - 5}px 0 var(--neon-purple)
-            `;
-            setTimeout(() => {
-                element.style.textShadow = '';
-            }, 50);
-        }
-    }, 2000);
-});
-
-// ================================
-// Random Pixel Flicker Effect
-// ================================
-function createPixelFlicker() {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        if (Math.random() > 0.98) {
-            section.style.filter = 'contrast(1.2) brightness(1.1)';
-            setTimeout(() => {
-                section.style.filter = '';
-            }, 50);
-        }
-    });
-}
-
-setInterval(createPixelFlicker, 3000);
-
-// ================================
-// Code Window Animation
-// ================================
-const codeWindow = document.querySelector('.window-content code');
-if (codeWindow) {
-    const originalCode = codeWindow.innerHTML;
-    let glitchInterval = setInterval(() => {
-        if (Math.random() > 0.97) {
-            codeWindow.style.opacity = '0.8';
-            setTimeout(() => {
-                codeWindow.style.opacity = '1';
-            }, 100);
-        }
-    }, 2000);
-}
-
-// ================================
 // Loading Animation
 // ================================
 window.addEventListener('load', () => {
@@ -566,92 +600,37 @@ window.addEventListener('keydown', (e) => {
 // ================================
 // Console Easter Egg
 // ================================
-console.log('%c🚀 Welcome to Harun Geçit\'s Portfolio!', 'color: #00ff41; font-size: 20px; font-weight: bold;');
-console.log('%c🤖 Full Stack Developer & AI Engineer | LLM | RAG | Multi-Agent Orchestration', 'color: #00f0ff; font-size: 14px;');
-console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff41;');
-console.log('%c\n📦 Tech Stack:', 'color: #b026ff; font-size: 14px; font-weight: bold;');
-console.log('%c   • AI/LLM: RAG, pgvector, Fine-Tuning, PageIndex, Multi-LLM, AI Agents', 'color: #b026ff; font-size: 12px;');
-console.log('%c   • AI Tools: Claude Code, Codex, Gemini CLI, OpenCode, Cursor, TRAE', 'color: #b026ff; font-size: 12px;');
-console.log('%c   • Languages: PHP, JavaScript, Go, SQL, Bash, Python', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Laravel: Livewire, Inertia.js, Filament, Nova, Forge, Vapor', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • DevOps: Docker, Kubernetes, Nginx, AWS, GCP', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Database: PostgreSQL, MySQL, MongoDB, Redis', 'color: #00f0ff; font-size: 12px;');
-console.log('%c\n💼 Interested in working together?', 'color: #ffa500; font-size: 14px; font-weight: bold;');
-console.log('%c   📧 info@harungecit.com', 'color: #00ff41; font-size: 12px;');
-console.log('%c   💬 WhatsApp: 0850 303 39 54', 'color: #00ff41; font-size: 12px;');
-console.log('%c   🐙 GitHub: github.com/harungecit', 'color: #00ff41; font-size: 12px;');
-console.log('%c\n🎮 Hidden Features:', 'color: #ff006e; font-size: 14px; font-weight: bold;');
-console.log('%c   • Try the interactive terminal above! Type "help" to get started', 'color: #b026ff; font-size: 12px;');
-console.log('%c   • Press Konami Code for a surprise: ⬆⬆⬇⬇⬅➡⬅➡BA', 'color: #b026ff; font-size: 12px;');
-console.log('%c   • Watch the Matrix rain effect in the background', 'color: #b026ff; font-size: 12px;');
-console.log('%c\n⚡ Performance Info:', 'color: #00f0ff; font-size: 14px; font-weight: bold;');
+console.log('%c🚀 Welcome to Harun Geçit\'s Portfolio!', 'color: #34d399; font-size: 20px; font-weight: bold;');
+console.log('%c🤖 Full Stack Developer & AI Engineer | LLM | RAG | Multi-Agent Orchestration', 'color: #22d3ee; font-size: 14px;');
+console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #34d399;');
+console.log('%c\n📦 Tech Stack:', 'color: #a78bfa; font-size: 14px; font-weight: bold;');
+console.log('%c   • AI/LLM: RAG, pgvector, Fine-Tuning, PageIndex, Multi-LLM, AI Agents', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • AI Tools: Claude Code, Codex, Gemini CLI, OpenCode, Cursor, TRAE', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • Languages: PHP, JavaScript, Go, SQL, Bash, Python', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • Laravel: Livewire, Inertia.js, Filament, Nova, Forge, Vapor', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • DevOps: Docker, Kubernetes, Nginx, AWS, GCP', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • Database: PostgreSQL, MySQL, MongoDB, Redis', 'color: #22d3ee; font-size: 12px;');
+console.log('%c\n💼 Interested in working together?', 'color: #fbbf24; font-size: 14px; font-weight: bold;');
+console.log('%c   📧 info@harungecit.com', 'color: #34d399; font-size: 12px;');
+console.log('%c   💬 WhatsApp: 0850 303 39 54', 'color: #34d399; font-size: 12px;');
+console.log('%c   🐙 GitHub: github.com/harungecit', 'color: #34d399; font-size: 12px;');
+console.log('%c\n🎮 Hidden Features:', 'color: #f472b6; font-size: 14px; font-weight: bold;');
+console.log('%c   • Try the interactive terminal above! Type "help" to get started', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • Press Konami Code for a surprise: ⬆⬆⬇⬇⬅➡⬅➡BA', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • Watch the neural network particles react to your cursor', 'color: #a78bfa; font-size: 12px;');
+console.log('%c\n⚡ Performance Info:', 'color: #22d3ee; font-size: 14px; font-weight: bold;');
 console.log('%c   • Pure JavaScript - No heavy frameworks on this page', 'color: #a0a0a0; font-size: 12px;');
 console.log('%c   • Optimized animations with CSS transforms', 'color: #a0a0a0; font-size: 12px;');
 console.log('%c   • Responsive design - Mobile & Desktop friendly', 'color: #a0a0a0; font-size: 12px;');
-console.log('%c\n💡 Pro Tip:', 'color: #ffa500; font-size: 12px; font-weight: bold;');
-console.log('%c   Check out my DevTools at https://devtools.harungecit.dev/', 'color: #00ff41; font-size: 12px;');
-console.log('%c\n🎯 Fun fact:', 'color: #ff006e; font-size: 12px; font-weight: bold;');
-console.log('%c   This entire site was built with AI assistance using Claude Code!', 'color: #b026ff; font-size: 12px;');
-console.log('%c\n🎮 Easter Egg Hunt:', 'color: #ff006e; font-size: 12px; font-weight: bold;');
-console.log('%c   The terminal has hidden commands... Can you find them all?', 'color: #ffbd2e; font-size: 12px;');
+console.log('%c\n💡 Pro Tip:', 'color: #fbbf24; font-size: 12px; font-weight: bold;');
+console.log('%c   Check out my DevTools at https://devtools.harungecit.dev/', 'color: #34d399; font-size: 12px;');
+console.log('%c\n🎯 Fun fact:', 'color: #f472b6; font-size: 12px; font-weight: bold;');
+console.log('%c   This entire site was built with AI assistance using Claude Code!', 'color: #a78bfa; font-size: 12px;');
+console.log('%c\n🎮 Easter Egg Hunt:', 'color: #f472b6; font-size: 12px; font-weight: bold;');
+console.log('%c   The terminal has hidden commands... Can you find them all?', 'color: #fcd34d; font-size: 12px;');
 console.log('%c   Hint: Try classic gaming references and old-school Unix magic words', 'color: #a0a0a0; font-size: 11px; font-style: italic;');
-console.log('%c\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', 'color: #00ff41;');
-
-// ================================
-// Cursor Trail Effect
-// ================================
-let cursorTrail = [];
-const maxTrailLength = 10;
-
-document.addEventListener('mousemove', (e) => {
-    cursorTrail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-
-    if (cursorTrail.length > maxTrailLength) {
-        cursorTrail.shift();
-    }
-
-    // Remove old trail elements
-    document.querySelectorAll('.cursor-trail').forEach(el => {
-        if (Date.now() - parseInt(el.dataset.time) > 500) {
-            el.remove();
-        }
-    });
-
-    // Create trail element occasionally
-    if (Math.random() > 0.9) {
-        const trail = document.createElement('div');
-        trail.className = 'cursor-trail';
-        trail.style.cssText = `
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-green);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            left: ${e.clientX}px;
-            top: ${e.clientY}px;
-            opacity: 0.6;
-            box-shadow: 0 0 10px var(--neon-green);
-            animation: fadeOut 0.5s forwards;
-        `;
-        trail.dataset.time = Date.now();
-        document.body.appendChild(trail);
-    }
-});
-
-// Add fadeOut animation
-const style = document.createElement('style');
-style.innerHTML = `
-    @keyframes fadeOut {
-        to {
-            opacity: 0;
-            transform: scale(0);
-        }
-    }
-`;
-document.head.appendChild(style);
+console.log('%c\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', 'color: #34d399;');
 
 // ================================
 // Performance: Reduce animations on low-end devices
@@ -697,7 +676,7 @@ function unlockAudio() {
     hoverSound.play().then(() => {
         hoverSound.pause();
         hoverSound.currentTime = 0;
-        console.log('%c🔊 Sound ready!', 'color: #00ff41; font-size: 12px;');
+        console.log('%c🔊 Sound ready!', 'color: #34d399; font-size: 12px;');
     }).catch(e => {
         console.debug('Sound unlock skipped:', e);
     });
@@ -765,7 +744,7 @@ function addHoverSounds() {
 // Initialize hover sounds after a short delay to avoid issues on page load
 setTimeout(addHoverSounds, 1000);
 
-console.log('%c⚡ Website fully loaded and optimized!', 'color: #00ff41; font-size: 14px; font-weight: bold;');
+console.log('%c⚡ Website fully loaded and optimized!', 'color: #34d399; font-size: 14px; font-weight: bold;');
 
 // ================================
 // Screensaver - Idle Detection
@@ -783,7 +762,7 @@ screensaver.style.cssText = `
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #0a0e27;
+    background: #07070d;
     z-index: 10000;
     display: none;
     opacity: 0;
@@ -817,8 +796,13 @@ screensaver.appendChild(screensaverHint);
 
 document.body.appendChild(screensaver);
 
-// Matrix rain for screensaver
-let screensaverInterval = null;
+// Neural network for screensaver — denser, more alive than the page background
+const screensaverNetwork = createNeuralNetwork(screensaverCanvas, {
+    density: 14000,
+    linkDist: 170,
+    maxParticles: 130
+});
+
 function startScreensaver() {
     if (screensaverActive) return;
 
@@ -830,43 +814,9 @@ function startScreensaver() {
         screensaver.style.opacity = '1';
     }, 10);
 
-    // Initialize canvas
-    const canvas = screensaverCanvas;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    screensaverNetwork.start();
 
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/~ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
-    const charArray = chars.split('');
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-
-    const drops = [];
-    for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * -100;
-    }
-
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#00ff41';
-        ctx.font = fontSize + 'px monospace';
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = charArray[Math.floor(Math.random() * charArray.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-
-    screensaverInterval = setInterval(drawMatrix, 33);
-
-    console.log('%c💤 Screensaver activated!', 'color: #00ff41; font-size: 12px;');
+    console.log('%c💤 Screensaver activated!', 'color: #a78bfa; font-size: 12px;');
 }
 
 function stopScreensaver() {
@@ -879,13 +829,10 @@ function stopScreensaver() {
 
     setTimeout(() => {
         screensaver.style.display = 'none';
-        if (screensaverInterval) {
-            clearInterval(screensaverInterval);
-            screensaverInterval = null;
-        }
+        screensaverNetwork.stop();
     }, 500);
 
-    console.log('%c👋 Screensaver deactivated!', 'color: #00ff41; font-size: 12px;');
+    console.log('%c👋 Screensaver deactivated!', 'color: #a78bfa; font-size: 12px;');
 }
 
 function resetIdleTimer() {
@@ -930,7 +877,7 @@ document.head.appendChild(screensaverStyle);
 // Start idle timer
 resetIdleTimer();
 
-console.log('%c⏰ Screensaver will activate after 1 minute of inactivity', 'color: #00f0ff; font-size: 12px;');
+console.log('%c⏰ Screensaver will activate after 1 minute of inactivity', 'color: #22d3ee; font-size: 12px;');
 
 // ================================
 // Projects Carousel - Swiper.js
@@ -985,4 +932,4 @@ const projectsSwiper = new Swiper('.projects-swiper', {
     },
 });
 
-console.log('%c🎠 Swiper Carousel initialized!', 'color: #00ff41;');
+console.log('%c🎠 Swiper Carousel initialized!', 'color: #34d399;');
