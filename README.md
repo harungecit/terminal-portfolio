@@ -1,15 +1,16 @@
 # 🚀 Terminal Portfolio - Harun Geçit
 
-Interactive terminal-style portfolio website featuring a cyberpunk aesthetic with Matrix rain effects, functional terminal emulator, AI chat integration, and modern animations.
+Interactive terminal-style portfolio website for **Harun Geçit — Full Stack Developer & AI Engineer**, featuring a cyberpunk aesthetic with Matrix rain effects, a functional terminal emulator, AI chat integration, a dedicated AI Engineering showcase (RAG, fine-tuning, multi-agent orchestration), and modern animations.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://harungecit.com)
-[![Version](https://img.shields.io/badge/version-15.4-blue)]()
+[![Version](https://img.shields.io/badge/version-16.0-blue)]()
 [![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)]()
 
 ## ✨ Features
 
 - **🌧️ Matrix Rain Background**: Animated Matrix-style rain effect using Canvas API
 - **💻 Interactive Terminal**: Fully functional Linux-style terminal emulator powered by XTerm.js
+- **🧠 AI Engineering Section**: Dedicated showcase of RAG (pgvector), fine-tuning/PageIndex, multi-LLM orchestration, web-search agents, AI-driven SDLC and AI security
 - **🤖 AI Chat**: Gemini 2.0 Flash integration via Puter.js for intelligent conversations
 - **🪄 Harry Potter Spells**: Magic commands including Lumos (light mode), Nox (dark mode), Accio, and more
 - **🎮 Games**: Built-in Snake game playable in terminal
@@ -49,6 +50,7 @@ Interactive terminal-style portfolio website featuring a cyberpunk aesthetic wit
 |---------|-------------|
 | `help` | Display all available commands |
 | `about` | Learn more about me |
+| `ai` | View my AI engineering stack (RAG, LLM, agents) |
 | `skills` | View technical skills |
 | `experience` | Show work experience |
 | `projects` | List featured projects |
@@ -238,7 +240,7 @@ Toggle between modes using:
 
 ## 👨‍💻 Author
 
-**Harun Geçit** - Software Architect & Full Stack Developer
+**Harun Geçit** - Full Stack Developer & AI Engineer
 
 - 🌐 Website: [harungecit.com](https://harungecit.com)
 - 📧 Email: [info@harungecit.com](mailto:info@harungecit.com)

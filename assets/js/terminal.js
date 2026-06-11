@@ -121,7 +121,7 @@
             '~': {
                 type: 'dir',
                 children: {
-                    'about.txt': { type: 'file', content: 'Harun Geçit - Software Architect & Full Stack Developer\r\nRoles: DevOps Engineer, System Admin, Cyber Security, Software Advisor, Blog Writer\r\nLocation: Istanbul, Türkiye\r\nExperience: 15+ years' },
+                    'about.txt': { type: 'file', content: 'Harun Geçit - Full Stack Developer & AI Engineer\r\nRoles: AI/LLM Engineer, DevOps Engineer, System Admin, Cyber Security, Software Advisor\r\nLocation: Istanbul, Türkiye\r\nExperience: 15+ years software, 2+ years AI engineering' },
                     'contact.txt': { type: 'file', content: 'Email: info@harungecit.com\r\nWhatsApp: 0850 303 39 54\r\nWebsite: https://harungecit.com' },
                     'projects': {
                         type: 'dir',
@@ -140,10 +140,11 @@
                             'laravel.md': { type: 'file', content: '# Laravel Ecosystem\r\n- Laravel\r\n- Livewire\r\n- Inertia.js\r\n- Filament\r\n- Nova\r\n- Forge\r\n- Vapor\r\n- Horizon\r\n- Sanctum' },
                             'backend.md': { type: 'file', content: '# Backend\r\n- CodeIgniter\r\n- Zend\r\n- Node.js\r\n- Express.js\r\n- Gin (Go)' },
                             'frontend.md': { type: 'file', content: '# Frontend\r\n- React.js\r\n- Alpine.js\r\n- Inertia.js\r\n- Livewire\r\n- Tailwind CSS\r\n- Bootstrap' },
-                            'devops.md': { type: 'file', content: '# DevOps\r\n- Docker\r\n- Kubernetes\r\n- Nginx\r\n- AWS\r\n- GCP' }
+                            'devops.md': { type: 'file', content: '# DevOps\r\n- Docker\r\n- Kubernetes\r\n- Nginx\r\n- AWS\r\n- GCP' },
+                            'ai.md': { type: 'file', content: '# AI & LLM Engineering (2+ years)\r\n- RAG on PostgreSQL + pgvector (embeddings, hybrid search, reranking)\r\n- PageIndex document indexing & training pipelines\r\n- Fine-tuning, dataset curation, evaluation\r\n- Multi-LLM orchestration, token accounting & cost optimization\r\n- System prompts, custom skills, web-search agents\r\n- AI tools: Claude Code, Codex, Gemini CLI, OpenCode, Commander.ai, Cursor, TRAE\r\n- AI-driven dev/test/staging/production, code review & security in CI/CD' }
                         }
                     },
-                    'README.md': { type: 'file', content: '# Harun Geçit Portfolio\r\nWelcome to my interactive terminal portfolio!\r\nTry commands like "ls", "cd", "cat", "snake", "weather", "top", "chat".' }
+                    'README.md': { type: 'file', content: '# Harun Geçit Portfolio\r\nWelcome to my interactive terminal portfolio!\r\nTry commands like "ai", "ls", "cd", "cat", "snake", "weather", "top", "chat".' }
                 }
             }
         };
@@ -372,21 +373,30 @@
         const HARUN_CONTEXT = `You are Harun Geçit's AI assistant on his portfolio website terminal. Be friendly, helpful, and concise.
 
 About Harun:
-- Software Architect with 15+ years of experience
+- Full Stack Developer & AI Engineer with 15+ years in software and 2+ years of hands-on AI engineering
 - Based in Istanbul, Turkey
-- Roles: Full Stack Developer, DevOps Engineer, System Administrator, Cybersecurity Specialist, Software Advisor, Technical Blog Writer
+- Roles: Full Stack Developer, AI/LLM Engineer, DevOps Engineer, System Administrator, Cybersecurity Specialist, Software Advisor
+
+AI Engineering (2+ years):
+- AI-assisted development via LLM CLIs: Claude Code, OpenAI Codex, Gemini CLI, OpenCode, Commander.ai
+- AI IDEs & agents: Cursor, TRAE, VS Code AI, GitHub Copilot
+- RAG on PostgreSQL + pgvector: embeddings, chunking, hybrid search, reranking, PageIndex
+- LLM engineering: multi-LLM orchestration, token accounting & cost optimization, system prompts, custom skills, web-search agents
+- Fine-tuning & PageIndex training pipelines, dataset curation, evaluation
+- AI-driven SDLC: dev/test/staging/production, LLM-based code review, AI security scanning, CI/CD automation
+- Reliability: guardrails, determinism, performance & resource optimization, stability
 
 Technical Skills:
-- Languages: PHP, JavaScript, Go, SQL, Bash
+- Languages: PHP, JavaScript, Go, SQL, Bash, Python
 - Laravel Ecosystem Expert: Laravel, Livewire, Inertia.js, Filament, Nova, Forge, Vapor, Horizon, Sanctum
 - Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS
 - Backend: CodeIgniter, Zend, Node.js, Express.js, Gin (Go)
 - DevOps: Docker, Kubernetes, Nginx, AWS, GCP, GitOps
-- Databases: PostgreSQL, MySQL, MongoDB, Redis, Elasticsearch
+- Databases: PostgreSQL, pgvector, MySQL, MongoDB, Redis, Elasticsearch
 
 Current Work:
-- Full Stack Developer at USTEK RFID (2022-Present) - RFID technologies for textile tracking
-- Software Advisor at CatchPad (2022-Present) - AI-supported training platform
+- Full Stack Developer & AI Engineer at USTEK RFID (2022-Present) - RFID + RAG/LLM features
+- Software Advisor & AI Engineer at CatchPad (2022-Present) - AI training platform, fine-tuning, agents
 
 Contact:
 - Email: info@harungecit.com
@@ -535,6 +545,7 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
                     '',
                     '\x1b[1;32mhelp\x1b[0m - Display this help message',
                     '\x1b[1;32mabout\x1b[0m - Learn more about me',
+                    '\x1b[1;32mai\x1b[0m - My AI engineering stack (RAG, LLM, agents)',
                     '\x1b[1;32mskills\x1b[0m - View my technical skills',
                     '\x1b[1;32mexperience\x1b[0m - Show my work experience',
                     '\x1b[1;32mprojects\x1b[0m - List my featured projects',
@@ -583,20 +594,20 @@ Keep responses brief (2-3 sentences max) since this is a terminal interface. Ans
 \x1b[1;36mABOUT ME:\x1b[0m
 
 \x1b[1;32mName:\x1b[0m        Harun Geçit
-\x1b[1;32mTitle:\x1b[0m       \x1b[1;33mSoftware Architect\x1b[0m
+\x1b[1;32mTitle:\x1b[0m       \x1b[1;33mFull Stack Developer & AI Engineer\x1b[0m
 \x1b[1;32mLocation:\x1b[0m    Istanbul, Türkiye
-\x1b[1;32mExperience:\x1b[0m  15+ years in software development
+\x1b[1;32mExperience:\x1b[0m  15+ years software · 2+ years AI engineering
 
 \x1b[1;35mRoles:\x1b[0m
-  • Full Stack Developer    • DevOps Engineer
-  • System Administrator    • Cyber Security
-  • Software Advisor        • Technical Blog Writer
+  • Full Stack Developer    • AI / LLM Engineer
+  • DevOps Engineer         • System Administrator
+  • Cyber Security          • Software Advisor
 
-Passionate about the \x1b[1;31mLaravel Ecosystem\x1b[0m and building scalable systems.
-Expert in PHP, JavaScript, Go, SQL, and Bash.
+Building with LLMs daily: \x1b[1;31mRAG\x1b[0m, fine-tuning, multi-agent
+orchestration and an AI-driven software lifecycle.
+Expert in the \x1b[1;31mLaravel Ecosystem\x1b[0m, PHP, JavaScript, Go & Python.
 
-\x1b[1;33m"Continually adding value to myself and recognizing there is
- still much to learn."\x1b[0m
+\x1b[1;33mTip:\x1b[0m Type \x1b[1;32mai\x1b[0m to see my AI engineering stack.
 `,
 
             skills: (args) => `
@@ -625,8 +636,45 @@ Expert in PHP, JavaScript, Go, SQL, and Bash.
 \x1b[1;33m▸ Security\x1b[0m
   OAuth 2.0, JWT, Firewall, Proxy, Cloudflare
 
-\x1b[1;33m▸ AI Tools\x1b[0m
-  Claude Code, GitHub Copilot, Gemini
+\x1b[1;35m▸ AI & LLM\x1b[0m
+  RAG, pgvector, Embeddings, PageIndex, Fine-Tuning
+  Multi-LLM Orchestration, Prompt Engineering, AI Agents
+
+\x1b[1;35m▸ AI Dev Tools\x1b[0m
+  Claude Code, Codex, Gemini CLI, OpenCode, Commander.ai
+  Cursor, TRAE, VS Code AI, GitHub Copilot
+
+\x1b[1;33mTip:\x1b[0m Type \x1b[1;32mai\x1b[0m for the full AI engineering breakdown.
+`,
+
+            ai: (args) => `
+\x1b[1;35m╔════════════════════════════════════════════╗\x1b[0m
+\x1b[1;35m║\x1b[0m        \x1b[1;36mAI ENGINEERING\x1b[0m  \x1b[1;33m(2+ years)\x1b[0m            \x1b[1;35m║\x1b[0m
+\x1b[1;35m╚════════════════════════════════════════════╝\x1b[0m
+
+\x1b[1;33m▸ AI-Assisted Development\x1b[0m
+  Claude Code · Codex · Gemini CLI · OpenCode · Commander.ai
+  Cursor · TRAE · VS Code AI · GitHub Copilot
+
+\x1b[1;33m▸ RAG & Vector Search\x1b[0m
+  PostgreSQL + pgvector · Embeddings · Hybrid Search
+  Reranking · Chunking · PageIndex document indexing
+
+\x1b[1;33m▸ LLM Engineering\x1b[0m
+  Multi-LLM orchestration · Token accounting & cost optimization
+  System prompts · Custom skills · Web-search agents
+
+\x1b[1;33m▸ Fine-Tuning & Training\x1b[0m
+  Fine-tuning · PageIndex pipelines · Dataset curation · Eval
+
+\x1b[1;33m▸ AI-Driven SDLC\x1b[0m
+  Dev → Test → Staging → Production, all LLM-assisted
+  AI code review · code security scanning · CI/CD automation
+
+\x1b[1;33m▸ Reliability & Optimization\x1b[0m
+  Guardrails · determinism · performance · resource & cost tuning
+
+\x1b[1;90mTip:\x1b[0m Type \x1b[1;32mchat\x1b[0m to talk to my AI assistant.
 `,
 
             experience: (args) => `
@@ -654,7 +702,11 @@ Expert in PHP, JavaScript, Go, SQL, and Bash.
 
 \x1b[1;32m[4] AI Training Platform\x1b[0m - Smart training with AI-supported exercises
 
-\x1b[1;32m[5] DevTools Platform\x1b[0m - Developer utilities and tools
+\x1b[1;32m[5] RAG Knowledge Engine\x1b[0m - Retrieval-Augmented Generation on pgvector
+
+\x1b[1;32m[6] Multi-Agent AI Toolkit\x1b[0m - Multi-LLM orchestration & web-search agents
+
+\x1b[1;32m[7] DevTools Platform\x1b[0m - Developer utilities and tools
     \x1b[1;33m→\x1b[0m https://devtools.harungecit.dev/
 `,
 
@@ -1399,7 +1451,7 @@ Example: \x1b[1;32msocial github\x1b[0m`;
             term.write('\x1b[0m\r\n');
         }
 
-        term.write('\x1b[1;36mFull Stack Developer | PHP | JavaScript | DevOps | Cybersecurity\x1b[0m\r\n');
+        term.write('\x1b[1;36mFull Stack Developer & AI Engineer | LLM | RAG | DevOps | Cybersecurity\x1b[0m\r\n');
         term.write('\r\n');
         term.write('\x1b[1;33mType \'\x1b[1;32mhelp\x1b[1;33m\' to see available commands.\x1b[0m\r\n');
         writePrompt();
