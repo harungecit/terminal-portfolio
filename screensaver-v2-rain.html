@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screensaver v2 — Digital Rain</title>
+<style>
+  :root { --violet:139,92,246; --cyan:34,211,238; --emerald:16,185,129; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; overflow:hidden; background:#04050a; }
+  body { font-family:'SF Mono','Cascadia Code','Consolas',ui-monospace,monospace; }
+  #stage { position:fixed; inset:0;
+    background:radial-gradient(1100px 800px at 50% 0%, rgba(var(--violet),0.10), transparent 60%), #04050a; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  #overlay { position:absolute; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0, rgba(0,0,0,0.22) 1px, transparent 2px, transparent 3px),
+    radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+    mix-blend-mode:multiply; opacity:0.55; }
+  #title { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; user-select:none; }
+  #title .glyph { font-size:clamp(40px,8vw,110px); font-weight:800; letter-spacing:0.12em;
+    background:linear-gradient(135deg, rgba(var(--cyan),1), rgba(var(--violet),1));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 26px rgba(var(--emerald),0.4)); animation:breathe 6s ease-in-out infinite; }
+  #title .sub { margin-top:14px; font-size:clamp(11px,1.6vw,15px); letter-spacing:0.5em; text-transform:uppercase; color:rgba(var(--emerald),0.7); }
+  @keyframes breathe { 0%,100%{opacity:.9} 50%{opacity:1; filter:drop-shadow(0 0 40px rgba(var(--cyan),0.5))} }
+  #agentlog { position:absolute; left:26px; bottom:22px; font-size:12px; line-height:1.7; color:rgba(190,200,220,0.5); pointer-events:none; user-select:none; max-width:46ch; }
+  #agentlog .tag{color:rgba(var(--violet),.95)} #agentlog .ok{color:rgba(var(--emerald),.95)} #agentlog .val{color:rgba(var(--cyan),.95)}
+  .cursor{display:inline-block;width:8px;height:13px;background:rgba(var(--emerald),.9);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+  #hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:rgba(160,175,200,.3);pointer-events:none;animation:blink 3s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div id="overlay"></div>
+  <div id="title"><div class="glyph">H · G</div><div class="sub">Decode · Stream · Inference</div></div>
+  <div id="agentlog"></div>
+  <div id="hint">Press any key or move mouse to continue</div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const C={violet:'139,92,246',cyan:'34,211,238',emerald:'16,185,129'};
+  const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+  let W,H,DPR,cols,drops,fontSize=16;
+  const CH='0123456789ABCDEFアカサタナハマ{}</>[]#$+=λΔΣ◇⟶'.split('');
+  const pick=a=>a[(Math.random()*a.length)|0];
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+    fontSize=Math.max(13,Math.min(20,Math.round(W/110)));
+    cols=Math.ceil(W/fontSize);
+    drops=Array.from({length:cols},()=>({
+      y:Math.random()*-H, speed:0.4+Math.random()*0.9,
+      len:8+(Math.random()*22|0), hue:Math.random()>0.5?C.cyan:C.violet
+    }));
+  }
+  function draw(){
+    // fade trail
+    ctx.fillStyle='rgba(4,5,10,0.12)';
+    ctx.fillRect(0,0,W,H);
+    ctx.font=fontSize+'px ui-monospace, monospace';
+    ctx.textAlign='center';
+    for(let i=0;i<cols;i++){
+      const d=drops[i]; const x=i*fontSize+fontSize/2;
+      const headY=d.y;
+      for(let k=0;k<d.len;k++){
+        const y=headY-k*fontSize;
+        if(y<-fontSize||y>H+fontSize) continue;
+        const ch=pick(CH);
+        if(k===0){
+          // bright head
+          ctx.fillStyle='rgba(220,255,250,0.95)';
+          ctx.shadowColor=`rgba(${d.hue},0.9)`; ctx.shadowBlur=12;
+          ctx.fillText(ch,x,y); ctx.shadowBlur=0;
+        }else{
+          const a=Math.max(0,(1-k/d.len))*0.9;
+          ctx.fillStyle=`rgba(${d.hue},${a})`;
+          ctx.fillText(ch,x,y);
+        }
+      }
+      d.y+=d.speed*fontSize*0.5;
+      if(headY-d.len*fontSize>H){ d.y=Math.random()*-200; d.speed=0.4+Math.random()*0.9; d.len=8+(Math.random()*22|0); d.hue=Math.random()>0.5?C.cyan:C.violet; }
+    }
+    requestAnimationFrame(draw);
+  }
+  // agentic log
+  const agentlog=document.getElementById('agentlog');
+  const LINES=[['decode','stream','packet#','ok','ok'],['infer','model','opus-4.8','val'],['parse','token','Δ chunk','flush','val'],['route','agent','dispatch(6)','ok','ok'],['match','vector','cosine 0.91','val'],['verify','check','consistent','passed','ok'],['build','graph','nodes++','val'],['fire','neuron','propagate','ok','ok']];
+  let li=0; const MAX=7;
+  function pushLog(){ const [a,tag,mid,end,kind]=LINES[li%LINES.length]; li++;
+    const ts=new Date().toLocaleTimeString('en-GB'); const ln=document.createElement('div');
+    ln.innerHTML=`<span style="opacity:.5">${ts}</span> <span class="tag">${tag}</span> ${a} <span class="val">${mid}</span> → <span class="${kind==='ok'?'ok':'val'}">${end||'ok'}</span>`;
+    agentlog.appendChild(ln); while(agentlog.children.length>MAX) agentlog.removeChild(agentlog.firstChild);
+    [...agentlog.children].forEach((c,i,arr)=>c.style.opacity=(0.25+0.75*(i/(arr.length-1||1))).toFixed(2));
+  }
+  const cur=document.createElement('div'); cur.innerHTML=`<span style="opacity:.5">agent@rain</span> $ <span class="cursor"></span>`;
+  function refresh(){agentlog.appendChild(cur);} setInterval(()=>{pushLog();refresh();},1400); pushLog();refresh();
+  addEventListener('resize',resize); resize();
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ctx.fillStyle='#04050a';ctx.fillRect(0,0,W,H);} else draw();
+})();
+</script>
+</body>
+</html>

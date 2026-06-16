@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screensaver v5 — Flow Field</title>
+<style>
+  :root { --violet:139,92,246; --cyan:34,211,238; --emerald:16,185,129; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; overflow:hidden; background:#04050a; }
+  body { font-family:'SF Mono','Cascadia Code','Consolas',ui-monospace,monospace; }
+  #stage { position:fixed; inset:0;
+    background:radial-gradient(1200px 800px at 30% 30%, rgba(var(--cyan),0.08), transparent 60%),
+    radial-gradient(1000px 800px at 75% 75%, rgba(var(--violet),0.10), transparent 60%), #04050a; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  #overlay { position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.5) 100%); opacity:0.6; }
+  #title { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; user-select:none; }
+  #title .glyph { font-size:clamp(40px,8vw,110px); font-weight:800; letter-spacing:0.12em;
+    background:linear-gradient(135deg, rgba(var(--cyan),1), rgba(var(--violet),1));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 26px rgba(var(--violet),0.4)); animation:breathe 6s ease-in-out infinite; }
+  #title .sub { margin-top:14px; font-size:clamp(11px,1.6vw,15px); letter-spacing:0.5em; text-transform:uppercase; color:rgba(var(--cyan),0.7); }
+  @keyframes breathe { 0%,100%{opacity:.9} 50%{opacity:1; filter:drop-shadow(0 0 40px rgba(var(--cyan),0.5))} }
+  #agentlog { position:absolute; left:26px; bottom:22px; font-size:12px; line-height:1.7; color:rgba(190,200,220,0.5); pointer-events:none; user-select:none; max-width:46ch; }
+  #agentlog .tag{color:rgba(var(--violet),.95)} #agentlog .ok{color:rgba(var(--emerald),.95)} #agentlog .val{color:rgba(var(--cyan),.95)}
+  .cursor{display:inline-block;width:8px;height:13px;background:rgba(var(--cyan),.9);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+  #hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:rgba(160,175,200,.3);pointer-events:none;animation:blink 3s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div id="overlay"></div>
+  <div id="title"><div class="glyph">H · G</div><div class="sub">Flow · Data · Emergence</div></div>
+  <div id="agentlog"></div>
+  <div id="hint">Press any key or move mouse to continue</div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const C={violet:[139,92,246],cyan:[34,211,238],emerald:[16,185,129]};
+  const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+  let W,H,DPR,particles=[],t=0;
+  const pointer={x:null,y:null,active:false};
+  // cheap pseudo-noise field via summed sines (no external libs)
+  function field(x,y,tt){
+    const a = Math.sin(x*0.0016 + tt*0.2) + Math.cos(y*0.0014 - tt*0.18);
+    const b = Math.sin((x+y)*0.0011 + tt*0.12);
+    return (a + b) * 1.1; // angle
+  }
+  function lerpC(c1,c2,u){ return `rgba(${Math.round(c1[0]+(c2[0]-c1[0])*u)},${Math.round(c1[1]+(c2[1]-c1[1])*u)},${Math.round(c1[2]+(c2[2]-c1[2])*u)}`; }
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.fillStyle='#04050a'; ctx.fillRect(0,0,W,H);
+    const n=Math.max(400,Math.min(1100,Math.floor((W*H)/2200)));
+    particles=Array.from({length:n},()=>spawn());
+  }
+  function spawn(){
+    const u=Math.random();
+    return { x:Math.random()*W, y:Math.random()*H, life:Math.random()*200+60, age:0,
+      hue:lerpC(C.cyan,C.violet,u), speed:0.7+Math.random()*1.4 };
+  }
+  function draw(){
+    // soft fade for trails
+    ctx.fillStyle='rgba(4,5,10,0.06)';
+    ctx.fillRect(0,0,W,H);
+    t+=0.016;
+    for(const p of particles){
+      let ang=field(p.x,p.y,t);
+      // pointer swirl
+      if(pointer.active){
+        const dx=p.x-pointer.x, dy=p.y-pointer.y, d=Math.hypot(dx,dy);
+        if(d<240){ const infl=(1-d/240); ang += Math.atan2(dy,dx)*0.0 + infl*2.2; }
+      }
+      const vx=Math.cos(ang)*p.speed, vy=Math.sin(ang)*p.speed;
+      const px=p.x, py=p.y;
+      p.x+=vx; p.y+=vy; p.age++;
+      const a=Math.min(0.5, (1-p.age/p.life))*0.6;
+      ctx.strokeStyle=`${p.hue},${a})`;
+      ctx.lineWidth=1.1;
+      ctx.beginPath(); ctx.moveTo(px,py); ctx.lineTo(p.x,p.y); ctx.stroke();
+      if(p.age>p.life || p.x<-10||p.x>W+10||p.y<-10||p.y>H+10){ Object.assign(p,spawn()); }
+    }
+    requestAnimationFrame(draw);
+  }
+  addEventListener('mousemove',e=>{pointer.x=e.clientX;pointer.y=e.clientY;pointer.active=true;});
+  addEventListener('mouseleave',()=>pointer.active=false);
+  // agentic log
+  const agentlog=document.getElementById('agentlog');
+  const LINES=[['flow','field','vortex Δ','ok','ok'],['emerge','pattern','attractor','val'],['stream','data','throughput↑','ok','ok'],['sample','noise','perlin','val'],['agent','swarm','align(120)','ok','ok'],['diffuse','token','denoise','val'],['converge','state','stable','ok','ok'],['trace','path','integral','val']];
+  let li=0; const MAX=7;
+  function pushLog(){ const [a,tag,mid,end,kind]=LINES[li%LINES.length]; li++;
+    const ts=new Date().toLocaleTimeString('en-GB'); const ln=document.createElement('div');
+    ln.innerHTML=`<span style="opacity:.5">${ts}</span> <span class="tag">${tag}</span> ${a} <span class="val">${mid}</span> → <span class="${kind==='ok'?'ok':'val'}">${end||'ok'}</span>`;
+    agentlog.appendChild(ln); while(agentlog.children.length>MAX) agentlog.removeChild(agentlog.firstChild);
+    [...agentlog.children].forEach((c,i,arr)=>c.style.opacity=(0.25+0.75*(i/(arr.length-1||1))).toFixed(2));
+  }
+  const cur=document.createElement('div'); cur.innerHTML=`<span style="opacity:.5">agent@flow</span> $ <span class="cursor"></span>`;
+  function refresh(){agentlog.appendChild(cur);} setInterval(()=>{pushLog();refresh();},1400); pushLog();refresh();
+  addEventListener('resize',resize); resize();
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ for(let i=0;i<200;i++) draw && 0; } else draw();
+})();
+</script>
+</body>
+</html>
