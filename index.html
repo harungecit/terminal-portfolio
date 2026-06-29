@@ -2,943 +2,375 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Harun Geçit - Software Architect & Full Stack Developer | Laravel Ecosystem Expert | PHP, JavaScript, Go | DevOps Engineer, System Admin & Cybersecurity Specialist">
-    <meta name="keywords" content="Software Architect, Full Stack Developer, Laravel, PHP, JavaScript, Go, DevOps Engineer, System Admin, Cybersecurity, React, Alpine.js, Inertia.js, Docker, Linux">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Harun Geçit - Full Stack Developer & AI Engineer | LLM, RAG, Fine-Tuning & Multi-Agent Orchestration | Laravel Ecosystem Expert | AI-Driven DevOps & Cybersecurity">
+    <meta name="keywords" content="AI Engineer, Full Stack Developer, LLM Engineer, RAG, Retrieval Augmented Generation, pgvector, Vector Database, Fine-Tuning, PageIndex, Claude Code, Codex, Gemini CLI, OpenCode, Cursor, TRAE, GitHub Copilot, AI Agents, Prompt Engineering, Multi-LLM, Laravel, PHP, JavaScript, Go, DevOps, AI Security, Cybersecurity">
     <meta name="author" content="Harun Geçit">
+    <meta name="theme-color" content="#0c0a06">
 
-    <title>Harun Geçit - Software Architect & Full Stack Developer</title>
+    <!-- Open Graph -->
+    <meta property="og:title" content="Harun Geçit - Full Stack Developer & AI Engineer">
+    <meta property="og:description" content="Full Stack Developer & AI Engineer building with LLMs — RAG, fine-tuning, multi-agent orchestration & AI-driven SDLC.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://harungecit.com">
+
+    <title>Harun Geçit - Full Stack Developer & AI Engineer</title>
+
+    <!-- Favicon (inline amber "H") -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230c0a06'/%3E%3Ctext x='16' y='25' font-family='monospace' font-size='26' font-weight='700' fill='%23ffb000' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/harunos.css?v=18.0">
 
-    <!-- XTerm.js for Terminal -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css">
+    <!-- Tell CSS that JS is available (progressive enhancement) -->
+    <script>document.documentElement.className += ' js';</script>
 
-    <!-- Swiper.js for Carousel -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-
-    <link rel="stylesheet" href="assets/css/styles.css?v=15.4">
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Harun Geçit",
+      "url": "https://harungecit.com",
+      "jobTitle": "Full Stack Developer & AI Engineer",
+      "email": "info@harungecit.com",
+      "address": { "@type": "PostalAddress", "addressLocality": "Istanbul", "addressCountry": "TR" },
+      "sameAs": [
+        "https://github.com/harungecit",
+        "https://linkedin.com/in/harungecit",
+        "https://x.com/harungecit_",
+        "https://instagram.com/harungecit.dev"
+      ],
+      "knowsAbout": ["RAG","pgvector","LLM Orchestration","Fine-Tuning","Laravel","PHP","Go","Python","DevOps","Cybersecurity"]
+    }
+    </script>
 </head>
 <body>
-    <!-- Matrix Rain Background -->
-    <canvas id="matrix-canvas"></canvas>
+<div class="crt" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="container">
-            <div class="nav-brand glitch" data-text="$ harun@dev">$ harun@dev</div>
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#terminal" class="nav-link">Terminal</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#experience" class="nav-link">Experience</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+<!-- =======================================================================
+     CONTENT (single source of truth) — also the no-JS / SEO fallback page.
+     When JS is on, HarunOS clones these sections into draggable windows.
+     ======================================================================= -->
+<main id="seo-content">
+
+    <!-- HOME / HERO -->
+    <section class="appsrc hero" id="sec-home" data-title="welcome.txt" data-gl="★" data-w="600" data-h="500">
+        <div class="status-badge"><span class="d"></span>online — available for new projects</div>
+        <h1 class="namebig">HARUN<span>GEÇIT</span></h1>
+        <p class="rolesline">Full Stack Developer <span class="amber">&amp;</span> AI Engineer</p>
+        <ul class="rolelist">
+            <li><span class="rn">01</span> Full Stack Developer</li>
+            <li><span class="rn">02</span> AI Engineer</li>
+            <li><span class="rn">03</span> DevOps &amp; Security</li>
+            <li><span class="rn">04</span> Laravel Ecosystem Expert</li>
+        </ul>
+        <p class="bd">I build production systems <b>with</b> large language models — RAG pipelines on
+            PostgreSQL + pgvector, fine-tuning workflows and multi-agent orchestration. 15+ years in
+            software, 2+ years deep in AI engineering, anchored in the Laravel ecosystem.</p>
+        <div class="cta-row">
+            <button class="btn" data-open="projects">▸ view projects</button>
+            <button class="btn ghost" data-open="contact">$ get in touch</button>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="glitch" data-text="HARUN GEÇİT">HARUN GEÇİT</h1>
-                    <div class="typing-container">
-                        <span class="typing-prefix">$ </span>
-                        <span id="typed-text"></span>
-                        <span class="cursor">|</span>
-                    </div>
-                    <p class="hero-description">
-                        Software Architect & Full Stack Developer specializing in Laravel Ecosystem, PHP, JavaScript & Go.
-                        DevOps Engineer | System Admin | Cybersecurity Specialist | Technical Blog Writer.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#terminal" class="btn btn-primary">
-                            <i class="fas fa-terminal"></i>
-                            <span class="btn-text">Launch Termina<span class="blinking-cursor">l</span></span>
-                        </a>
-                        <a href="#contact" class="btn btn-secondary">
-                            <i class="fas fa-envelope"></i>
-                            Get In Touch
-                        </a>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://github.com/harungecit" target="_blank" rel="noopener" title="GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener" title="LinkedIn">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://x.com/harungecit_" target="_blank" rel="noopener" title="X (Twitter)">
-                            <i class="fab fa-x-twitter"></i>
-                        </a>
-                        <a href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener" title="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://bio.link/harungecit" target="_blank" rel="noopener" title="All Links">
-                            <i class="fas fa-link"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="hero-visual">
-                    <div class="code-window">
-                        <div class="window-header">
-                            <span class="window-dot red"></span>
-                            <span class="window-dot yellow"></span>
-                            <span class="window-dot green"></span>
-                            <span class="window-title">server.php</span>
-                        </div>
-                        <div class="window-content">
-                            <pre><code><span class="code-comment">// System Status</span>
-<span class="code-keyword">class</span> <span class="code-class">SoftwareArchitect</span> {
-    <span class="code-keyword">public</span> <span class="code-variable">$name</span> = <span class="code-string">"Harun Geçit"</span>;
-    <span class="code-keyword">public</span> <span class="code-variable">$role</span> = <span class="code-string">"Software Architect"</span>;
-    <span class="code-keyword">public</span> <span class="code-variable">$status</span> = <span class="code-string">"Available"</span>;
-
-    <span class="code-keyword">public function</span> <span class="code-function">getRoles</span>() {
-        <span class="code-keyword">return</span> [
-            <span class="code-string">"Full Stack Developer"</span>,
-            <span class="code-string">"DevOps Engineer"</span>,
-            <span class="code-string">"System Admin"</span>,
-            <span class="code-string">"Cyber Security"</span>,
-        ];
-    }
-}</code></pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <i class="fas fa-chevron-down"></i>
+        <div class="socs">
+            <a class="soc" href="https://github.com/harungecit" target="_blank" rel="noopener">GitHub</a>
+            <a class="soc" href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="soc" href="https://x.com/harungecit_" target="_blank" rel="noopener">X</a>
+            <a class="soc" href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener">Instagram</a>
+            <a class="soc" href="https://bio.link/harungecit" target="_blank" rel="noopener">All Links</a>
         </div>
     </section>
 
-    <!-- Terminal Section -->
-    <section id="terminal" class="terminal-section">
-        <div class="container">
-            <h2 class="section-title">
-                <i class="fas fa-terminal"></i>
-                Interactive Terminal
-            </h2>
-            <p class="section-subtitle">Try some commands: <code>help</code>, <code>about</code>, <code>skills</code>, <code>experience</code>, <code>contact</code></p>
-
-            <div class="terminal-window">
-                <div class="terminal-header">
-                    <span class="terminal-dot red"></span>
-                    <span class="terminal-dot yellow"></span>
-                    <span class="terminal-dot green"></span>
-                    <span class="terminal-title">harun@dev:~$</span>
-                </div>
-                <div id="terminal-container"></div>
-            </div>
+    <!-- ABOUT -->
+    <section class="appsrc" id="sec-about" data-title="about.txt" data-gl="≡" data-w="560" data-h="480">
+        <h2 class="t">About Me</h2>
+        <p class="sub">Full Stack Developer &amp; AI Engineer · Istanbul, Türkiye</p>
+        <p class="bd">I'm a <b>Full Stack Developer &amp; AI Engineer</b> who designs scalable systems and builds
+            with Large Language Models every day. With <b>15+ years in software</b> and <b>2+ years of hands-on AI
+            engineering</b>, I also work as a DevOps Engineer, System Administrator, Cybersecurity Specialist and
+            Software Advisor.</p>
+        <p class="bd">On the <b>AI</b> side I build production <b>RAG</b> pipelines on PostgreSQL + pgvector, design
+            <b>fine-tuning</b> and PageIndex-based training workflows, and orchestrate <b>multiple LLMs</b> together —
+            managing token budgets, system prompts, custom skills and web-search agents. My daily toolkit is LLM-driven:
+            Claude Code, Codex, Gemini CLI, OpenCode, Commander.ai, Cursor, TRAE and VS Code AI agents.</p>
+        <p class="bd">I'm deeply passionate about the <b>Laravel Ecosystem</b> — Livewire, Inertia.js, Filament,
+            Forge/Vapor. Backend expertise spans PHP, JavaScript, Go, SQL and Python. I run AI-driven development,
+            testing, staging and production workflows, with <b>LLM-based code review</b> and <b>AI security scanning</b>
+            wired into CI/CD on Docker, Kubernetes, Nginx and AWS/GCP.</p>
+        <div class="gauge">
+            <div class="gr"><div class="gtop"><span>Years coding</span><b>15+</b></div><div class="bar2"><i style="width:98%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>Years AI engineering</span><b>2+</b></div><div class="bar2"><i style="width:72%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>AI tools in daily use</span><b>8+</b></div><div class="bar2"><i style="width:85%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>Companies</span><b>5</b></div><div class="bar2"><i style="width:55%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>Projects shipped</span><b>100+</b></div><div class="bar2"><i style="width:100%"></i></div></div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <h2 class="section-title">
-                <i class="fas fa-user"></i>
-                About Me
-            </h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p class="lead">
-                        As a <strong>Software Architect</strong>, I design scalable and maintainable systems.
-                        With 15+ years of experience, I wear multiple hats: <strong>Full Stack Developer</strong>,
-                        <strong>DevOps Engineer</strong>, <strong>System Administrator</strong>, <strong>Cybersecurity Specialist</strong>,
-                        <strong>Software Advisor</strong>, and <strong>Technical Blog Writer</strong>.
-                    </p>
-                    <p>
-                        I'm deeply passionate about the <strong>Laravel Ecosystem</strong> - from <strong>Livewire</strong> and
-                        <strong>Inertia.js</strong> for reactive frontends, to <strong>Filament</strong> for admin panels,
-                        and <strong>Forge/Vapor</strong> for deployment. My frontend stack includes <strong>React</strong>,
-                        <strong>Alpine.js</strong>, and modern JavaScript. Backend expertise spans <strong>PHP</strong>,
-                        <strong>JavaScript</strong>, <strong>Go</strong>, <strong>SQL</strong>, and <strong>Bash</strong>.
-                    </p>
-                    <p>
-                        Beyond development, I manage infrastructure with <strong>Docker</strong>, <strong>Kubernetes</strong>,
-                        <strong>Nginx</strong>, and <strong>AWS/GCP</strong>. Security is integral to my work - implementing
-                        firewalls, proxies, and secure authentication systems. I share my knowledge through technical
-                        blog writing and software advisory roles.
-                    </p>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <i class="fas fa-code"></i>
-                            <h3 class="stat-number" data-target="15">0</h3>
-                            <p>Years Coding</p>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-briefcase"></i>
-                            <h3 class="stat-number" data-target="5">0</h3>
-                            <p>Companies</p>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-award"></i>
-                            <h3 class="stat-number" data-target="10">0</h3>
-                            <p>Certifications</p>
-                        </div>
-                        <div class="stat-card">
-                            <i class="fas fa-rocket"></i>
-                            <h3 class="stat-number" data-target="100">0</h3>
-                            <p>Projects+</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- AI ENGINEERING -->
+    <section class="appsrc" id="sec-ai" data-title="ai_engine" data-gl="✦" data-w="680" data-h="540">
+        <h2 class="t">AI Engineering</h2>
+        <p class="sub"><span class="pill">2+ years</span> building production AI — RAG, fine-tuning, multi-agent
+            orchestration &amp; an AI-driven software lifecycle. I build <em>with</em> LLMs, every day.</p>
+
+        <div class="pipe">
+            <div class="pstep"><div class="pn">PHASE_01</div><h4>Development</h4><p>LLM pair-programming &amp; agents writing, refactoring and documenting code.</p></div>
+            <div class="pstep"><div class="pn">PHASE_02</div><h4>Test</h4><p>AI-generated test suites, coverage analysis &amp; automated bug triage.</p></div>
+            <div class="pstep"><div class="pn">PHASE_03</div><h4>Staging</h4><p>LLM-based code review, AI security scanning &amp; release-note generation.</p></div>
+            <div class="pstep"><div class="pn">PHASE_04</div><h4>Production</h4><p>AI-assisted CI/CD, anomaly detection &amp; intelligent incident response.</p></div>
+        </div>
+
+        <div class="cards">
+            <div class="card"><div class="mid">MOD_01</div><h3>AI-Assisted Development</h3><p>I develop primarily through LLM-based CLIs and coding agents — driving features end-to-end from the terminal, from scaffolding to refactor to docs.</p><div class="chips"><span class="chip">Claude Code</span><span class="chip">OpenAI Codex</span><span class="chip">Gemini CLI</span><span class="chip">OpenCode</span><span class="chip">Commander.ai</span></div></div>
+            <div class="card"><div class="mid">MOD_02</div><h3>AI IDEs &amp; Agents</h3><p>Heavy daily use of agentic IDEs and in-editor assistants — running autonomous agents for multi-file edits, reviews and repo-wide tasks.</p><div class="chips"><span class="chip">Cursor</span><span class="chip">TRAE</span><span class="chip">VS Code AI</span><span class="chip">GitHub Copilot</span><span class="chip">Custom Agents</span></div></div>
+            <div class="card"><div class="mid">MOD_03</div><h3>RAG &amp; Vector Search</h3><p>Production RAG on PostgreSQL + pgvector — embeddings, chunking, hybrid &amp; semantic search, reranking and PageIndex document indexing.</p><div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">PageIndex</span><span class="chip">Hybrid Search</span><span class="chip">Reranking</span><span class="chip">Chunking</span></div></div>
+            <div class="card"><div class="mid">MOD_04</div><h3>LLM Engineering</h3><p>Orchestrating multiple LLMs on a single task, designing system prompts, building custom skills, and accounting for tokens &amp; cost across providers.</p><div class="chips"><span class="chip">Multi-LLM Orchestration</span><span class="chip">LLM APIs</span><span class="chip">Token Accounting</span><span class="chip">Cost Optimization</span><span class="chip">System Prompts</span><span class="chip">Skill Development</span></div></div>
+            <div class="card"><div class="mid">MOD_05</div><h3>Web-Search Agents &amp; Tools</h3><p>Building web-search skills and autonomous research agents that expand an LLM's source count, fetch live context and ground answers in citations.</p><div class="chips"><span class="chip">Web Search Skills</span><span class="chip">Research Agents</span><span class="chip">Tool Use</span><span class="chip">Function Calling</span><span class="chip">Source Grounding</span></div></div>
+            <div class="card"><div class="mid">MOD_06</div><h3>Fine-Tuning &amp; Training</h3><p>Designing fine-tuning and PageIndex-based training pipelines — dataset curation, evaluation harnesses and shaping model behavior to a domain.</p><div class="chips"><span class="chip">Fine-Tuning</span><span class="chip">PageIndex</span><span class="chip">Dataset Curation</span><span class="chip">Evaluation</span><span class="chip">TensorFlow</span><span class="chip">Python</span></div></div>
+            <div class="card"><div class="mid">MOD_07</div><h3>AI-Powered Security</h3><p>Using LLM agents for automated code review, code security analysis, vulnerability detection and secure-by-default remediation across the codebase.</p><div class="chips"><span class="chip">AI Code Review</span><span class="chip">Code Security</span><span class="chip">Vulnerability Scan</span><span class="chip">SAST</span><span class="chip">Secure Remediation</span></div></div>
+            <div class="card"><div class="mid">MOD_08</div><h3>Reliability &amp; Optimization</h3><p>Defining LLM boundaries &amp; determinism, adding guardrails, and optimizing performance, resource consumption and stability of AI systems in production.</p><div class="chips"><span class="chip">Guardrails</span><span class="chip">Determinism</span><span class="chip">Performance Tuning</span><span class="chip">Resource Optimization</span><span class="chip">Stability</span></div></div>
+            <div class="card"><div class="mid">MOD_09</div><h3>AI-Driven CI/CD</h3><p>LLM-based automation across dev, test, staging and production — generating pipelines, reviewing diffs and triaging failures automatically.</p><div class="chips"><span class="chip">GitHub Actions</span><span class="chip">AI Automation</span><span class="chip">GitOps</span><span class="chip">Auto Triage</span><span class="chip">Release Notes</span></div></div>
         </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills-section">
-        <div class="container">
-            <h2 class="section-title">
-                <i class="fas fa-cog"></i>
-                Technical Skills
-            </h2>
+    <!-- SKILLS -->
+    <section class="appsrc" id="sec-skills" data-title="skills.json" data-gl="⚙" data-w="640" data-h="540">
+        <h2 class="t">Technical Skills</h2>
+        <p class="sub">manifest — the full stack I build with</p>
 
-            <div class="skills-grid">
-                <!-- Languages -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-code"></i> Languages</h3>
-                    <div class="skill-bars">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>PHP</span>
-                                <span>95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="95"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>JavaScript</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="90"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>SQL</span>
-                                <span>88%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="88"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Go</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="75"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Bash Shell</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-progress="85"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="secn">AI &amp; LLM</div>
+        <div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">PageIndex</span><span class="chip">Fine-Tuning</span><span class="chip">Prompt Engineering</span><span class="chip">Multi-LLM</span><span class="chip">LLM APIs</span><span class="chip">Token Accounting</span><span class="chip">AI Agents</span><span class="chip">Web Search Agents</span><span class="chip">Function Calling</span><span class="chip">TensorFlow</span><span class="chip">Python</span></div>
 
-                <!-- Laravel Ecosystem -->
-                <div class="skill-category">
-                    <h3><i class="fab fa-laravel"></i> Laravel Ecosystem</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Laravel</span>
-                        <span class="skill-tag">Livewire</span>
-                        <span class="skill-tag">Inertia.js</span>
-                        <span class="skill-tag">Filament</span>
-                        <span class="skill-tag">Nova</span>
-                        <span class="skill-tag">Forge</span>
-                        <span class="skill-tag">Vapor</span>
-                        <span class="skill-tag">Horizon</span>
-                        <span class="skill-tag">Sanctum</span>
-                        <span class="skill-tag">Passport</span>
-                    </div>
-                </div>
+        <div class="secn">AI Dev Tools</div>
+        <div class="chips"><span class="chip">Claude Code</span><span class="chip">OpenAI Codex</span><span class="chip">Gemini CLI</span><span class="chip">OpenCode</span><span class="chip">Commander.ai</span><span class="chip">Cursor</span><span class="chip">TRAE</span><span class="chip">VS Code AI</span><span class="chip">GitHub Copilot</span></div>
 
-                <!-- Backend Frameworks -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-layer-group"></i> Backend Frameworks</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">CodeIgniter</span>
-                        <span class="skill-tag">Zend</span>
-                        <span class="skill-tag">Node.js</span>
-                        <span class="skill-tag">Express</span>
-                        <span class="skill-tag">Gin (Go)</span>
-                    </div>
-                </div>
+        <div class="secn">Languages</div>
+        <div class="gauge">
+            <div class="gr"><div class="gtop"><span>PHP</span><b>95%</b></div><div class="bar2"><i style="width:95%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>JavaScript</span><b>90%</b></div><div class="bar2"><i style="width:90%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>SQL</span><b>88%</b></div><div class="bar2"><i style="width:88%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>Bash Shell</span><b>85%</b></div><div class="bar2"><i style="width:85%"></i></div></div>
+            <div class="gr"><div class="gtop"><span>Go</span><b>75%</b></div><div class="bar2"><i style="width:75%"></i></div></div>
+        </div>
 
-                <!-- Frontend Technologies -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-paint-brush"></i> Frontend</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">React.js</span>
-                        <span class="skill-tag">Alpine.js</span>
-                        <span class="skill-tag">Inertia.js</span>
-                        <span class="skill-tag">Livewire</span>
-                        <span class="skill-tag">jQuery</span>
-                        <span class="skill-tag">Tailwind CSS</span>
-                        <span class="skill-tag">Bootstrap</span>
-                    </div>
-                </div>
+        <div class="secn">Laravel Ecosystem</div>
+        <div class="chips"><span class="chip">Laravel</span><span class="chip">Livewire</span><span class="chip">Inertia.js</span><span class="chip">Filament</span><span class="chip">Nova</span><span class="chip">Forge</span><span class="chip">Vapor</span><span class="chip">Horizon</span><span class="chip">Sanctum</span><span class="chip">Passport</span></div>
 
-                <!-- Databases & Data -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-database"></i> Databases & Data</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">MySQL</span>
-                        <span class="skill-tag">MariaDB</span>
-                        <span class="skill-tag">MongoDB</span>
-                        <span class="skill-tag">Redis</span>
-                        <span class="skill-tag">SQLite</span>
-                        <span class="skill-tag">Elasticsearch</span>
-                        <span class="skill-tag">Firebase</span>
-                        <span class="skill-tag">Supabase</span>
-                    </div>
-                </div>
+        <div class="secn">Backend Frameworks</div>
+        <div class="chips"><span class="chip">CodeIgniter</span><span class="chip">Zend</span><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Gin (Go)</span></div>
 
-                <!-- DevOps & Cloud -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-cloud"></i> DevOps & Cloud</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Docker</span>
-                        <span class="skill-tag">Podman</span>
-                        <span class="skill-tag">Kubernetes</span>
-                        <span class="skill-tag">Portainer</span>
-                        <span class="skill-tag">Coolify</span>
-                        <span class="skill-tag">Dokploy</span>
-                        <span class="skill-tag">Nginx</span>
-                        <span class="skill-tag">Traefik</span>
-                        <span class="skill-tag">FrankenPHP</span>
-                        <span class="skill-tag">Caddy</span>
-                        <span class="skill-tag">AWS</span>
-                        <span class="skill-tag">GCP</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">GitHub Actions</span>
-                        <span class="skill-tag">GitOps</span>
-                    </div>
-                </div>
+        <div class="secn">Frontend</div>
+        <div class="chips"><span class="chip">React.js</span><span class="chip">Alpine.js</span><span class="chip">Inertia.js</span><span class="chip">Livewire</span><span class="chip">jQuery</span><span class="chip">Tailwind CSS</span><span class="chip">Bootstrap</span></div>
 
-                <!-- APIs & Communication -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-exchange-alt"></i> APIs & Protocols</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">REST API</span>
-                        <span class="skill-tag">RESTful</span>
-                        <span class="skill-tag">GraphQL</span>
-                        <span class="skill-tag">WebSockets</span>
-                        <span class="skill-tag">SOAP</span>
-                        <span class="skill-tag">XML</span>
-                        <span class="skill-tag">JSON</span>
-                    </div>
-                </div>
+        <div class="secn">Databases &amp; Data</div>
+        <div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">MariaDB</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">SQLite</span><span class="chip">Elasticsearch</span><span class="chip">Firebase</span><span class="chip">Supabase</span></div>
 
-                <!-- Security -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-shield-alt"></i> Security</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">OAuth 2.0</span>
-                        <span class="skill-tag">JWT</span>
-                        <span class="skill-tag">Firewall</span>
-                        <span class="skill-tag">Proxy</span>
-                        <span class="skill-tag">Cloudflare</span>
-                    </div>
-                </div>
+        <div class="secn">DevOps &amp; Cloud</div>
+        <div class="chips"><span class="chip">Docker</span><span class="chip">Podman</span><span class="chip">Kubernetes</span><span class="chip">Portainer</span><span class="chip">Coolify</span><span class="chip">Dokploy</span><span class="chip">Nginx</span><span class="chip">Traefik</span><span class="chip">FrankenPHP</span><span class="chip">Caddy</span><span class="chip">AWS</span><span class="chip">GCP</span><span class="chip">Git</span><span class="chip">GitHub Actions</span><span class="chip">GitOps</span></div>
 
-                <!-- Message Queues -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-stream"></i> Message Queues</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Redis</span>
-                        <span class="skill-tag">RabbitMQ</span>
-                        <span class="skill-tag">Memcached</span>
-                    </div>
-                </div>
+        <div class="secn">APIs &amp; Protocols</div>
+        <div class="chips"><span class="chip">REST API</span><span class="chip">RESTful</span><span class="chip">GraphQL</span><span class="chip">WebSockets</span><span class="chip">SOAP</span><span class="chip">XML</span><span class="chip">JSON</span></div>
 
-                <!-- Systems & Servers -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-server"></i> Systems & Servers</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Debian</span>
-                        <span class="skill-tag">Ubuntu</span>
-                        <span class="skill-tag">CentOS</span>
-                        <span class="skill-tag">AlmaLinux</span>
-                        <span class="skill-tag">SSH</span>
-                        <span class="skill-tag">Linux</span>
-                    </div>
-                </div>
+        <div class="secn">Security</div>
+        <div class="chips"><span class="chip">OAuth 2.0</span><span class="chip">JWT</span><span class="chip">Firewall</span><span class="chip">Proxy</span><span class="chip">Cloudflare</span></div>
 
-                <!-- Notifications & Services -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-bell"></i> Notifications & Services</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">OneSignal</span>
-                        <span class="skill-tag">Firebase</span>
-                        <span class="skill-tag">Twilio</span>
-                        <span class="skill-tag">SendGrid</span>
-                        <span class="skill-tag">Telegram</span>
-                        <span class="skill-tag">Slack</span>
-                        <span class="skill-tag">Discord</span>
-                    </div>
-                </div>
+        <div class="secn">Message Queues</div>
+        <div class="chips"><span class="chip">Redis</span><span class="chip">RabbitMQ</span><span class="chip">Memcached</span></div>
 
-                <!-- Tools & IDEs -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-tools"></i> Tools & IDEs</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">PhpStorm</span>
-                        <span class="skill-tag">VS Code</span>
-                        <span class="skill-tag">Claude Code</span>
-                        <span class="skill-tag">GitHub Copilot</span>
-                        <span class="skill-tag">Gemini</span>
-                        <span class="skill-tag">Navicat</span>
-                        <span class="skill-tag">DBeaver</span>
-                        <span class="skill-tag">Composer</span>
-                        <span class="skill-tag">NPM</span>
-                        <span class="skill-tag">Yarn</span>
-                        <span class="skill-tag">AAPanel</span>
-                    </div>
-                </div>
+        <div class="secn">Systems &amp; Servers</div>
+        <div class="chips"><span class="chip">Debian</span><span class="chip">Ubuntu</span><span class="chip">CentOS</span><span class="chip">AlmaLinux</span><span class="chip">SSH</span><span class="chip">Linux</span></div>
 
-                <!-- Project Management -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-tasks"></i> Project Management</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Asana</span>
-                        <span class="skill-tag">Trello</span>
-                        <span class="skill-tag">ClickUp</span>
-                    </div>
-                </div>
+        <div class="secn">Notifications &amp; Services</div>
+        <div class="chips"><span class="chip">OneSignal</span><span class="chip">Firebase</span><span class="chip">Twilio</span><span class="chip">SendGrid</span><span class="chip">Telegram</span><span class="chip">Slack</span><span class="chip">Discord</span></div>
 
-                <!-- Design & Multimedia -->
-                <div class="skill-category">
-                    <h3><i class="fas fa-palette"></i> Design & Multimedia</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Canva</span>
-                        <span class="skill-tag">Photoshop</span>
-                        <span class="skill-tag">Premiere Pro</span>
-                        <span class="skill-tag">CapCut</span>
-                    </div>
-                </div>
-            </div>
+        <div class="secn">Tools &amp; IDEs</div>
+        <div class="chips"><span class="chip">PhpStorm</span><span class="chip">VS Code</span><span class="chip">Claude Code</span><span class="chip">GitHub Copilot</span><span class="chip">Gemini</span><span class="chip">Navicat</span><span class="chip">DBeaver</span><span class="chip">Composer</span><span class="chip">NPM</span><span class="chip">Yarn</span><span class="chip">AAPanel</span></div>
+
+        <div class="secn">Project Management</div>
+        <div class="chips"><span class="chip">Asana</span><span class="chip">Trello</span><span class="chip">ClickUp</span></div>
+
+        <div class="secn">Design &amp; Multimedia</div>
+        <div class="chips"><span class="chip">Canva</span><span class="chip">Photoshop</span><span class="chip">Premiere Pro</span><span class="chip">CapCut</span></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="appsrc" id="sec-career" data-title="career.log" data-gl="≣" data-w="600" data-h="520">
+        <h2 class="t">Work Experience</h2>
+        <p class="sub">tail -f career.log</p>
+        <div class="tl">
+            <div class="tlx"><div class="when">July 2022 — Present</div><h3>Full Stack Developer &amp; AI Engineer</h3><div class="co">USTEK RFID Elektronik Yazılım A.Ş.</div>
+                <ul><li>Developing with Zend Framework, Laravel, NodeJS and ExpressJS</li><li>RFID technologies for textile tracking, inventory management and HR</li><li>Building RAG pipelines on PostgreSQL + pgvector and integrating LLM features</li><li>AI-driven development, LLM-based code review and AI security scanning in CI/CD</li></ul>
+                <div class="chips"><span class="chip">Laravel</span><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">LLM APIs</span><span class="chip">PostgreSQL</span></div></div>
+            <div class="tlx"><div class="when">Apr 2022 — Present</div><h3>Software Advisor &amp; AI Engineer</h3><div class="co">CatchPad Smart Training Platform</div>
+                <ul><li>Developing with Laravel, Python, TensorFlow, NodeJS and Alpine</li><li>AI-supported exercise technologies and LLM-powered features</li><li>Fine-tuning &amp; PageIndex training workflows and multi-LLM orchestration</li><li>Web-search agents and custom skills with token &amp; cost optimization</li></ul>
+                <div class="chips"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">Fine-Tuning</span><span class="chip">Multi-LLM</span><span class="chip">AI Agents</span></div></div>
+            <div class="tlx"><div class="when">March 2021 — July 2022</div><h3>Full Stack Developer</h3><div class="co">Gourmeturca.com</div>
+                <ul><li>Cargo company integrations (DHL, FedEx, UPS)</li><li>API integrations to Oracle Netsuite ERP</li><li>Reward and referral programs; React Native webview apps</li><li>Stock system live update and export service</li></ul>
+                <div class="chips"><span class="chip">Laravel</span><span class="chip">React Native</span><span class="chip">Oracle Netsuite</span><span class="chip">REST API</span></div></div>
+            <div class="tlx"><div class="when">May 2020 — Jan 2021</div><h3>Full Stack Developer</h3><div class="co">Sadıkoğulları Teknoloji İletişim Yazılım</div>
+                <ul><li>Sentiment analysis applications for schools</li><li>Docker environment for server installation</li><li>Corporate web solutions and e-commerces</li></ul>
+                <div class="chips"><span class="chip">PHP</span><span class="chip">Docker</span><span class="chip">E-commerce</span></div></div>
+            <div class="tlx"><div class="when">Jan 2011 — Aug 2019</div><h3>Full Stack Developer / Freelance</h3><div class="co">Self-Employed</div>
+                <ul><li>Corporate websites and e-commerce sites</li><li>Templates and plugins for WordPress, Opencart, Jitsi, Drupal</li><li>Server setup, DNS, network configuration and virtualization</li></ul>
+                <div class="chips"><span class="chip">PHP</span><span class="chip">WordPress</span><span class="chip">Server Admin</span></div></div>
         </div>
     </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="experience-section">
-        <div class="container">
-            <h2 class="section-title">
-                <i class="fas fa-briefcase"></i>
-                Work Experience
-            </h2>
-
-            <div class="timeline">
-                <div class="timeline-item" data-aos="fade-up">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">July 2022 - Present</div>
-                    <div class="timeline-content">
-                        <h3>Full Stack Developer</h3>
-                        <h4>USTEK RFID ELEKTRONIK YAZILIM A.Ş.</h4>
-                        <ul>
-                            <li>Developing with Zend Framework, Laravel, NodeJS, and ExpressJS</li>
-                            <li>Producing RFID technologies for textile tracking, inventory management, and HR technologies</li>
-                            <li>Using PostgreSQL, Debian, Nginx, and PHP 8.x</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span>Laravel</span>
-                            <span>NodeJS</span>
-                            <span>PostgreSQL</span>
-                            <span>Nginx</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">Apr 2022 - Present</div>
-                    <div class="timeline-content">
-                        <h3>Software Advisor</h3>
-                        <h4>CatchPad Smart Training Platform</h4>
-                        <ul>
-                            <li>Developing with Laravel, Python, TensorFlow, NodeJS and Alpine</li>
-                            <li>Producing AI-supported exercise technologies</li>
-                            <li>Developing detailed statistics, analyses and reports</li>
-                            <li>Building compatible technologies across web, mobile and hardware layers</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span>Laravel</span>
-                            <span>Python</span>
-                            <span>TensorFlow</span>
-                            <span>AI/ML</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">March 2021 - July 2022</div>
-                    <div class="timeline-content">
-                        <h3>Full Stack Developer</h3>
-                        <h4>Gourmeturca.com</h4>
-                        <ul>
-                            <li>Developed cargo company integrations (DHL, FedEx, UPS)</li>
-                            <li>API integrations to Oracle Netsuite ERP system</li>
-                            <li>Designed and developed reward and referral programs</li>
-                            <li>Developed React Native Webview applications for e-commerce</li>
-                            <li>Stock system live update and export service</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span>Laravel</span>
-                            <span>React Native</span>
-                            <span>Oracle Netsuite</span>
-                            <span>REST API</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">May 2020 - Jan 2021</div>
-                    <div class="timeline-content">
-                        <h3>Full Stack Developer</h3>
-                        <h4>Sadıkoğulları Teknoloji İletişim Yazılım Tic. Ltd. Şti.</h4>
-                        <ul>
-                            <li>Developed sentiment analysis applications for schools</li>
-                            <li>Implemented Docker environment for server installation</li>
-                            <li>Developed corporate web solutions and e-commerces</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span>PHP</span>
-                            <span>Docker</span>
-                            <span>E-commerce</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-up">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-date">Jan 2011 - Aug 2019</div>
-                    <div class="timeline-content">
-                        <h3>Full Stack Developer / Freelance</h3>
-                        <h4>Self-Employed</h4>
-                        <ul>
-                            <li>Developed corporate websites and e-commerce sites</li>
-                            <li>Created templates and plugins for WordPress, Opencart, Jitsi, Drupal</li>
-                            <li>Server setup, DNS, network configuration, and virtualization</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span>PHP</span>
-                            <span>WordPress</span>
-                            <span>Server Admin</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- PROJECTS -->
+    <section class="appsrc" id="sec-projects" data-title="Projects" data-gl="▤" data-w="680" data-h="560">
+        <h2 class="t">Featured Projects</h2>
+        <p class="sub">~/projects · ls -la</p>
+        <div class="cards">
+            <div class="card"><div class="mid">RAG · 2024–Present</div><h3>RAG Knowledge Engine</h3><p>Retrieval-Augmented Generation over private docs using PostgreSQL + pgvector, embeddings, hybrid search, reranking and PageIndex — grounded, cited answers from multiple LLMs.</p><div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">LLM</span></div></div>
+            <div class="card"><div class="mid">Multi-LLM · 2024–Present</div><h3>Multi-Agent AI Toolkit</h3><p>LLM orchestration layer that routes tasks across multiple models with custom skills, web-search agents, token accounting and cost optimization — powering an AI-driven workflow.</p><div class="chips"><span class="chip">Multi-LLM</span><span class="chip">AI Agents</span><span class="chip">Web Search</span><span class="chip">Token Mgmt</span></div></div>
+            <div class="card"><div class="mid">RFID · 2022–Present</div><h3>RFID Tracking System</h3><p>Enterprise RFID solution for textile tracking, inventory management and personnel identification with HR integration capabilities.</p><div class="chips"><span class="chip">Laravel</span><span class="chip">PostgreSQL</span><span class="chip">RFID</span><span class="chip">IoT</span></div></div>
+            <div class="card"><div class="mid">AI/ML · 2022–Present</div><h3>AI Training Platform</h3><p>Smart training platform with AI-supported exercises, detailed analytics and cross-platform compatibility (web, mobile, hardware).</p><div class="chips"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">Laravel</span><span class="chip">AI/ML</span></div></div>
+            <div class="card"><div class="mid">Web Tools · 2024–Present</div><h3>DevTools Platform</h3><p>Comprehensive developer tools platform — formatters, converters, generators and productivity utilities.</p><div class="chips"><span class="chip">Web Tools</span><span class="chip">Utilities</span></div><div class="links"><a href="https://devtools.harungecit.dev/" target="_blank" rel="noopener">Visit Project ↗</a></div></div>
+            <div class="card"><div class="mid">TypeScript · OSS</div><h3>Smart Changelists</h3><p>VS Code extension bringing JetBrains-style changelist functionality — save file snapshots, manage versions and selectively commit changes.</p><div class="chips"><span class="chip">TypeScript</span><span class="chip">VS Code API</span><span class="chip">Git</span></div><div class="links"><a href="https://github.com/harungecit/smart-changelists" target="_blank" rel="noopener">GitHub</a><a href="https://marketplace.visualstudio.com/items?itemName=harungecit.smart-changelists" target="_blank" rel="noopener">VS Marketplace</a><a href="https://open-vsx.org/extension/harungecit/smart-changelists" target="_blank" rel="noopener">OpenVSX</a></div></div>
+            <div class="card"><div class="mid">PHP · OSS</div><h3>PHP Email Validator</h3><p>Comprehensive PHP library for email validation — format checking, disposable email detection (4,900+ domains) and MX record verification.</p><div class="chips"><span class="chip">PHP</span><span class="chip">Composer</span><span class="chip">DNS/MX</span></div><div class="links"><a href="https://github.com/harungecit/php-email-validator" target="_blank" rel="noopener">GitHub</a><a href="https://packagist.org/packages/harungecit/php-email-validator" target="_blank" rel="noopener">Packagist</a></div></div>
+            <div class="card"><div class="mid">Go · OSS</div><h3>Vigilon</h3><p>Multi-platform service monitoring and alerting system with real-time status updates, Telegram notifications and role-based access control.</p><div class="chips"><span class="chip">Go</span><span class="chip">SQLite</span><span class="chip">Docker</span><span class="chip">SSE</span></div><div class="links"><a href="https://github.com/harungecit/vigilon" target="_blank" rel="noopener">View on GitHub</a></div></div>
+            <div class="card"><div class="mid">JavaScript · OSS</div><h3>UBL Viewer</h3><p>Browser extension to view e-Invoice, e-Waybill and UBL XML documents. Supports Turkish GİB, UBL 2.1, Peppol BIS and EN16931 formats.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Extension</span><span class="chip">XSLT</span></div><div class="links"><a href="https://chromewebstore.google.com/detail/mccmnolbachccdccdcidgkoligcalgpm" target="_blank" rel="noopener">Chrome</a><a href="https://addons.mozilla.org/en-US/firefox/addon/ubl-viewer/" target="_blank" rel="noopener">Firefox</a></div></div>
+            <div class="card"><div class="mid">E-commerce · 2021–2022</div><h3>E-commerce Platform</h3><p>Full-featured e-commerce platform with cargo integrations (DHL, FedEx, UPS), stock management, barcode system and Oracle Netsuite ERP integration.</p><div class="chips"><span class="chip">Laravel</span><span class="chip">React Native</span><span class="chip">Oracle API</span></div></div>
+            <div class="card"><div class="mid">PWA · April 2019</div><h3>BRAISLATOR</h3><p>Instant translation of Turkish texts into Braille for visually impaired individuals, with real-time speech-to-text translation support.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Speech-to-Text</span><span class="chip">Braille</span><span class="chip">PWA</span></div></div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects-section">
-        <div class="container">
-            <h2 class="section-title">
-                <i class="fas fa-folder-open"></i>
-                Featured Projects
-            </h2>
+    <!-- CONTACT -->
+    <section class="appsrc" id="sec-contact" data-title="mail" data-gl="✉" data-w="600" data-h="560">
+        <h2 class="t">Get In Touch</h2>
+        <p class="sub">Feel free to reach out for collaborations or just a friendly chat.</p>
+        <div class="conn">
+            <div class="cr"><span class="k">location</span><span>Istanbul, Türkiye</span></div>
+            <div class="cr"><span class="k">email</span><a href="mailto:info@harungecit.com">info@harungecit.com</a></div>
+            <div class="cr"><span class="k">whatsapp</span><a href="https://wa.me/908503033954" target="_blank" rel="noopener">0850 303 39 54</a></div>
+            <div class="cr"><span class="k">website</span><a href="https://harungecit.com" target="_blank" rel="noopener">harungecit.com</a></div>
         </div>
 
-        <div class="swiper projects-swiper">
-                <div class="swiper-wrapper">
-                    <!-- BRAISLATOR -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-universal-access"></i>
-                            </div>
-                            <h3>BRAISLATOR</h3>
-                            <p>An innovative application for instant translation of Turkish texts into Braille for visually impaired individuals. Features real-time speech-to-text translation support.</p>
-                            <div class="project-tech">
-                                <span>JavaScript</span>
-                                <span>Speech-to-Text</span>
-                                <span>Braille</span>
-                                <span>PWA</span>
-                            </div>
-                            <div class="project-year">April 2019</div>
-                        </div>
-                    </div>
+        <form class="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact" />
+            <p class="hp"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+            <div class="fg"><label for="name">Name</label><input type="text" id="name" name="name" required></div>
+            <div class="fg"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
+            <div class="fg"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" placeholder="+90 5XX XXX XX XX"></div>
+            <div class="fg"><label for="topic">Topic</label><select id="topic" name="topic" required>
+                <option value="">Select a topic…</option>
+                <option value="project">Project Collaboration</option>
+                <option value="job">Job Opportunity</option>
+                <option value="consultation">Consultation</option>
+                <option value="support">Technical Support</option>
+                <option value="other">Other</option>
+            </select></div>
+            <div class="fg"><label for="message">Message</label><textarea id="message" name="message" rows="3" required></textarea></div>
+            <label class="checkbox-label"><input type="checkbox" name="consent" required>
+                <span>I agree to the processing of my personal data per KVKK/GDPR. <a href="#" data-open="privacy">Privacy Policy</a></span></label>
+            <button type="submit" class="btn">▸ Send Message</button>
+        </form>
 
-                    <!-- E-commerce Platform -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <h3>E-commerce Platform</h3>
-                            <p>Full-featured e-commerce platform with cargo integrations (DHL, FedEx, UPS), stock management, barcode system, and Oracle Netsuite ERP integration.</p>
-                            <div class="project-tech">
-                                <span>Laravel</span>
-                                <span>React Native</span>
-                                <span>Oracle API</span>
-                            </div>
-                            <div class="project-year">2021-2022</div>
-                        </div>
-                    </div>
-
-                    <!-- RFID Tracking -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-tag"></i>
-                            </div>
-                            <h3>RFID Tracking System</h3>
-                            <p>Enterprise RFID solution for textile tracking, inventory management, and personnel identification with HR integration capabilities.</p>
-                            <div class="project-tech">
-                                <span>Laravel</span>
-                                <span>PostgreSQL</span>
-                                <span>RFID</span>
-                                <span>IoT</span>
-                            </div>
-                            <div class="project-year">2022-Present</div>
-                        </div>
-                    </div>
-
-                    <!-- AI Training Platform -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-brain"></i>
-                            </div>
-                            <h3>AI Training Platform</h3>
-                            <p>Smart training platform with AI-supported exercises, detailed analytics, and cross-platform compatibility (web, mobile, hardware).</p>
-                            <div class="project-tech">
-                                <span>Python</span>
-                                <span>TensorFlow</span>
-                                <span>Laravel</span>
-                                <span>AI/ML</span>
-                            </div>
-                            <div class="project-year">2022-Present</div>
-                        </div>
-                    </div>
-
-                    <!-- DevTools Platform -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-tools"></i>
-                            </div>
-                            <h3>DevTools Platform</h3>
-                            <p>Comprehensive developer tools platform featuring various utilities including code formatters, converters, generators, and productivity tools.</p>
-                            <div class="project-tech">
-                                <span>Web Tools</span>
-                                <span>Utilities</span>
-                            </div>
-                            <div class="project-year">2024-Present</div>
-                            <a href="https://devtools.harungecit.dev/" target="_blank" class="project-link">
-                                <i class="fas fa-external-link-alt"></i> Visit Project
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Smart Changelists -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-code-branch"></i>
-                            </div>
-                            <h3>Smart Changelists</h3>
-                            <p>VS Code extension that brings JetBrains-style changelist functionality. Save file snapshots, manage versions, and selectively commit changes.</p>
-                            <div class="project-tech">
-                                <span>TypeScript</span>
-                                <span>VS Code API</span>
-                                <span>Git</span>
-                            </div>
-                            <div class="project-year">Open Source</div>
-                            <div class="project-links">
-                                <a href="https://github.com/harungecit/smart-changelists" target="_blank" class="project-link"><i class="fab fa-github"></i> GitHub</a>
-                                <a href="https://marketplace.visualstudio.com/items?itemName=harungecit.smart-changelists" target="_blank" class="project-link"><i class="fas fa-store"></i> VS Marketplace</a>
-                                <a href="https://open-vsx.org/extension/harungecit/smart-changelists" target="_blank" class="project-link"><i class="fas fa-cube"></i> OpenVSX</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PHP Email Validator -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-at"></i>
-                            </div>
-                            <h3>PHP Email Validator</h3>
-                            <p>Comprehensive PHP library for email validation with format checking, disposable email detection (4,900+ domains), and MX record verification.</p>
-                            <div class="project-tech">
-                                <span>PHP</span>
-                                <span>Composer</span>
-                                <span>DNS/MX</span>
-                            </div>
-                            <div class="project-year">Open Source</div>
-                            <div class="project-links">
-                                <a href="https://github.com/harungecit/php-email-validator" target="_blank" class="project-link"><i class="fab fa-github"></i> GitHub</a>
-                                <a href="https://packagist.org/packages/harungecit/php-email-validator" target="_blank" class="project-link"><i class="fas fa-box"></i> Packagist</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Vigilon -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-satellite-dish"></i>
-                            </div>
-                            <h3>Vigilon</h3>
-                            <p>Multi-platform service monitoring and alerting system with real-time status updates, Telegram notifications, and role-based access control.</p>
-                            <div class="project-tech">
-                                <span>Go</span>
-                                <span>SQLite</span>
-                                <span>Docker</span>
-                                <span>SSE</span>
-                            </div>
-                            <div class="project-year">Open Source</div>
-                            <a href="https://github.com/harungecit/vigilon" target="_blank" class="project-link">
-                                <i class="fab fa-github"></i> View on GitHub
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- UBL Viewer -->
-                    <div class="swiper-slide">
-                        <div class="project-card">
-                            <div class="project-header">
-                                <i class="fas fa-file-invoice"></i>
-                            </div>
-                            <h3>UBL Viewer</h3>
-                            <p>Browser extension to view e-Invoice, e-Waybill and UBL XML documents. Supports Turkish GİB, UBL 2.1, Peppol BIS, and EN16931 formats.</p>
-                            <div class="project-tech">
-                                <span>JavaScript</span>
-                                <span>Extension</span>
-                                <span>XSLT</span>
-                            </div>
-                            <div class="project-year">Open Source</div>
-                            <div class="project-links">
-                                <a href="https://chromewebstore.google.com/detail/mccmnolbachccdccdcidgkoligcalgpm" target="_blank" class="project-link"><i class="fab fa-chrome"></i> Chrome</a>
-                                <a href="https://addons.mozilla.org/en-US/firefox/addon/ubl-viewer/" target="_blank" class="project-link"><i class="fab fa-firefox-browser"></i> Firefox</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-
-                <!-- Pagination -->
-                <div class="swiper-pagination"></div>
-            </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <h2 class="section-title">
-                <i class="fas fa-envelope"></i>
-                Get In Touch
-            </h2>
-            <p class="section-subtitle">Feel free to reach out for collaborations or just a friendly chat!</p>
-
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-card">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h3>Location</h3>
-                        <p>Istanbul, Türkiye</p>
-                    </div>
-                    <div class="contact-card">
-                        <i class="fas fa-envelope"></i>
-                        <h3>Email</h3>
-                        <a href="mailto:info@harungecit.com">info@harungecit.com</a>
-                    </div>
-                    <div class="contact-card">
-                        <i class="fab fa-whatsapp"></i>
-                        <h3>WhatsApp</h3>
-                        <a href="https://wa.me/908503033954" target="_blank">0850 303 39 54</a>
-                    </div>
-                    <div class="contact-card">
-                        <i class="fas fa-globe"></i>
-                        <h3>Website</h3>
-                        <a href="https://harungecit.com" target="_blank">harungecit.com</a>
-                    </div>
-                </div>
-
-                <div class="contact-form-wrapper">
-                    <form class="contact-form" id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
-                        <!-- Hidden fields for Netlify Forms -->
-                        <input type="hidden" name="form-name" value="contact" />
-                        <p style="display: none;">
-                            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-                        </p>
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                            <span class="field-error" id="email-error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+90 5XX XXX XX XX">
-                            <span class="field-error" id="phone-error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="topic">Topic</label>
-                            <select id="topic" name="topic" required>
-                                <option value="">Select a topic...</option>
-                                <option value="project">Project Collaboration</option>
-                                <option value="job">Job Opportunity</option>
-                                <option value="consultation">Consultation</option>
-                                <option value="support">Technical Support</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="3" required></textarea>
-                        </div>
-                        <div class="form-group checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="consent" name="consent" required>
-                                <span>I agree to the processing of my personal data in accordance with KVKK/GDPR regulations. <a href="#" class="privacy-link" id="privacy-link">Privacy Policy</a></span>
-                            </label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i>
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="social-links-large">
-                <a href="https://github.com/harungecit" target="_blank" rel="noopener" class="social-card">
-                    <i class="fab fa-github"></i>
-                    <span>GitHub</span>
-                </a>
-                <a href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener" class="social-card">
-                    <i class="fab fa-linkedin"></i>
-                    <span>LinkedIn</span>
-                </a>
-                <a href="https://x.com/harungecit_" target="_blank" rel="noopener" class="social-card">
-                    <i class="fab fa-x-twitter"></i>
-                    <span>X</span>
-                </a>
-                <a href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener" class="social-card">
-                    <i class="fab fa-instagram"></i>
-                    <span>Instagram</span>
-                </a>
-                <a href="https://echo.harungecit.dev/" target="_blank" rel="noopener" class="social-card">
-                    <i class="fas fa-blog"></i>
-                    <span>Blog</span>
-                </a>
-                <a href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit" target="_blank" rel="noopener" class="social-card">
-                    <i class="fas fa-download"></i>
-                    <span>Download CV</span>
-                </a>
-                <a href="https://bio.link/harungecit" target="_blank" rel="noopener" class="social-card">
-                    <i class="fas fa-link"></i>
-                    <span>All Links</span>
-                </a>
-            </div>
+        <div class="secn">Channels</div>
+        <div class="socs">
+            <a class="soc" href="https://github.com/harungecit" target="_blank" rel="noopener">GitHub</a>
+            <a class="soc" href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="soc" href="https://x.com/harungecit_" target="_blank" rel="noopener">X</a>
+            <a class="soc" href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener">Instagram</a>
+            <a class="soc" href="https://echo.harungecit.dev/" target="_blank" rel="noopener">Blog</a>
+            <a class="soc" href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit" target="_blank" rel="noopener">Download CV</a>
+            <a class="soc" href="https://bio.link/harungecit" target="_blank" rel="noopener">All Links</a>
         </div>
     </section>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <!-- PRIVACY -->
+    <section class="appsrc" id="sec-privacy" data-title="privacy.txt" data-gl="§" data-w="560" data-h="500">
+        <h2 class="t">Privacy Policy</h2>
+        <p class="sub">KVKK / GDPR Compliance · Gizlilik Politikası</p>
+        <p class="bd">This website collects personal data through the contact form for the purpose of responding to your inquiries. The data collected includes name, email address, phone number (optional), message content, and IP/location data (for security).</p>
+        <div class="secn">Data Usage</div>
+        <ul class="plain"><li>Responding to your inquiries</li><li>Communication regarding collaborations or job opportunities</li><li>Security and fraud prevention</li></ul>
+        <div class="secn">Data Retention</div>
+        <p class="bd">Your data is retained only as long as necessary to fulfill the purposes above, or as required by law.</p>
+        <div class="secn">Your Rights (KVKK &amp; GDPR)</div>
+        <ul class="plain"><li>Access your personal data</li><li>Request correction of inaccurate data</li><li>Request deletion of your data</li><li>Object to processing</li><li>Data portability</li></ul>
+        <div class="secn">Contact</div>
+        <p class="bd">For privacy-related inquiries: <a href="mailto:info@harungecit.com">info@harungecit.com</a></p>
+    </section>
 
-    <!-- Privacy Policy Modal -->
-    <div id="privacy-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Privacy Policy / Gizlilik Politikası</h3>
-                <button class="modal-close" id="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <h4>KVKK / GDPR Compliance</h4>
-                <p>This website collects personal data through the contact form for the purpose of responding to your inquiries. The data collected includes:</p>
-                <ul>
-                    <li>Name</li>
-                    <li>Email address</li>
-                    <li>Phone number (optional)</li>
-                    <li>Message content</li>
-                    <li>IP address and location data (for security purposes)</li>
-                </ul>
-
-                <h4>Data Usage</h4>
-                <p>Your personal data will be used solely for:</p>
-                <ul>
-                    <li>Responding to your inquiries</li>
-                    <li>Communication regarding potential collaborations or job opportunities</li>
-                    <li>Security and fraud prevention</li>
-                </ul>
-
-                <h4>Data Retention</h4>
-                <p>Your data will be retained for as long as necessary to fulfill the purposes outlined above, or as required by law.</p>
-
-                <h4>Your Rights</h4>
-                <p>Under KVKK (Turkish Personal Data Protection Law) and GDPR, you have the right to:</p>
-                <ul>
-                    <li>Access your personal data</li>
-                    <li>Request correction of inaccurate data</li>
-                    <li>Request deletion of your data</li>
-                    <li>Object to processing of your data</li>
-                    <li>Data portability</li>
-                </ul>
-
-                <h4>Contact</h4>
-                <p>For any privacy-related inquiries, please contact: <a href="mailto:info@harungecit.com">info@harungecit.com</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; <span id="current-year"></span> Harun Geçit. All rights reserved.</p>
-            <p class="footer-version">Version 15.4</p>
-        </div>
+    <footer class="fb-footer">
+        <p>&copy; <span id="year">2026</span> Harun Geçit. All rights reserved.</p>
+        <p>HarunOS v18.0 — phosphor build</p>
     </footer>
+</main>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="assets/js/script.js?v=15.4"></script>
-    <script src="assets/js/terminal.js?v=15.4"></script>
+<!-- =======================================================================
+     HarunOS shell (shown only when JS is available)
+     ======================================================================= -->
+<div id="boot" aria-hidden="true">
+    <div class="boot-logo">Harun<span>OS</span></div>
+    <div class="boot-log" id="bootlog"></div>
+    <div class="boot-bar"><i id="bootbar"></i></div>
+    <div class="boot-skip">tap anywhere to skip ▸</div>
+</div>
+
+<div id="desktop" aria-hidden="true">
+    <div class="wordmark">HarunOS</div>
+    <div class="botlayer" id="botlayer"></div>
+    <div class="icons" id="icons">
+        <button class="icon" data-app="about"><span class="gl">≡</span><span class="nm">about.txt</span></button>
+        <button class="icon" data-app="ai"><span class="gl">✦</span><span class="nm">ai_engine</span></button>
+        <button class="icon" data-app="projects"><span class="gl">▤</span><span class="nm">Projects</span></button>
+        <button class="icon" data-app="skills"><span class="gl">⚙</span><span class="nm">skills.json</span></button>
+        <button class="icon" data-app="career"><span class="gl">≣</span><span class="nm">career.log</span></button>
+        <button class="icon" data-app="terminal"><span class="gl shell">&gt;_</span><span class="nm">shell</span></button>
+        <button class="icon" data-app="contact"><span class="gl">✉</span><span class="nm">mail</span></button>
+        <button class="icon" data-href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit"><span class="gl">⤓</span><span class="nm">resume.pdf</span></button>
+    </div>
+    <div class="hintbar">double-click / tap an icon · drag windows · chase the bots</div>
+</div>
+
+<div id="taskbar" aria-hidden="true">
+    <button class="start-btn" id="startbtn"><span class="gl">≡</span><span class="lbl">start</span></button>
+    <div class="tasks" id="tasks"></div>
+    <div class="tray">
+        <button class="tbtn" id="soundbtn" title="Toggle sound" aria-label="Toggle sound">♪</button>
+        <span class="stat"><span class="d"></span>available</span>
+        <span class="clock" id="clock">00:00</span>
+    </div>
+</div>
+
+<nav id="startmenu" aria-hidden="true">
+    <div class="sm-head"><div class="nm">Harun Geçit</div><div class="rl">Full Stack &amp; AI Engineer</div></div>
+    <div class="sm-list">
+        <button class="sm-item" data-app="about"><span class="gl">≡</span> about.txt</button>
+        <button class="sm-item" data-app="ai"><span class="gl">✦</span> ai_engine</button>
+        <button class="sm-item" data-app="projects"><span class="gl">▤</span> Projects</button>
+        <button class="sm-item" data-app="skills"><span class="gl">⚙</span> skills.json</button>
+        <button class="sm-item" data-app="career"><span class="gl">≣</span> career.log</button>
+        <button class="sm-item" data-app="terminal"><span class="gl shell">&gt;_</span> shell</button>
+        <button class="sm-item" data-app="contact"><span class="gl">✉</span> mail</button>
+        <button class="sm-item" data-app="privacy"><span class="gl">§</span> privacy.txt</button>
+        <button class="sm-item" data-action="lock" id="lockbtn"><span class="gl gl-lock"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> lock</button>
+        <button class="sm-item power" id="powerbtn"><span class="gl">⏻</span> shut down</button>
+    </div>
+</nav>
+
+<div id="shutdown" aria-hidden="true">
+    <div class="msg">It's now safe to turn off<br>your portfolio.</div>
+    <button class="pw" id="poweron">▸ power on</button>
+</div>
+
+<div id="lockscreen" aria-hidden="true">
+    <canvas id="ss-canvas"></canvas>
+    <div class="lock-ui">
+        <div class="lock-clock" id="lockclock">00:00</div>
+        <div class="lock-date" id="lockdate"></div>
+        <div class="lock-name">Harun Geçit</div>
+        <div class="lock-hint">click or press any key to unlock</div>
+    </div>
+</div>
+
+<audio id="ui-sound" src="assets/sounds/button.mp3" preload="auto"></audio>
+
+<script src="assets/js/harunos.js?v=18.0"></script>
 </body>
 </html>
