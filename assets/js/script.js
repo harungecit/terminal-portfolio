@@ -1,47 +1,133 @@
 // ================================
-// Matrix Rain Background Effect
+// Neural Network Particle Background
 // ================================
-const canvas = document.getElementById('matrix-canvas');
-const ctx = canvas.getContext('2d');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// Reusable neural-network renderer (used for page background + screensaver)
+function createNeuralNetwork(canvasEl, options = {}) {
+    const ctx = canvasEl.getContext('2d');
+    const density = options.density || 24000;   // px² per particle (higher = sparser)
+    const linkDist = options.linkDist || 150;
+    const maxParticles = options.maxParticles || 90;
+    const pointer = { x: null, y: null };
+    let particles = [];
+    let rafId = null;
 
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/~';
-const charArray = chars.split('');
-
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-
-const drops = [];
-for (let i = 0; i < columns; i++) {
-    drops[i] = Math.random() * -100;
-}
-
-function drawMatrix() {
-    ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#00ff41';
-    ctx.font = fontSize + 'px monospace';
-
-    for (let i = 0; i < drops.length; i++) {
-        const text = charArray[Math.floor(Math.random() * charArray.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-        drops[i]++;
+    function resize() {
+        canvasEl.width = window.innerWidth;
+        canvasEl.height = window.innerHeight;
+        init();
     }
+
+    function init() {
+        const count = Math.min(maxParticles, Math.floor((canvasEl.width * canvasEl.height) / density));
+        particles = Array.from({ length: count }, () => ({
+            x: Math.random() * canvasEl.width,
+            y: Math.random() * canvasEl.height,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.5 + 0.6,
+            // violet or cyan node
+            color: Math.random() > 0.5 ? '139, 92, 246' : '34, 211, 238'
+        }));
+    }
+
+    function drawFrame() {
+        ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+        // Move particles
+        for (const p of particles) {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvasEl.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvasEl.height) p.vy *= -1;
+        }
+
+        // Connection lines
+        for (let i = 0; i < particles.length; i++) {
+            const a = particles[i];
+            for (let j = i + 1; j < particles.length; j++) {
+                const b = particles[j];
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < linkDist) {
+                    const alpha = (1 - dist / linkDist) * 0.14;
+                    ctx.strokeStyle = `rgba(139, 92, 246, ${alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+            }
+
+            // Pointer attraction lines — the network "reaches" toward the cursor
+            if (pointer.x !== null) {
+                const dx = a.x - pointer.x;
+                const dy = a.y - pointer.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < linkDist * 1.2) {
+                    const alpha = (1 - dist / (linkDist * 1.2)) * 0.22;
+                    ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(pointer.x, pointer.y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Nodes
+        for (const p of particles) {
+            ctx.fillStyle = `rgba(${p.color}, 0.55)`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function loop() {
+        drawFrame();
+        rafId = requestAnimationFrame(loop);
+    }
+
+    return {
+        start() {
+            resize();
+            if (prefersReducedMotion) {
+                drawFrame(); // static frame only
+            } else {
+                loop();
+            }
+        },
+        stop() {
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = null;
+        },
+        resize,
+        setPointer(x, y) {
+            pointer.x = x;
+            pointer.y = y;
+        }
+    };
 }
 
-setInterval(drawMatrix, 33);
+const bgCanvas = document.getElementById('matrix-canvas');
+const bgNetwork = createNeuralNetwork(bgCanvas);
+bgNetwork.start();
 
-// Resize canvas on window resize
+document.addEventListener('mousemove', (e) => {
+    bgNetwork.setPointer(e.clientX, e.clientY);
+});
+
+document.addEventListener('mouseleave', () => {
+    bgNetwork.setPointer(null, null);
+});
+
 window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    bgNetwork.resize();
 });
 
 // ================================
@@ -49,13 +135,14 @@ window.addEventListener('resize', () => {
 // ================================
 const typedTextElement = document.getElementById('typed-text');
 const textArray = [
-    'Software Architect',
-    'Laravel Ecosystem Expert',
     'Full Stack Developer',
+    'AI Engineer',
+    'LLM & RAG Developer',
+    'Prompt Engineer',
+    'Multi-Agent Orchestrator',
+    'Laravel Ecosystem Expert',
     'DevOps Engineer',
-    'System Administrator',
-    'Cybersecurity Specialist',
-    'Technical Blog Writer'
+    'Cybersecurity Specialist'
 ];
 let textArrayIndex = 0;
 let charIndex = 0;
@@ -118,7 +205,7 @@ window.addEventListener('scroll', () => {
     navLinks.forEach(link => {
         link.style.color = '';
         if (link.getAttribute('href') === `#${current}`) {
-            link.style.color = 'var(--neon-green)';
+            link.style.color = 'var(--accent)';
         }
     });
 });
@@ -189,7 +276,7 @@ const statsObserver = new IntersectionObserver((entries) => {
                 const counter = setInterval(() => {
                     current += increment;
                     if (current >= target) {
-                        const suffix = (target === 100 || target === 15 || target === 10) ? '+' : '';
+                        const suffix = (target === 100 || target === 15 || target === 2 || target === 8) ? '+' : '';
                         stat.textContent = target + suffix;
                         clearInterval(counter);
                     } else {
@@ -464,58 +551,6 @@ window.addEventListener('scroll', () => {
 });
 
 // ================================
-// Glitch Effect Enhancement
-// ================================
-const glitchElements = document.querySelectorAll('.glitch');
-
-glitchElements.forEach(element => {
-    setInterval(() => {
-        if (Math.random() > 0.95) {
-            element.style.textShadow = `
-                ${Math.random() * 10 - 5}px 0 var(--neon-cyan),
-                ${Math.random() * 10 - 5}px 0 var(--neon-purple)
-            `;
-            setTimeout(() => {
-                element.style.textShadow = '';
-            }, 50);
-        }
-    }, 2000);
-});
-
-// ================================
-// Random Pixel Flicker Effect
-// ================================
-function createPixelFlicker() {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        if (Math.random() > 0.98) {
-            section.style.filter = 'contrast(1.2) brightness(1.1)';
-            setTimeout(() => {
-                section.style.filter = '';
-            }, 50);
-        }
-    });
-}
-
-setInterval(createPixelFlicker, 3000);
-
-// ================================
-// Code Window Animation
-// ================================
-const codeWindow = document.querySelector('.window-content code');
-if (codeWindow) {
-    const originalCode = codeWindow.innerHTML;
-    let glitchInterval = setInterval(() => {
-        if (Math.random() > 0.97) {
-            codeWindow.style.opacity = '0.8';
-            setTimeout(() => {
-                codeWindow.style.opacity = '1';
-            }, 100);
-        }
-    }, 2000);
-}
-
-// ================================
 // Loading Animation
 // ================================
 window.addEventListener('load', () => {
@@ -565,90 +600,37 @@ window.addEventListener('keydown', (e) => {
 // ================================
 // Console Easter Egg
 // ================================
-console.log('%c🚀 Welcome to Harun Geçit\'s Portfolio!', 'color: #00ff41; font-size: 20px; font-weight: bold;');
-console.log('%c🏛️ Software Architect | Laravel Ecosystem Expert | Full Stack Developer', 'color: #00f0ff; font-size: 14px;');
-console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #00ff41;');
-console.log('%c\n📦 Tech Stack:', 'color: #b026ff; font-size: 14px; font-weight: bold;');
-console.log('%c   • Languages: PHP, JavaScript, Go, SQL, Bash', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Laravel: Livewire, Inertia.js, Filament, Nova, Forge, Vapor', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • DevOps: Docker, Kubernetes, Nginx, AWS, GCP', 'color: #00f0ff; font-size: 12px;');
-console.log('%c   • Database: PostgreSQL, MySQL, MongoDB, Redis', 'color: #00f0ff; font-size: 12px;');
-console.log('%c\n💼 Interested in working together?', 'color: #ffa500; font-size: 14px; font-weight: bold;');
-console.log('%c   📧 info@harungecit.com', 'color: #00ff41; font-size: 12px;');
-console.log('%c   💬 WhatsApp: 0850 303 39 54', 'color: #00ff41; font-size: 12px;');
-console.log('%c   🐙 GitHub: github.com/harungecit', 'color: #00ff41; font-size: 12px;');
-console.log('%c\n🎮 Hidden Features:', 'color: #ff006e; font-size: 14px; font-weight: bold;');
-console.log('%c   • Try the interactive terminal above! Type "help" to get started', 'color: #b026ff; font-size: 12px;');
-console.log('%c   • Press Konami Code for a surprise: ⬆⬆⬇⬇⬅➡⬅➡BA', 'color: #b026ff; font-size: 12px;');
-console.log('%c   • Watch the Matrix rain effect in the background', 'color: #b026ff; font-size: 12px;');
-console.log('%c\n⚡ Performance Info:', 'color: #00f0ff; font-size: 14px; font-weight: bold;');
+console.log('%c🚀 Welcome to Harun Geçit\'s Portfolio!', 'color: #34d399; font-size: 20px; font-weight: bold;');
+console.log('%c🤖 Full Stack Developer & AI Engineer | LLM | RAG | Multi-Agent Orchestration', 'color: #22d3ee; font-size: 14px;');
+console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #34d399;');
+console.log('%c\n📦 Tech Stack:', 'color: #a78bfa; font-size: 14px; font-weight: bold;');
+console.log('%c   • AI/LLM: RAG, pgvector, Fine-Tuning, PageIndex, Multi-LLM, AI Agents', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • AI Tools: Claude Code, Codex, Gemini CLI, OpenCode, Cursor, TRAE', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • Languages: PHP, JavaScript, Go, SQL, Bash, Python', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • Laravel: Livewire, Inertia.js, Filament, Nova, Forge, Vapor', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • Frontend: React.js, Alpine.js, Inertia.js, Tailwind CSS', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • DevOps: Docker, Kubernetes, Nginx, AWS, GCP', 'color: #22d3ee; font-size: 12px;');
+console.log('%c   • Database: PostgreSQL, MySQL, MongoDB, Redis', 'color: #22d3ee; font-size: 12px;');
+console.log('%c\n💼 Interested in working together?', 'color: #fbbf24; font-size: 14px; font-weight: bold;');
+console.log('%c   📧 info@harungecit.com', 'color: #34d399; font-size: 12px;');
+console.log('%c   💬 WhatsApp: 0850 303 39 54', 'color: #34d399; font-size: 12px;');
+console.log('%c   🐙 GitHub: github.com/harungecit', 'color: #34d399; font-size: 12px;');
+console.log('%c\n🎮 Hidden Features:', 'color: #f472b6; font-size: 14px; font-weight: bold;');
+console.log('%c   • Try the interactive terminal above! Type "help" to get started', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • Press Konami Code for a surprise: ⬆⬆⬇⬇⬅➡⬅➡BA', 'color: #a78bfa; font-size: 12px;');
+console.log('%c   • Watch the neural network particles react to your cursor', 'color: #a78bfa; font-size: 12px;');
+console.log('%c\n⚡ Performance Info:', 'color: #22d3ee; font-size: 14px; font-weight: bold;');
 console.log('%c   • Pure JavaScript - No heavy frameworks on this page', 'color: #a0a0a0; font-size: 12px;');
 console.log('%c   • Optimized animations with CSS transforms', 'color: #a0a0a0; font-size: 12px;');
 console.log('%c   • Responsive design - Mobile & Desktop friendly', 'color: #a0a0a0; font-size: 12px;');
-console.log('%c\n💡 Pro Tip:', 'color: #ffa500; font-size: 12px; font-weight: bold;');
-console.log('%c   Check out my DevTools at https://devtools.harungecit.dev/', 'color: #00ff41; font-size: 12px;');
-console.log('%c\n🎯 Fun fact:', 'color: #ff006e; font-size: 12px; font-weight: bold;');
-console.log('%c   This entire site was built with AI assistance using Claude Code!', 'color: #b026ff; font-size: 12px;');
-console.log('%c\n🎮 Easter Egg Hunt:', 'color: #ff006e; font-size: 12px; font-weight: bold;');
-console.log('%c   The terminal has hidden commands... Can you find them all?', 'color: #ffbd2e; font-size: 12px;');
+console.log('%c\n💡 Pro Tip:', 'color: #fbbf24; font-size: 12px; font-weight: bold;');
+console.log('%c   Check out my DevTools at https://devtools.harungecit.dev/', 'color: #34d399; font-size: 12px;');
+console.log('%c\n🎯 Fun fact:', 'color: #f472b6; font-size: 12px; font-weight: bold;');
+console.log('%c   This entire site was built with AI assistance using Claude Code!', 'color: #a78bfa; font-size: 12px;');
+console.log('%c\n🎮 Easter Egg Hunt:', 'color: #f472b6; font-size: 12px; font-weight: bold;');
+console.log('%c   The terminal has hidden commands... Can you find them all?', 'color: #fcd34d; font-size: 12px;');
 console.log('%c   Hint: Try classic gaming references and old-school Unix magic words', 'color: #a0a0a0; font-size: 11px; font-style: italic;');
-console.log('%c\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', 'color: #00ff41;');
-
-// ================================
-// Cursor Trail Effect
-// ================================
-let cursorTrail = [];
-const maxTrailLength = 10;
-
-document.addEventListener('mousemove', (e) => {
-    cursorTrail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-
-    if (cursorTrail.length > maxTrailLength) {
-        cursorTrail.shift();
-    }
-
-    // Remove old trail elements
-    document.querySelectorAll('.cursor-trail').forEach(el => {
-        if (Date.now() - parseInt(el.dataset.time) > 500) {
-            el.remove();
-        }
-    });
-
-    // Create trail element occasionally
-    if (Math.random() > 0.9) {
-        const trail = document.createElement('div');
-        trail.className = 'cursor-trail';
-        trail.style.cssText = `
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: var(--neon-green);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            left: ${e.clientX}px;
-            top: ${e.clientY}px;
-            opacity: 0.6;
-            box-shadow: 0 0 10px var(--neon-green);
-            animation: fadeOut 0.5s forwards;
-        `;
-        trail.dataset.time = Date.now();
-        document.body.appendChild(trail);
-    }
-});
-
-// Add fadeOut animation
-const style = document.createElement('style');
-style.innerHTML = `
-    @keyframes fadeOut {
-        to {
-            opacity: 0;
-            transform: scale(0);
-        }
-    }
-`;
-document.head.appendChild(style);
+console.log('%c\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', 'color: #34d399;');
 
 // ================================
 // Performance: Reduce animations on low-end devices
@@ -694,7 +676,7 @@ function unlockAudio() {
     hoverSound.play().then(() => {
         hoverSound.pause();
         hoverSound.currentTime = 0;
-        console.log('%c🔊 Sound ready!', 'color: #00ff41; font-size: 12px;');
+        console.log('%c🔊 Sound ready!', 'color: #34d399; font-size: 12px;');
     }).catch(e => {
         console.debug('Sound unlock skipped:', e);
     });
@@ -762,7 +744,7 @@ function addHoverSounds() {
 // Initialize hover sounds after a short delay to avoid issues on page load
 setTimeout(addHoverSounds, 1000);
 
-console.log('%c⚡ Website fully loaded and optimized!', 'color: #00ff41; font-size: 14px; font-weight: bold;');
+console.log('%c⚡ Website fully loaded and optimized!', 'color: #34d399; font-size: 14px; font-weight: bold;');
 
 // ================================
 // Screensaver - Idle Detection
@@ -780,7 +762,7 @@ screensaver.style.cssText = `
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #0a0e27;
+    background: #07070d;
     z-index: 10000;
     display: none;
     opacity: 0;
@@ -814,89 +796,441 @@ screensaver.appendChild(screensaverHint);
 
 document.body.appendChild(screensaver);
 
-// Matrix rain for screensaver
-let screensaverInterval = null;
-function startScreensaver() {
-    if (screensaverActive) return;
+// ================================
+// Screensaver renderers (random pick on each activation)
+// Each factory takes the shared canvas and returns { start, stop, resize }.
+// All share the violet/cyan palette and the AI / neural / agentic theme.
+// ================================
+const SS = {
+    violet: '139, 92, 246',
+    cyan: '34, 211, 238',
+    emerald: '16, 185, 129',
+};
+const ssRand = (a, b) => a + Math.random() * (b - a);
+const ssPick = (arr) => arr[(Math.random() * arr.length) | 0];
+const SS_GLYPHS = '01{}</>[]#$+=*ΔΣλ⌁⎔◇◆∴⟶→01アカサ0x'.split('');
 
-    screensaverActive = true;
-    screensaver.style.display = 'block';
+function ssDims(canvas, ctx) {
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    const W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    return { W, H, DPR };
+}
 
-    // Fade in
-    setTimeout(() => {
-        screensaver.style.opacity = '1';
-    }, 10);
-
-    // Initialize canvas
-    const canvas = screensaverCanvas;
+// --- v1: Neural Signals — firing neurons + traveling signal pulses + glyphs ---
+function makeNeuralSignals(canvas) {
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/~ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
-    const charArray = chars.split('');
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-
-    const drops = [];
-    for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * -100;
+    let W, H, raf = null, nodes = [], links = [], signals = [], glyphs = [];
+    const LINK = 165;
+    function build() {
+        const n = Math.max(36, Math.min(120, Math.floor((W * H) / 16000)));
+        nodes = Array.from({ length: n }, () => {
+            const hub = Math.random() < 0.14;
+            return { x: Math.random() * W, y: Math.random() * H, vx: ssRand(-0.28, 0.28), vy: ssRand(-0.28, 0.28),
+                r: hub ? ssRand(2.6, 4.2) : ssRand(0.8, 1.8), hub, color: Math.random() > 0.5 ? SS.violet : SS.cyan,
+                fire: 0, nextFire: ssRand(0, 240) };
+        });
+        const g = Math.max(14, Math.min(40, Math.floor((W * H) / 52000)));
+        glyphs = Array.from({ length: g }, () => ({ x: Math.random() * W, y: Math.random() * H, ch: ssPick(SS_GLYPHS),
+            size: ssRand(10, 22), vy: ssRand(-0.18, -0.5), drift: ssRand(-0.12, 0.12), alpha: ssRand(0.05, 0.22),
+            color: Math.random() > 0.5 ? SS.cyan : SS.violet, swap: ssRand(0, 300) }));
+        signals = [];
     }
-
-    function drawMatrix() {
-        ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = '#00ff41';
-        ctx.font = fontSize + 'px monospace';
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = charArray[Math.floor(Math.random() * charArray.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
+    function emit(p) {
+        let fired = 0;
+        for (const q of nodes) {
+            if (q === p) continue;
+            if (Math.hypot(p.x - q.x, p.y - q.y) < LINK && Math.random() < 0.5) {
+                signals.push({ from: p, to: q, t: 0, speed: ssRand(0.012, 0.03), color: p.color });
+                if (++fired >= (p.hub ? 4 : 2)) break;
             }
-            drops[i]++;
         }
     }
+    function frame() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of nodes) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > W) p.vx *= -1;
+            if (p.y < 0 || p.y > H) p.vy *= -1;
+            if (p.fire > 0) p.fire -= 0.02;
+            if (--p.nextFire <= 0) { p.fire = 1; p.nextFire = ssRand(120, 360); emit(p); }
+        }
+        links.length = 0;
+        for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
+            if (d < LINK) links.push({ a, b, d });
+        }
+        ctx.lineWidth = 1;
+        for (const l of links) {
+            ctx.strokeStyle = `rgba(${SS.violet}, ${(1 - l.d / LINK) * 0.16})`;
+            ctx.beginPath(); ctx.moveTo(l.a.x, l.a.y); ctx.lineTo(l.b.x, l.b.y); ctx.stroke();
+        }
+        for (let i = signals.length - 1; i >= 0; i--) {
+            const s = signals[i]; s.t += s.speed;
+            if (s.t >= 1) { s.to.fire = Math.max(s.to.fire, 0.7); signals.splice(i, 1); continue; }
+            const x = s.from.x + (s.to.x - s.from.x) * s.t, y = s.from.y + (s.to.y - s.from.y) * s.t;
+            const g = ctx.createRadialGradient(x, y, 0, x, y, 7);
+            g.addColorStop(0, `rgba(${s.color}, 0.9)`); g.addColorStop(1, `rgba(${s.color}, 0)`);
+            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.beginPath(); ctx.arc(x, y, 1.6, 0, Math.PI * 2); ctx.fill();
+        }
+        for (const p of nodes) {
+            if (p.fire > 0 || p.hub) {
+                const rad = p.hub ? p.r * 4 : 18 * p.fire + p.r;
+                const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rad);
+                gr.addColorStop(0, `rgba(${p.color}, ${(p.hub ? 0.5 : 0) + 0.35 * p.fire})`);
+                gr.addColorStop(1, `rgba(${p.color}, 0)`);
+                ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.fillStyle = `rgba(${p.color}, ${p.hub ? 0.95 : 0.6})`;
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        for (const g of glyphs) {
+            g.y += g.vy; g.x += g.drift;
+            if (--g.swap <= 0) { g.ch = ssPick(SS_GLYPHS); g.swap = ssRand(40, 300); }
+            if (g.y < -20) { g.y = H + 20; g.x = Math.random() * W; }
+            ctx.font = `${g.size}px ui-monospace, monospace`;
+            ctx.fillStyle = `rgba(${g.color}, ${g.alpha})`;
+            ctx.fillText(g.ch, g.x, g.y);
+        }
+    }
+    function loop() { frame(); raf = requestAnimationFrame(loop); }
+    return {
+        start() { ({ W, H } = ssDims(canvas, ctx)); build(); prefersReducedMotion ? frame() : loop(); },
+        stop() { if (raf) cancelAnimationFrame(raf); raf = null; },
+        resize() { ({ W, H } = ssDims(canvas, ctx)); build(); },
+    };
+}
 
-    screensaverInterval = setInterval(drawMatrix, 33);
+// --- v2: Digital Rain — falling code columns ---
+function makeRain(canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H, raf = null, cols, drops, fontSize = 16;
+    const CH = '0123456789ABCDEFアカサタナハマ{}</>[]#$+=λΔΣ◇⟶'.split('');
+    function build() {
+        fontSize = Math.max(13, Math.min(20, Math.round(W / 110)));
+        cols = Math.ceil(W / fontSize);
+        drops = Array.from({ length: cols }, () => ({ y: Math.random() * -H, speed: 0.4 + Math.random() * 0.9,
+            len: 8 + (Math.random() * 22 | 0), hue: Math.random() > 0.5 ? SS.cyan : SS.violet }));
+        ctx.fillStyle = '#04050a'; ctx.fillRect(0, 0, W, H);
+    }
+    function frame() {
+        ctx.fillStyle = 'rgba(4,5,10,0.12)'; ctx.fillRect(0, 0, W, H);
+        ctx.font = fontSize + 'px ui-monospace, monospace'; ctx.textAlign = 'center';
+        for (let i = 0; i < cols; i++) {
+            const d = drops[i], x = i * fontSize + fontSize / 2;
+            for (let k = 0; k < d.len; k++) {
+                const y = d.y - k * fontSize;
+                if (y < -fontSize || y > H + fontSize) continue;
+                const ch = ssPick(CH);
+                if (k === 0) {
+                    ctx.fillStyle = 'rgba(220,255,250,0.95)'; ctx.shadowColor = `rgba(${d.hue},0.9)`; ctx.shadowBlur = 12;
+                    ctx.fillText(ch, x, y); ctx.shadowBlur = 0;
+                } else {
+                    ctx.fillStyle = `rgba(${d.hue},${Math.max(0, 1 - k / d.len) * 0.9})`;
+                    ctx.fillText(ch, x, y);
+                }
+            }
+            d.y += d.speed * fontSize * 0.5;
+            if (d.y - d.len * fontSize > H) { d.y = Math.random() * -200; d.speed = 0.4 + Math.random() * 0.9;
+                d.len = 8 + (Math.random() * 22 | 0); d.hue = Math.random() > 0.5 ? SS.cyan : SS.violet; }
+        }
+    }
+    function loop() { frame(); raf = requestAnimationFrame(loop); }
+    return {
+        start() { ({ W, H } = ssDims(canvas, ctx)); build(); prefersReducedMotion ? frame() : loop(); },
+        stop() { if (raf) cancelAnimationFrame(raf); raf = null; },
+        resize() { ({ W, H } = ssDims(canvas, ctx)); build(); },
+    };
+}
 
-    console.log('%c💤 Screensaver activated!', 'color: #00ff41; font-size: 12px;');
+// --- v3: Circuit Board — PCB traces with traveling light pulses ---
+function makeCircuit(canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H, raf = null, traces = [], pulses = [], pads = [];
+    const GAP = 46;
+    function build() {
+        traces = []; pads = []; pulses = [];
+        const colsN = Math.ceil(W / GAP) + 1, rowsN = Math.ceil(H / GAP) + 1;
+        const num = Math.max(20, Math.floor((W * H) / 26000));
+        for (let t = 0; t < num; t++) {
+            let cx = Math.floor(Math.random() * colsN), cy = Math.floor(Math.random() * rowsN);
+            const pts = [{ x: cx * GAP, y: cy * GAP }];
+            const steps = 4 + (Math.random() * 9 | 0); let horiz = Math.random() < 0.5;
+            for (let s = 0; s < steps; s++) {
+                const dist = 1 + (Math.random() * 3 | 0);
+                if (horiz) cx += Math.random() < 0.5 ? dist : -dist; else cy += Math.random() < 0.5 ? dist : -dist;
+                cx = Math.max(0, Math.min(colsN, cx)); cy = Math.max(0, Math.min(rowsN, cy));
+                pts.push({ x: cx * GAP, y: cy * GAP }); horiz = !horiz;
+            }
+            const color = Math.random() > 0.5 ? SS.cyan : SS.violet;
+            let len = 0; for (let i = 1; i < pts.length; i++) len += Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+            traces.push({ pts, color, len });
+            pts.forEach((p, i) => { if (i === 0 || i === pts.length - 1 || Math.random() < 0.3) pads.push({ x: p.x, y: p.y, color, via: Math.random() < 0.4 }); });
+        }
+        for (let i = 0; i < Math.min(traces.length, 30); i++) spawn();
+    }
+    function spawn() { const tr = traces[(Math.random() * traces.length) | 0]; if (tr) pulses.push({ tr, t: Math.random() * 0.3, speed: 0.0025 + Math.random() * 0.006, color: tr.color }); }
+    function pointAt(tr, frac) {
+        let target = frac * tr.len, acc = 0;
+        for (let i = 1; i < tr.pts.length; i++) {
+            const a = tr.pts[i - 1], b = tr.pts[i], seg = Math.hypot(b.x - a.x, b.y - a.y);
+            if (acc + seg >= target) { const u = (target - acc) / (seg || 1); return { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u }; }
+            acc += seg;
+        }
+        return tr.pts[tr.pts.length - 1];
+    }
+    function frame() {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = 'rgba(120,140,170,0.05)';
+        for (let x = 0; x <= W; x += GAP) for (let y = 0; y <= H; y += GAP) ctx.fillRect(x - 0.5, y - 0.5, 1, 1);
+        ctx.lineWidth = 1.4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+        for (const tr of traces) {
+            ctx.strokeStyle = `rgba(${tr.color},0.16)`;
+            ctx.beginPath(); ctx.moveTo(tr.pts[0].x, tr.pts[0].y);
+            for (let i = 1; i < tr.pts.length; i++) ctx.lineTo(tr.pts[i].x, tr.pts[i].y);
+            ctx.stroke();
+        }
+        for (const p of pads) {
+            ctx.fillStyle = `rgba(${p.color},0.5)`; ctx.beginPath(); ctx.arc(p.x, p.y, p.via ? 3.2 : 2, 0, Math.PI * 2); ctx.fill();
+            if (p.via) { ctx.strokeStyle = `rgba(${p.color},0.35)`; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(p.x, p.y, 5, 0, Math.PI * 2); ctx.stroke(); }
+        }
+        for (let i = pulses.length - 1; i >= 0; i--) {
+            const pu = pulses[i]; pu.t += pu.speed;
+            if (pu.t >= 1) { pulses.splice(i, 1); continue; }
+            for (let k = 0; k < 6; k++) {
+                const f = pu.t - k * 0.012; if (f < 0) break;
+                const pt = pointAt(pu.tr, f), a = 1 - k / 6, r = (k === 0 ? 3.2 : 2.4) * 3;
+                const g = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, r);
+                g.addColorStop(0, `rgba(${pu.color},${0.85 * a})`); g.addColorStop(1, `rgba(${pu.color},0)`);
+                ctx.fillStyle = g; ctx.beginPath(); ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2); ctx.fill();
+            }
+            const head = pointAt(pu.tr, pu.t);
+            ctx.fillStyle = 'rgba(235,255,252,0.95)'; ctx.beginPath(); ctx.arc(head.x, head.y, 1.6, 0, Math.PI * 2); ctx.fill();
+        }
+        if (pulses.length < Math.max(18, traces.length * 0.7) && Math.random() < 0.25) spawn();
+    }
+    function loop() { frame(); raf = requestAnimationFrame(loop); }
+    return {
+        start() { ({ W, H } = ssDims(canvas, ctx)); build(); prefersReducedMotion ? frame() : loop(); },
+        stop() { if (raf) cancelAnimationFrame(raf); raf = null; },
+        resize() { ({ W, H } = ssDims(canvas, ctx)); build(); },
+    };
+}
+
+// --- v4: Neural Sphere — rotating 3D point-sphere network ---
+function makeSphere(canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H, raf = null, R, cx, cy, pts = [], edges = [], signals = [];
+    let yaw = 0, pitch = 0.4;
+    const N = 160;
+    function build() {
+        cx = W / 2; cy = H * 0.45; R = Math.min(W, H) * 0.32;
+        pts = []; edges = []; signals = [];
+        const gold = Math.PI * (3 - Math.sqrt(5));
+        for (let i = 0; i < N; i++) {
+            const y = 1 - (i / (N - 1)) * 2, r = Math.sqrt(1 - y * y), th = gold * i;
+            pts.push({ x: Math.cos(th) * r, y, z: Math.sin(th) * r, color: Math.random() > 0.5 ? SS.violet : SS.cyan,
+                hub: Math.random() < 0.12, fire: 0, nextFire: Math.random() * 240 });
+        }
+        for (let i = 0; i < N; i++) {
+            const ds = [];
+            for (let j = 0; j < N; j++) { if (i === j) continue;
+                const dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y, dz = pts[i].z - pts[j].z;
+                ds.push({ j, d: dx * dx + dy * dy + dz * dz }); }
+            ds.sort((a, b) => a.d - b.d);
+            const k = pts[i].hub ? 4 : 3;
+            for (let n = 0; n < k; n++) if (ds[n].j > i) edges.push({ a: i, b: ds[n].j });
+        }
+    }
+    function rot(p) {
+        const cosY = Math.cos(yaw), sinY = Math.sin(yaw);
+        const x1 = p.x * cosY - p.z * sinY, z1 = p.x * sinY + p.z * cosY;
+        const cosP = Math.cos(pitch), sinP = Math.sin(pitch);
+        return { x: x1, y: p.y * cosP - z1 * sinP, z: p.y * sinP + z1 * cosP };
+    }
+    function project(rp) { const persp = R * 2.2 / (R * 2.2 + rp.z * R); return { x: cx + rp.x * R * persp, y: cy + rp.y * R * persp, scale: persp, z: rp.z }; }
+    function emit(i) {
+        let fired = 0;
+        for (const e of edges) {
+            let b = -1; if (e.a === i) b = e.b; else if (e.b === i) b = e.a;
+            if (b >= 0 && Math.random() < 0.6) { signals.push({ a: i, b, t: 0, speed: 0.02 + Math.random() * 0.02, color: pts[i].color }); if (++fired >= (pts[i].hub ? 3 : 2)) break; }
+        }
+    }
+    function frame() {
+        ctx.clearRect(0, 0, W, H);
+        yaw += 0.0026;
+        const pr = pts.map(p => { const rp = rot(p); return Object.assign(project(rp), { color: p.color, ref: p }); });
+        ctx.lineWidth = 1;
+        for (const e of edges) {
+            const A = pr[e.a], B = pr[e.b], depth = (A.z + B.z) / 2;
+            ctx.strokeStyle = `rgba(${SS.violet},${Math.max(0, 0.6 - depth * 0.5) * 0.3})`;
+            ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(B.x, B.y); ctx.stroke();
+        }
+        for (let i = signals.length - 1; i >= 0; i--) {
+            const s = signals[i]; s.t += s.speed;
+            if (s.t >= 1) { pts[s.b].fire = Math.max(pts[s.b].fire, 0.7); signals.splice(i, 1); continue; }
+            const A = pr[s.a], B = pr[s.b], x = A.x + (B.x - A.x) * s.t, y = A.y + (B.y - A.y) * s.t;
+            const g = ctx.createRadialGradient(x, y, 0, x, y, 6);
+            g.addColorStop(0, `rgba(${s.color},0.9)`); g.addColorStop(1, `rgba(${s.color},0)`);
+            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.beginPath(); ctx.arc(x, y, 1.4, 0, Math.PI * 2); ctx.fill();
+        }
+        const order = pr.map((p, i) => i).sort((a, b) => pr[a].z - pr[b].z);
+        for (const idx of order) {
+            const p = pr[idx], ref = p.ref;
+            if (ref.fire > 0) ref.fire -= 0.02;
+            if (--ref.nextFire <= 0) { ref.fire = 1; ref.nextFire = 120 + Math.random() * 300; emit(idx); }
+            const depthA = 0.35 + 0.65 * ((p.z + 1) / 2), rad = (ref.hub ? 2.8 : 1.4) * p.scale;
+            if (ref.fire > 0 || ref.hub) {
+                const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, rad * 5);
+                gr.addColorStop(0, `rgba(${p.color},${(ref.hub ? 0.3 : 0) + 0.35 * ref.fire})`); gr.addColorStop(1, `rgba(${p.color},0)`);
+                ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(p.x, p.y, rad * 5, 0, Math.PI * 2); ctx.fill();
+            }
+            ctx.fillStyle = `rgba(${p.color},${(ref.hub ? 0.95 : 0.6) * depthA})`;
+            ctx.beginPath(); ctx.arc(p.x, p.y, rad, 0, Math.PI * 2); ctx.fill();
+        }
+    }
+    function loop() { frame(); raf = requestAnimationFrame(loop); }
+    return {
+        start() { ({ W, H } = ssDims(canvas, ctx)); build(); prefersReducedMotion ? frame() : loop(); },
+        stop() { if (raf) cancelAnimationFrame(raf); raf = null; },
+        resize() { ({ W, H } = ssDims(canvas, ctx)); build(); },
+    };
+}
+
+// --- v5: Flow Field — thousands of particles streaming through a noise field ---
+function makeFlow(canvas) {
+    const ctx = canvas.getContext('2d');
+    let W, H, raf = null, particles = [], t = 0;
+    const cV = [139, 92, 246], cC = [34, 211, 238];
+    const field = (x, y, tt) => (Math.sin(x * 0.0016 + tt * 0.2) + Math.cos(y * 0.0014 - tt * 0.18) + Math.sin((x + y) * 0.0011 + tt * 0.12)) * 1.1;
+    const lerpC = (c1, c2, u) => `rgba(${Math.round(c1[0] + (c2[0] - c1[0]) * u)},${Math.round(c1[1] + (c2[1] - c1[1]) * u)},${Math.round(c1[2] + (c2[2] - c1[2]) * u)}`;
+    function spawn() { const u = Math.random(); return { x: Math.random() * W, y: Math.random() * H, life: Math.random() * 200 + 60, age: 0, hue: lerpC(cC, cV, u), speed: 0.7 + Math.random() * 1.4 }; }
+    function build() {
+        ctx.fillStyle = '#04050a'; ctx.fillRect(0, 0, W, H);
+        const n = Math.max(400, Math.min(1100, Math.floor((W * H) / 2200)));
+        particles = Array.from({ length: n }, spawn);
+    }
+    function frame() {
+        ctx.fillStyle = 'rgba(4,5,10,0.06)'; ctx.fillRect(0, 0, W, H);
+        t += 0.016; ctx.lineWidth = 1.1;
+        for (const p of particles) {
+            const ang = field(p.x, p.y, t), px = p.x, py = p.y;
+            p.x += Math.cos(ang) * p.speed; p.y += Math.sin(ang) * p.speed; p.age++;
+            ctx.strokeStyle = `${p.hue},${Math.min(0.5, 1 - p.age / p.life) * 0.6})`;
+            ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(p.x, p.y); ctx.stroke();
+            if (p.age > p.life || p.x < -10 || p.x > W + 10 || p.y < -10 || p.y > H + 10) Object.assign(p, spawn());
+        }
+    }
+    function loop() { frame(); raf = requestAnimationFrame(loop); }
+    return {
+        start() { ({ W, H } = ssDims(canvas, ctx)); build(); prefersReducedMotion ? frame() : loop(); },
+        stop() { if (raf) cancelAnimationFrame(raf); raf = null; },
+        resize() { ({ W, H } = ssDims(canvas, ctx)); build(); },
+    };
+}
+
+// Registry — picked at random on each activation
+const SS_VARIANTS = [
+    { name: 'Neural Signals', subtitle: 'Neural · Agentic · Systems', make: makeNeuralSignals, prompt: 'agent@neural' },
+    { name: 'Digital Rain',   subtitle: 'Decode · Stream · Inference', make: makeRain,          prompt: 'agent@rain' },
+    { name: 'Circuit Board',  subtitle: 'Circuit · Logic · Compute',   make: makeCircuit,       prompt: 'agent@circuit' },
+    { name: 'Neural Sphere',  subtitle: 'Neural · Sphere · Cognition', make: makeSphere,        prompt: 'agent@sphere' },
+    { name: 'Flow Field',     subtitle: 'Flow · Data · Emergence',     make: makeFlow,          prompt: 'agent@flow' },
+];
+let ssLastIndex = -1;
+let ssCurrent = null;
+let ssAgentTimer = null;
+
+// Shared overlay: centered H·G title + agentic terminal stream (variant-agnostic)
+const ssTitle = document.createElement('div');
+ssTitle.style.cssText = `position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;user-select:none;z-index:2;`;
+ssTitle.innerHTML = `
+    <div class="ss-glyph" style="font-size:clamp(40px,8vw,110px);font-weight:800;letter-spacing:.12em;
+        background:linear-gradient(135deg, rgba(${SS.cyan},1), rgba(${SS.violet},1));
+        -webkit-background-clip:text;background-clip:text;color:transparent;
+        filter:drop-shadow(0 0 28px rgba(${SS.violet},.45));animation:ssBreathe 6s ease-in-out infinite;">H · G</div>
+    <div class="ss-sub" style="margin-top:14px;font-size:clamp(11px,1.6vw,15px);letter-spacing:.5em;
+        text-transform:uppercase;color:rgba(${SS.cyan},.7);"></div>`;
+screensaver.appendChild(ssTitle);
+const ssSub = ssTitle.querySelector('.ss-sub');
+
+const ssLog = document.createElement('div');
+ssLog.style.cssText = `position:absolute;left:26px;bottom:60px;font-size:12px;line-height:1.7;
+    color:rgba(190,200,220,.5);pointer-events:none;user-select:none;max-width:46ch;z-index:2;
+    font-family:var(--font-code, ui-monospace, monospace);`;
+screensaver.appendChild(ssLog);
+
+const SS_LOG_LINES = [
+    ['spawn', 'agent', 'orchestrator', 'online', 'ok'], ['route', 'task', 'embeddings.index', 'queued', 'val'],
+    ['infer', 'model', 'opus-4.8', '128k ctx', 'val'], ['link', 'synapse', 'cluster #7', 'reinforced', 'ok'],
+    ['vector', 'memory', 'cosine 0.94', 'match', 'val'], ['tool', 'call', 'search()', 'resolved', 'ok'],
+    ['plan', 'agent', 'decompose(4)', 'committed', 'val'], ['signal', 'neuron', 'fire Δ+1', 'propagate', 'ok'],
+    ['verify', 'check', 'self-consistent', 'passed', 'ok'], ['async', 'agent', 'fan-out(8)', 'dispatched', 'ok'],
+];
+let ssLogIdx = 0;
+function ssPushLog(promptLabel) {
+    const [act, tag, mid, end, kind] = SS_LOG_LINES[ssLogIdx++ % SS_LOG_LINES.length];
+    const ts = new Date().toLocaleTimeString('en-GB');
+    const ln = document.createElement('div');
+    ln.style.whiteSpace = 'nowrap';
+    ln.innerHTML = `<span style="opacity:.5">${ts}</span> ` +
+        `<span style="color:rgba(${SS.violet},.95)">${tag}</span> ${act} ` +
+        `<span style="color:rgba(${SS.cyan},.95)">${mid}</span> → ` +
+        `<span style="color:rgba(${kind === 'ok' ? SS.emerald : SS.cyan},.95)">${end}</span>`;
+    ssLog.insertBefore(ln, ssLog.lastElementChild);
+    while (ssLog.children.length > 8) ssLog.removeChild(ssLog.firstChild);
+    [...ssLog.children].forEach((c, i, arr) => c.style.opacity = (0.25 + 0.75 * (i / (arr.length - 1 || 1))).toFixed(2));
+}
+
+function startScreensaver() {
+    if (screensaverActive) return;
+    screensaverActive = true;
+    screensaver.style.display = 'block';
+    setTimeout(() => { screensaver.style.opacity = '1'; }, 10);
+
+    // Pick a random variant, avoiding an immediate repeat
+    let idx = (Math.random() * SS_VARIANTS.length) | 0;
+    if (SS_VARIANTS.length > 1 && idx === ssLastIndex) idx = (idx + 1) % SS_VARIANTS.length;
+    ssLastIndex = idx;
+    const variant = SS_VARIANTS[idx];
+    ssSub.textContent = variant.subtitle;
+
+    ssCurrent = variant.make(screensaverCanvas);
+    ssCurrent.start();
+
+    // Agentic terminal stream
+    ssLog.innerHTML = '';
+    const cursor = document.createElement('div');
+    cursor.innerHTML = `<span style="opacity:.5">${variant.prompt}</span> $ <span style="display:inline-block;width:8px;height:13px;background:rgba(${SS.cyan},.9);margin-left:2px;vertical-align:-2px;animation:ssBlink 1s step-end infinite"></span>`;
+    ssLog.appendChild(cursor);
+    ssLogIdx = 0;
+    ssPushLog();
+    if (ssAgentTimer) clearInterval(ssAgentTimer);
+    if (!prefersReducedMotion) ssAgentTimer = setInterval(() => ssPushLog(), 1400);
+
+    console.log(`%c💤 Screensaver: ${variant.name}`, 'color: #a78bfa; font-size: 12px;');
 }
 
 function stopScreensaver() {
     if (!screensaverActive) return;
-
     screensaverActive = false;
-
-    // Fade out
     screensaver.style.opacity = '0';
-
+    if (ssAgentTimer) { clearInterval(ssAgentTimer); ssAgentTimer = null; }
     setTimeout(() => {
         screensaver.style.display = 'none';
-        if (screensaverInterval) {
-            clearInterval(screensaverInterval);
-            screensaverInterval = null;
-        }
+        if (ssCurrent) { ssCurrent.stop(); ssCurrent = null; }
     }, 500);
-
-    console.log('%c👋 Screensaver deactivated!', 'color: #00ff41; font-size: 12px;');
+    console.log('%c👋 Screensaver deactivated!', 'color: #a78bfa; font-size: 12px;');
 }
 
 function resetIdleTimer() {
-    // Stop screensaver if active
-    if (screensaverActive) {
-        stopScreensaver();
-    }
-
-    // Clear existing timer
-    if (idleTimer) {
-        clearTimeout(idleTimer);
-    }
-
-    // Set new timer
+    if (screensaverActive) stopScreensaver();
+    if (idleTimer) clearTimeout(idleTimer);
     idleTimer = setTimeout(startScreensaver, IDLE_TIME);
 }
 
@@ -906,12 +1240,9 @@ activityEvents.forEach(event => {
     document.addEventListener(event, resetIdleTimer, { passive: true });
 });
 
-// Resize screensaver canvas on window resize
+// Resize active variant on window resize
 window.addEventListener('resize', () => {
-    if (screensaverActive && screensaverCanvas) {
-        screensaverCanvas.width = window.innerWidth;
-        screensaverCanvas.height = window.innerHeight;
-    }
+    if (screensaverActive && ssCurrent) ssCurrent.resize();
 });
 
 // Add fadeInOut animation for hint text
@@ -921,13 +1252,18 @@ screensaverStyle.innerHTML = `
         0%, 100% { opacity: 0.7; }
         50% { opacity: 0.3; }
     }
+    @keyframes ssBreathe {
+        0%, 100% { opacity: 0.92; filter: drop-shadow(0 0 22px rgba(139,92,246,0.35)); }
+        50%      { opacity: 1;    filter: drop-shadow(0 0 40px rgba(34,211,238,0.55)); }
+    }
+    @keyframes ssBlink { 50% { opacity: 0; } }
 `;
 document.head.appendChild(screensaverStyle);
 
 // Start idle timer
 resetIdleTimer();
 
-console.log('%c⏰ Screensaver will activate after 1 minute of inactivity', 'color: #00f0ff; font-size: 12px;');
+console.log('%c⏰ Screensaver will activate after 1 minute of inactivity', 'color: #22d3ee; font-size: 12px;');
 
 // ================================
 // Projects Carousel - Swiper.js
@@ -982,4 +1318,4 @@ const projectsSwiper = new Swiper('.projects-swiper', {
     },
 });
 
-console.log('%c🎠 Swiper Carousel initialized!', 'color: #00ff41;');
+console.log('%c🎠 Swiper Carousel initialized!', 'color: #34d399;');

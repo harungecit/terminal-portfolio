@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screensaver Varyantları — Galeri</title>
+<style>
+  :root { --violet:139,92,246; --cyan:34,211,238; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'SF Mono','Cascadia Code','Consolas',ui-monospace,monospace; background:#06070d; color:#e6ebf5; padding:32px; }
+  h1 { font-size:22px; font-weight:800; letter-spacing:.04em; margin-bottom:6px;
+    background:linear-gradient(135deg, rgba(var(--cyan),1), rgba(var(--violet),1));
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  p.lead { color:#8b96ad; font-size:13px; margin-bottom:26px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(360px,1fr)); gap:22px; }
+  .card { border:1px solid rgba(var(--violet),0.22); border-radius:14px; overflow:hidden; background:#0a0c14;
+    box-shadow:0 8px 30px rgba(0,0,0,0.4); transition:transform .2s, border-color .2s; }
+  .card:hover { transform:translateY(-3px); border-color:rgba(var(--cyan),0.5); }
+  .frame { position:relative; aspect-ratio:16/10; background:#04050a; }
+  .frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0;
+    transform:scale(1); transform-origin:top left; pointer-events:none; }
+  .frame a.open { position:absolute; inset:0; z-index:2; display:flex; align-items:flex-end; justify-content:flex-end;
+    text-decoration:none; opacity:0; transition:opacity .2s; background:linear-gradient(transparent 60%, rgba(0,0,0,0.55)); }
+  .frame:hover a.open { opacity:1; }
+  .frame a.open span { margin:12px; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:700;
+    background:rgba(var(--cyan),0.9); color:#04050a; }
+  .meta { padding:14px 16px; }
+  .meta .name { font-size:15px; font-weight:700; }
+  .meta .tag { font-size:11px; color:rgba(var(--cyan),0.85); letter-spacing:.2em; text-transform:uppercase; margin-top:3px; }
+  .meta .desc { font-size:12px; color:#8b96ad; margin-top:8px; line-height:1.5; }
+  .footer { margin-top:30px; font-size:12px; color:#6b7689; line-height:1.7; }
+  .footer b { color:rgba(var(--violet),0.95); }
+  kbd { background:#161a26; border:1px solid #2a3142; border-radius:5px; padding:1px 6px; font-size:11px; }
+</style>
+</head>
+<body>
+  <h1>Neural Screensaver — Varyantlar</h1>
+  <p class="lead">Her kartın üzerine gel → <b>Tam ekran aç</b>. Beğendiklerini bana söyle, rastgele dönüşüme onları ekleyeyim.</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="footer">
+    <p><b>Nasıl seçeceğiz:</b> Beğendiğin varyantların numaralarını söyle (örn. "v1, v3, v4"). Sadece onlar siteye yüklendiğinde rastgele biri seçilip gösterilecek şekilde <b>script.js</b>'e entegre edeceğim.</p>
+    <p style="margin-top:8px">İpucu: Önizlemeler küçük kutularda çalışıyor; gerçek his için <kbd>Tam ekran aç</kbd>.</p>
+  </div>
+
+<script>
+  const variants = [
+    { file:'screensaver-preview.html', name:'v1 — Neural Signals', tag:'Sinir Ağı', desc:'Ateşlenen nöronlar, hat boyunca akan sinyal darbeleri, hub düğümler, süzülen kod glyph’leri ve canlı HUD.' },
+    { file:'screensaver-v2-rain.html', name:'v2 — Digital Rain', tag:'Matrix', desc:'Düşen kod sütunları; parlak öncü karakter, violet/cyan iz. Klasik ama agentic akışla modernleştirilmiş.' },
+    { file:'screensaver-v3-circuit.html', name:'v3 — Circuit Board', tag:'Elektronik', desc:'Manhattan PCB devre yolları, vialar/padler ve hatlar boyunca koşan ışık darbeleri.' },
+    { file:'screensaver-v4-sphere.html', name:'v4 — Neural Sphere', tag:'3B Globe', desc:'Dönen 3B nöron küresi, en yakın komşu bağlantıları, derinlikli sinyal yayılımı. Fareyle eğilir.' },
+    { file:'screensaver-v5-flow.html', name:'v5 — Flow Field', tag:'Akış Alanı', desc:'Akış alanında binlerce parçacık akıntı oluşturur; fare imleci girdap yaratır. Emergent veri akışı.' },
+  ];
+  const grid = document.getElementById('grid');
+  for (const v of variants) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="frame">
+        <iframe src="${v.file}" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+        <a class="open" href="${v.file}" target="_blank"><span>Tam ekran aç ↗</span></a>
+      </div>
+      <div class="meta">
+        <div class="name">${v.name}</div>
+        <div class="tag">${v.tag}</div>
+        <div class="desc">${v.desc}</div>
+      </div>`;
+    grid.appendChild(card);
+  }
+</script>
+</body>
+</html>
