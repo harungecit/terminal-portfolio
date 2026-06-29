@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screensaver v3 — Circuit Board</title>
+<style>
+  :root { --violet:139,92,246; --cyan:34,211,238; --emerald:16,185,129; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; overflow:hidden; background:#04060a; }
+  body { font-family:'SF Mono','Cascadia Code','Consolas',ui-monospace,monospace; }
+  #stage { position:fixed; inset:0;
+    background:radial-gradient(1000px 700px at 80% 20%, rgba(var(--cyan),0.08), transparent 60%),
+    radial-gradient(900px 600px at 15% 80%, rgba(var(--violet),0.08), transparent 60%), #04060a; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  #overlay { position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%); opacity:0.7; }
+  #title { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; pointer-events:none; user-select:none; }
+  #title .glyph { font-size:clamp(40px,8vw,110px); font-weight:800; letter-spacing:0.12em;
+    background:linear-gradient(135deg, rgba(var(--cyan),1), rgba(var(--emerald),1));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 26px rgba(var(--cyan),0.4)); animation:breathe 6s ease-in-out infinite; }
+  #title .sub { margin-top:14px; font-size:clamp(11px,1.6vw,15px); letter-spacing:0.5em; text-transform:uppercase; color:rgba(var(--cyan),0.7); }
+  @keyframes breathe { 0%,100%{opacity:.9} 50%{opacity:1; filter:drop-shadow(0 0 40px rgba(var(--emerald),0.5))} }
+  #agentlog { position:absolute; left:26px; bottom:22px; font-size:12px; line-height:1.7; color:rgba(190,200,220,0.5); pointer-events:none; user-select:none; max-width:46ch; }
+  #agentlog .tag{color:rgba(var(--cyan),.95)} #agentlog .ok{color:rgba(var(--emerald),.95)} #agentlog .val{color:rgba(var(--violet),.95)}
+  .cursor{display:inline-block;width:8px;height:13px;background:rgba(var(--cyan),.9);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+  #hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:rgba(160,175,200,.3);pointer-events:none;animation:blink 3s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div id="overlay"></div>
+  <div id="title"><div class="glyph">H · G</div><div class="sub">Circuit · Logic · Compute</div></div>
+  <div id="agentlog"></div>
+  <div id="hint">Press any key or move mouse to continue</div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const C={violet:'139,92,246',cyan:'34,211,238',emerald:'16,185,129'};
+  const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+  let W,H,DPR,grid,traces=[],pulses=[],pads=[];
+  const GAP=46;
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+    build();
+  }
+  function build(){
+    traces=[]; pads=[]; pulses=[];
+    const colsN=Math.ceil(W/GAP)+1, rowsN=Math.ceil(H/GAP)+1;
+    // generate manhattan traces (random walks on grid)
+    const numTraces=Math.max(20,Math.floor((W*H)/26000));
+    for(let t=0;t<numTraces;t++){
+      let cx=Math.floor(Math.random()*colsN), cy=Math.floor(Math.random()*rowsN);
+      const pts=[{x:cx*GAP,y:cy*GAP}];
+      const steps=4+(Math.random()*9|0);
+      let horiz=Math.random()<0.5;
+      for(let s=0;s<steps;s++){
+        const dist=1+(Math.random()*3|0);
+        if(horiz) cx+=Math.random()<0.5?dist:-dist; else cy+=Math.random()<0.5?dist:-dist;
+        cx=Math.max(0,Math.min(colsN,cx)); cy=Math.max(0,Math.min(rowsN,cy));
+        pts.push({x:cx*GAP,y:cy*GAP});
+        horiz=!horiz;
+      }
+      const color=Math.random()>0.5?C.cyan:C.violet;
+      // total length for pulse param
+      let len=0; for(let i=1;i<pts.length;i++) len+=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);
+      const tr={pts,color,len};
+      traces.push(tr);
+      // pads at endpoints + joints
+      pts.forEach((p,i)=>{ if(i===0||i===pts.length-1||Math.random()<0.3) pads.push({x:p.x,y:p.y,color,via:Math.random()<0.4}); });
+    }
+    // seed pulses
+    for(let i=0;i<Math.min(traces.length, 30);i++) spawnPulse();
+  }
+  function spawnPulse(){
+    const tr=traces[(Math.random()*traces.length)|0];
+    if(!tr) return;
+    pulses.push({tr, t:Math.random()*0.3, speed:0.0025+Math.random()*0.006, color:tr.color});
+  }
+  function pointAt(tr, frac){
+    let target=frac*tr.len, acc=0;
+    for(let i=1;i<tr.pts.length;i++){
+      const a=tr.pts[i-1], b=tr.pts[i];
+      const seg=Math.hypot(b.x-a.x,b.y-a.y);
+      if(acc+seg>=target){ const u=(target-acc)/(seg||1); return {x:a.x+(b.x-a.x)*u, y:a.y+(b.y-a.y)*u}; }
+      acc+=seg;
+    }
+    return tr.pts[tr.pts.length-1];
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // faint grid dots
+    ctx.fillStyle='rgba(120,140,170,0.05)';
+    for(let x=0;x<=W;x+=GAP) for(let y=0;y<=H;y+=GAP){ ctx.fillRect(x-0.5,y-0.5,1,1); }
+    // traces
+    ctx.lineWidth=1.4; ctx.lineCap='round'; ctx.lineJoin='round';
+    for(const tr of traces){
+      ctx.strokeStyle=`rgba(${tr.color},0.16)`;
+      ctx.beginPath(); ctx.moveTo(tr.pts[0].x,tr.pts[0].y);
+      for(let i=1;i<tr.pts.length;i++) ctx.lineTo(tr.pts[i].x,tr.pts[i].y);
+      ctx.stroke();
+    }
+    // pads / vias
+    for(const p of pads){
+      ctx.fillStyle=`rgba(${p.color},0.5)`;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.via?3.2:2,0,Math.PI*2); ctx.fill();
+      if(p.via){ ctx.strokeStyle=`rgba(${p.color},0.35)`; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.stroke(); }
+    }
+    // pulses
+    for(let i=pulses.length-1;i>=0;i--){
+      const pu=pulses[i]; pu.t+=pu.speed;
+      if(pu.t>=1){ pulses.splice(i,1); continue; }
+      // draw a glowing comet with short trail along the trace
+      for(let k=0;k<6;k++){
+        const f=pu.t-k*0.012; if(f<0) break;
+        const pt=pointAt(pu.tr,f); const a=(1-k/6);
+        const r=k===0?3.2:2.4;
+        const g=ctx.createRadialGradient(pt.x,pt.y,0,pt.x,pt.y,r*3);
+        g.addColorStop(0,`rgba(${pu.color},${0.85*a})`); g.addColorStop(1,`rgba(${pu.color},0)`);
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(pt.x,pt.y,r*3,0,Math.PI*2); ctx.fill();
+      }
+      const head=pointAt(pu.tr,pu.t);
+      ctx.fillStyle='rgba(235,255,252,0.95)'; ctx.beginPath(); ctx.arc(head.x,head.y,1.6,0,Math.PI*2); ctx.fill();
+    }
+    if(pulses.length<Math.max(18,traces.length*0.7) && Math.random()<0.25) spawnPulse();
+    requestAnimationFrame(draw);
+  }
+  // agentic log
+  const agentlog=document.getElementById('agentlog');
+  const LINES=[['clock','bus','rising edge','ok','ok'],['fetch','core','0x7FA2','val'],['route','trace','net#42','linked','ok'],['power','rail','3.3V','stable','val'],['logic','gate','XOR Δ','high','ok'],['cache','mem','hit 0.96','val'],['exec','alu','add r1,r2','ok','ok'],['signal','via','propagate','val']];
+  let li=0; const MAX=7;
+  function pushLog(){ const [a,tag,mid,end,kind]=LINES[li%LINES.length]; li++;
+    const ts=new Date().toLocaleTimeString('en-GB'); const ln=document.createElement('div');
+    ln.innerHTML=`<span style="opacity:.5">${ts}</span> <span class="tag">${tag}</span> ${a} <span class="val">${mid}</span> → <span class="${kind==='ok'?'ok':'val'}">${end||'ok'}</span>`;
+    agentlog.appendChild(ln); while(agentlog.children.length>MAX) agentlog.removeChild(agentlog.firstChild);
+    [...agentlog.children].forEach((c,i,arr)=>c.style.opacity=(0.25+0.75*(i/(arr.length-1||1))).toFixed(2));
+  }
+  const cur=document.createElement('div'); cur.innerHTML=`<span style="opacity:.5">agent@circuit</span> $ <span class="cursor"></span>`;
+  function refresh(){agentlog.appendChild(cur);} setInterval(()=>{pushLog();refresh();},1400); pushLog();refresh();
+  addEventListener('resize',resize); resize();
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ pulses=[]; draw.call(null); ctx.clearRect(0,0,W,H);} else draw();
+})();
+</script>
+</body>
+</html>

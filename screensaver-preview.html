@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Screensaver — Preview</title>
+<style>
+  :root {
+    --violet: 139, 92, 246;
+    --cyan: 34, 211, 238;
+    --emerald: 16, 185, 129;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; background: #05060a; }
+  body { font-family: 'SF Mono', 'Cascadia Code', 'Consolas', ui-monospace, monospace; }
+
+  #stage {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(1200px 800px at 75% 15%, rgba(var(--violet), 0.10), transparent 60%),
+      radial-gradient(900px 700px at 20% 85%, rgba(var(--cyan), 0.08), transparent 60%),
+      #05060a;
+  }
+
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  /* subtle scanline + vignette overlay for the "screen" feel */
+  #overlay {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 2px, transparent 3px),
+      radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+    mix-blend-mode: multiply;
+    opacity: 0.5;
+  }
+
+  /* center title cluster */
+  #title {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center; pointer-events: none;
+    user-select: none;
+  }
+  #title .glyph {
+    font-size: clamp(40px, 8vw, 110px);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    background: linear-gradient(135deg, rgba(var(--cyan),1), rgba(var(--violet),1));
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 28px rgba(var(--violet), 0.45));
+    animation: breathe 6s ease-in-out infinite;
+  }
+  #title .sub {
+    margin-top: 14px;
+    font-size: clamp(11px, 1.6vw, 15px);
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: rgba(var(--cyan), 0.7);
+  }
+  #title .sub .dot { color: rgba(var(--violet), 0.9); }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.92; filter: drop-shadow(0 0 22px rgba(var(--violet), 0.35)); }
+    50%      { opacity: 1;    filter: drop-shadow(0 0 40px rgba(var(--cyan), 0.55)); }
+  }
+
+  /* agentic terminal stream, bottom-left */
+  #agentlog {
+    position: absolute; left: 26px; bottom: 22px;
+    font-size: 12px; line-height: 1.7;
+    color: rgba(190, 200, 220, 0.5);
+    pointer-events: none; user-select: none;
+    max-width: 46ch;
+  }
+  #agentlog .ln { white-space: nowrap; }
+  #agentlog .tag { color: rgba(var(--violet), 0.95); }
+  #agentlog .ok  { color: rgba(var(--emerald), 0.95); }
+  #agentlog .val { color: rgba(var(--cyan), 0.95); }
+  #agentlog .cursor {
+    display: inline-block; width: 8px; height: 13px;
+    background: rgba(var(--cyan), 0.9); margin-left: 2px;
+    vertical-align: -2px; animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* live metrics, top-right */
+  #hud {
+    position: absolute; right: 26px; top: 22px;
+    text-align: right; font-size: 11px; letter-spacing: 0.08em;
+    color: rgba(160, 175, 200, 0.45);
+    pointer-events: none; user-select: none;
+  }
+  #hud .row { margin-bottom: 4px; }
+  #hud b { color: rgba(var(--cyan), 0.85); font-weight: 600; }
+
+  #hint {
+    position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+    font-size: 11px; letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(160, 175, 200, 0.3);
+    pointer-events: none; user-select: none;
+    animation: blink 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <canvas id="net"></canvas>
+    <div id="overlay"></div>
+
+    <div id="title">
+      <div class="glyph">H · G</div>
+      <div class="sub">Neural<span class="dot"> · </span>Agentic<span class="dot"> · </span>Systems</div>
+    </div>
+
+    <div id="hud">
+      <div class="row">NODES <b id="m-nodes">—</b></div>
+      <div class="row">SYNAPSES <b id="m-syn">—</b></div>
+      <div class="row">SIGNALS/s <b id="m-sig">—</b></div>
+      <div class="row">FPS <b id="m-fps">—</b></div>
+    </div>
+
+    <div id="agentlog"></div>
+
+    <div id="hint">Press any key or move mouse to continue</div>
+  </div>
+
+<script>
+(() => {
+  'use strict';
+  const C = {
+    violet: '139, 92, 246',
+    cyan:   '34, 211, 238',
+    emerald:'16, 185, 129',
+  };
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d');
+  let W, H, DPR;
+
+  let nodes = [];
+  let links = [];           // {a, b, dist}
+  let signals = [];         // pulses traveling along a link
+  let glyphs = [];          // floating code/hex characters
+  const pointer = { x: null, y: null, active: false };
+
+  const GLYPH_CHARS = '01{}</>[]#$+=*ΔΣλ⌁⎔◇◆∴⟶→01アカサ0x'.split('');
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function pick(arr) { return arr[(Math.random() * arr.length) | 0]; }
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    build();
+  }
+
+  function build() {
+    // density scales with area, clamped
+    const count = Math.max(36, Math.min(120, Math.floor((W * H) / 16000)));
+    nodes = Array.from({ length: count }, () => {
+      const isHub = Math.random() < 0.14;          // a few bright "hub" neurons
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: rand(-0.28, 0.28),
+        vy: rand(-0.28, 0.28),
+        r: isHub ? rand(2.6, 4.2) : rand(0.8, 1.8),
+        hub: isHub,
+        color: Math.random() > 0.5 ? C.violet : C.cyan,
+        // firing animation
+        fire: 0,
+        nextFire: rand(0, 240),
+      };
+    });
+
+    // floating glyphs
+    const gCount = Math.max(14, Math.min(40, Math.floor((W * H) / 52000)));
+    glyphs = Array.from({ length: gCount }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      ch: pick(GLYPH_CHARS),
+      size: rand(10, 22),
+      vy: rand(-0.18, -0.5),
+      drift: rand(-0.12, 0.12),
+      alpha: rand(0.05, 0.22),
+      color: Math.random() > 0.5 ? C.cyan : C.violet,
+      swap: rand(0, 300),
+    }));
+
+    signals = [];
+  }
+
+  const LINK_DIST = 165;
+
+  let sigCounter = 0, sigWindow = 0, sigPerSec = 0;
+
+  function update() {
+    // move nodes
+    for (const p of nodes) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+
+      // gentle attraction toward pointer
+      if (pointer.active) {
+        const dx = pointer.x - p.x, dy = pointer.y - p.y;
+        const d = Math.hypot(dx, dy);
+        if (d < 220 && d > 1) {
+          p.vx += (dx / d) * 0.006;
+          p.vy += (dy / d) * 0.006;
+        }
+      }
+      // damp speed
+      const sp = Math.hypot(p.vx, p.vy);
+      if (sp > 0.7) { p.vx *= 0.96; p.vy *= 0.96; }
+
+      // firing cycle
+      if (p.fire > 0) p.fire -= 0.02;
+      p.nextFire -= 1;
+      if (p.nextFire <= 0) {
+        p.fire = 1;
+        p.nextFire = rand(120, 360);
+        emitSignalsFrom(p);
+      }
+    }
+
+    // rebuild near links
+    links.length = 0;
+    for (let i = 0; i < nodes.length; i++) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j++) {
+        const b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < LINK_DIST) links.push({ a, b, dist });
+      }
+    }
+
+    // advance signals
+    for (let i = signals.length - 1; i >= 0; i--) {
+      const s = signals[i];
+      s.t += s.speed;
+      if (s.t >= 1) {
+        // arrive: make target node fire faintly
+        s.to.fire = Math.max(s.to.fire, 0.7);
+        signals.splice(i, 1);
+      }
+    }
+
+    // glyphs float up
+    for (const g of glyphs) {
+      g.y += g.vy; g.x += g.drift;
+      g.swap -= 1;
+      if (g.swap <= 0) { g.ch = pick(GLYPH_CHARS); g.swap = rand(40, 300); }
+      if (g.y < -20) { g.y = H + 20; g.x = Math.random() * W; }
+      if (g.x < -20) g.x = W + 20;
+      if (g.x > W + 20) g.x = -20;
+    }
+  }
+
+  function emitSignalsFrom(p) {
+    // find a few neighbours within link distance, fire pulses to them
+    let fired = 0;
+    for (const q of nodes) {
+      if (q === p) continue;
+      const d = Math.hypot(p.x - q.x, p.y - q.y);
+      if (d < LINK_DIST && Math.random() < 0.5) {
+        signals.push({
+          from: p, to: q, t: 0,
+          speed: rand(0.012, 0.03),
+          color: p.color,
+        });
+        sigCounter++;
+        if (++fired >= (p.hub ? 4 : 2)) break;
+      }
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // links
+    ctx.lineWidth = 1;
+    for (const l of links) {
+      const alpha = (1 - l.dist / LINK_DIST) * 0.16;
+      ctx.strokeStyle = `rgba(${C.violet}, ${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(l.a.x, l.a.y);
+      ctx.lineTo(l.b.x, l.b.y);
+      ctx.stroke();
+    }
+
+    // pointer "reach" lines
+    if (pointer.active) {
+      for (const p of nodes) {
+        const d = Math.hypot(p.x - pointer.x, p.y - pointer.y);
+        if (d < 200) {
+          const alpha = (1 - d / 200) * 0.3;
+          ctx.strokeStyle = `rgba(${C.cyan}, ${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(pointer.x, pointer.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // signals (traveling pulses)
+    for (const s of signals) {
+      const x = s.from.x + (s.to.x - s.from.x) * s.t;
+      const y = s.from.y + (s.to.y - s.from.y) * s.t;
+      // glowing trail
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, 7);
+      grad.addColorStop(0, `rgba(${s.color}, 0.9)`);
+      grad.addColorStop(1, `rgba(${s.color}, 0)`);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = `rgba(255,255,255,0.9)`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // nodes
+    for (const p of nodes) {
+      // firing glow
+      if (p.fire > 0) {
+        const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 18 * p.fire + p.r);
+        gr.addColorStop(0, `rgba(${p.color}, ${0.35 * p.fire})`);
+        gr.addColorStop(1, `rgba(${p.color}, 0)`);
+        ctx.fillStyle = gr;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 18 * p.fire + p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      if (p.hub) {
+        const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
+        gr.addColorStop(0, `rgba(${p.color}, 0.5)`);
+        gr.addColorStop(1, `rgba(${p.color}, 0)`);
+        ctx.fillStyle = gr;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = `rgba(${p.color}, ${p.hub ? 0.95 : 0.6})`;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // floating glyphs (drawn last, faint)
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    for (const g of glyphs) {
+      ctx.font = `${g.size}px ui-monospace, monospace`;
+      ctx.fillStyle = `rgba(${g.color}, ${g.alpha})`;
+      ctx.fillText(g.ch, g.x, g.y);
+    }
+  }
+
+  // ---- metrics / hud ----
+  const mNodes = document.getElementById('m-nodes');
+  const mSyn = document.getElementById('m-syn');
+  const mSig = document.getElementById('m-sig');
+  const mFps = document.getElementById('m-fps');
+  let fpsT = performance.now(), fpsFrames = 0, fps = 0;
+
+  function updateHud(now) {
+    fpsFrames++;
+    if (now - fpsT >= 500) {
+      fps = Math.round((fpsFrames * 1000) / (now - fpsT));
+      fpsFrames = 0; fpsT = now;
+      mFps.textContent = fps;
+      mNodes.textContent = nodes.length;
+      mSyn.textContent = links.length;
+    }
+    sigWindow += 0; // noop, sec counter handled below
+  }
+
+  setInterval(() => {
+    sigPerSec = sigCounter; sigCounter = 0;
+    mSig.textContent = sigPerSec;
+  }, 1000);
+
+  // ---- agentic terminal stream ----
+  const agentlog = document.getElementById('agentlog');
+  const AGENT_LINES = [
+    ['spawn  ', 'agent', 'orchestrator', 'online', 'ok'],
+    ['route  ', 'task', 'embeddings.index', 'queued', 'val'],
+    ['infer  ', 'model', 'opus-4.8', '128k ctx', 'val'],
+    ['link   ', 'synapse', 'cluster #7', 'reinforced', 'ok'],
+    ['vector ', 'memory', 'cosine 0.94', 'match', 'val'],
+    ['tool   ', 'call', 'search()', 'resolved', 'ok'],
+    ['plan   ', 'agent', 'decompose(4)', 'committed', 'val'],
+    ['signal ', 'neuron', 'fire Δ+1', 'propagate', 'ok'],
+    ['build  ', 'graph', 'nodes++', 'stable', 'val'],
+    ['verify ', 'check', 'self-consistent', 'passed', 'ok'],
+    ['stream ', 'token', 'Δ chunk', 'flush', 'val'],
+    ['async  ', 'agent', 'fan-out(8)', 'dispatched', 'ok'],
+  ];
+  const MAX_LOG = 7;
+  let logIdx = 0;
+  function pushLog() {
+    const [act, tag, mid, end, kind] = AGENT_LINES[logIdx % AGENT_LINES.length];
+    logIdx++;
+    const ts = new Date().toLocaleTimeString('en-GB');
+    const ln = document.createElement('div');
+    ln.className = 'ln';
+    ln.innerHTML =
+      `<span style="opacity:.5">${ts}</span> ` +
+      `<span class="tag">${tag}</span> ` +
+      `<span>${act.trim()}</span> ` +
+      `<span class="val">${mid}</span> → ` +
+      `<span class="${kind === 'ok' ? 'ok' : 'val'}">${end}</span>`;
+    agentlog.appendChild(ln);
+    while (agentlog.children.length > MAX_LOG) agentlog.removeChild(agentlog.firstChild);
+    // fade older lines
+    [...agentlog.children].forEach((c, i, arr) => {
+      c.style.opacity = (0.25 + 0.75 * (i / (arr.length - 1 || 1))).toFixed(2);
+    });
+  }
+  // trailing cursor
+  const cursorLine = document.createElement('div');
+  cursorLine.className = 'ln';
+  cursorLine.innerHTML = `<span style="opacity:.5">agent@neural</span> $ <span class="cursor"></span>`;
+  function refreshCursor() { agentlog.appendChild(cursorLine); }
+
+  setInterval(() => { pushLog(); refreshCursor(); }, 1400);
+  pushLog(); refreshCursor();
+
+  // ---- main loop ----
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function loop(now) {
+    update();
+    draw();
+    updateHud(now || performance.now());
+    if (!reduce) requestAnimationFrame(loop);
+  }
+
+  // ---- input ----
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', (e) => {
+    pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true;
+  });
+  window.addEventListener('mouseleave', () => { pointer.active = false; });
+
+  resize();
+  if (reduce) { update(); draw(); } else { requestAnimationFrame(loop); }
+})();
+</script>
+</body>
+</html>

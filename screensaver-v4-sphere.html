@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Screensaver v4 — Neural Sphere</title>
+<style>
+  :root { --violet:139,92,246; --cyan:34,211,238; --emerald:16,185,129; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { height:100%; overflow:hidden; background:#04050b; }
+  body { font-family:'SF Mono','Cascadia Code','Consolas',ui-monospace,monospace; }
+  #stage { position:fixed; inset:0;
+    background:radial-gradient(900px 900px at 50% 45%, rgba(var(--violet),0.12), transparent 60%), #04050b; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; display:block; }
+  #overlay { position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%); opacity:0.7; }
+  #title { position:absolute; left:50%; bottom:14%; transform:translateX(-50%); text-align:center; pointer-events:none; user-select:none; }
+  #title .glyph { font-size:clamp(30px,5vw,64px); font-weight:800; letter-spacing:0.14em;
+    background:linear-gradient(135deg, rgba(var(--cyan),1), rgba(var(--violet),1));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 22px rgba(var(--violet),0.45)); }
+  #title .sub { margin-top:10px; font-size:clamp(10px,1.4vw,13px); letter-spacing:0.5em; text-transform:uppercase; color:rgba(var(--cyan),0.65); }
+  #agentlog { position:absolute; left:26px; bottom:22px; font-size:12px; line-height:1.7; color:rgba(190,200,220,0.5); pointer-events:none; user-select:none; max-width:46ch; }
+  #agentlog .tag{color:rgba(var(--violet),.95)} #agentlog .ok{color:rgba(var(--emerald),.95)} #agentlog .val{color:rgba(var(--cyan),.95)}
+  .cursor{display:inline-block;width:8px;height:13px;background:rgba(var(--cyan),.9);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{opacity:0}}
+  #hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:11px;letter-spacing:.35em;text-transform:uppercase;color:rgba(160,175,200,.28);pointer-events:none;animation:blink 3s ease-in-out infinite}
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div id="overlay"></div>
+  <div id="title"><div class="glyph">H · G</div><div class="sub">Neural · Sphere · Cognition</div></div>
+  <div id="agentlog"></div>
+  <div id="hint">Press any key or move mouse to continue</div>
+</div>
+<script>
+(() => {
+  'use strict';
+  const C={violet:'139,92,246',cyan:'34,211,238',emerald:'16,185,129'};
+  const canvas=document.getElementById('c'), ctx=canvas.getContext('2d');
+  let W,H,DPR,R,cx,cy;
+  let pts=[], edges=[], signals=[];
+  let yaw=0, pitch=0.4, targetYaw=0, targetPitch=0.4;
+  const N=160;
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=innerWidth;H=innerHeight;
+    canvas.width=W*DPR;canvas.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);
+    cx=W/2; cy=H*0.45; R=Math.min(W,H)*0.32;
+    build();
+  }
+  function build(){
+    pts=[]; edges=[]; signals=[];
+    // fibonacci sphere distribution
+    const gold=Math.PI*(3-Math.sqrt(5));
+    for(let i=0;i<N;i++){
+      const y=1-(i/(N-1))*2;
+      const r=Math.sqrt(1-y*y);
+      const th=gold*i;
+      pts.push({
+        x:Math.cos(th)*r, y, z:Math.sin(th)*r,
+        color:Math.random()>0.5?C.violet:C.cyan,
+        hub:Math.random()<0.12, fire:0, nextFire:Math.random()*240
+      });
+    }
+    // connect each point to a few nearest neighbours
+    for(let i=0;i<N;i++){
+      const dists=[];
+      for(let j=0;j<N;j++){ if(i===j) continue;
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, dz=pts[i].z-pts[j].z;
+        dists.push({j, d:dx*dx+dy*dy+dz*dz});
+      }
+      dists.sort((a,b)=>a.d-b.d);
+      const k=pts[i].hub?4:3;
+      for(let n=0;n<k;n++){ const j=dists[n].j; if(j>i) edges.push({a:i,b:j}); }
+    }
+  }
+  function rot(p){
+    // rotate around Y (yaw) then X (pitch)
+    let x=p.x, y=p.y, z=p.z;
+    let cosY=Math.cos(yaw), sinY=Math.sin(yaw);
+    let x1=x*cosY - z*sinY, z1=x*sinY + z*cosY;
+    let cosP=Math.cos(pitch), sinP=Math.sin(pitch);
+    let y1=y*cosP - z1*sinP, z2=y*sinP + z1*cosP;
+    return {x:x1, y:y1, z:z2};
+  }
+  function project(rp){
+    const persp=R*2.2/(R*2.2 + rp.z*R); // simple perspective
+    return { x:cx + rp.x*R*persp, y:cy + rp.y*R*persp, scale:persp, z:rp.z };
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    yaw+=(targetYaw-yaw)*0.04 + 0.0026;
+    pitch+=(targetPitch-pitch)*0.04;
+    // precompute projected
+    const pr=pts.map(p=>{ const rp=rot(p); return {...project(rp), color:p.color, ref:p}; });
+    // edges (depth-sorted faintly)
+    ctx.lineWidth=1;
+    for(const e of edges){
+      const A=pr[e.a], B=pr[e.b];
+      const depth=(A.z+B.z)/2; // -1 back .. 1 front
+      const a=Math.max(0,(0.6 - depth*0.5))*0.3;
+      ctx.strokeStyle=`rgba(${C.violet},${a})`;
+      ctx.beginPath(); ctx.moveTo(A.x,A.y); ctx.lineTo(B.x,B.y); ctx.stroke();
+    }
+    // signals along edges
+    for(let i=signals.length-1;i>=0;i--){
+      const s=signals[i]; s.t+=s.speed;
+      if(s.t>=1){ pts[s.b].fire=Math.max(pts[s.b].fire,0.7); signals.splice(i,1); continue; }
+      const A=pr[s.a], B=pr[s.b];
+      const x=A.x+(B.x-A.x)*s.t, y=A.y+(B.y-A.y)*s.t;
+      const g=ctx.createRadialGradient(x,y,0,x,y,6);
+      g.addColorStop(0,`rgba(${s.color},0.9)`); g.addColorStop(1,`rgba(${s.color},0)`);
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,6,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.beginPath(); ctx.arc(x,y,1.4,0,Math.PI*2); ctx.fill();
+    }
+    // nodes (sort back-to-front)
+    const order=pr.map((p,i)=>i).sort((a,b)=>pr[a].z-pr[b].z);
+    for(const idx of order){
+      const p=pr[idx], ref=p.ref;
+      if(ref.fire>0) ref.fire-=0.02;
+      ref.nextFire-=1;
+      if(ref.nextFire<=0){ ref.fire=1; ref.nextFire=120+Math.random()*300; emit(idx); }
+      const depthA=0.35+0.65*((p.z+1)/2); // front brighter
+      const rad=(ref.hub?2.8:1.4)*p.scale;
+      if(ref.fire>0 || ref.hub){
+        const gr=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y, rad*5);
+        const ga=(ref.hub?0.3:0)+0.35*ref.fire;
+        gr.addColorStop(0,`rgba(${p.color},${ga})`); gr.addColorStop(1,`rgba(${p.color},0)`);
+        ctx.fillStyle=gr; ctx.beginPath(); ctx.arc(p.x,p.y,rad*5,0,Math.PI*2); ctx.fill();
+      }
+      ctx.fillStyle=`rgba(${p.color},${(ref.hub?0.95:0.6)*depthA})`;
+      ctx.beginPath(); ctx.arc(p.x,p.y,rad,0,Math.PI*2); ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  function emit(i){
+    let fired=0;
+    for(const e of edges){
+      let b=-1; if(e.a===i) b=e.b; else if(e.b===i) b=e.a;
+      if(b>=0 && Math.random()<0.6){ signals.push({a:i,b,t:0,speed:0.02+Math.random()*0.02,color:pts[i].color}); if(++fired>= (pts[i].hub?3:2)) break; }
+    }
+  }
+  // gentle mouse parallax
+  addEventListener('mousemove',e=>{
+    targetYaw = (e.clientX/W-0.5)*1.2;
+    targetPitch = 0.4 + (e.clientY/H-0.5)*0.9;
+  });
+  // agentic log
+  const agentlog=document.getElementById('agentlog');
+  const LINES=[['rotate','frame','yaw Δ','ok','ok'],['embed','vector','dim 1536','val'],['fire','neuron','cluster #5','propagate','ok'],['attend','head','softmax','val'],['link','synapse','k=3','reinforced','ok'],['think','agent','reflect()','done','val'],['weight','tensor','grad↓','val'],['recall','memory','top-k','ok']];
+  let li=0; const MAX=7;
+  function pushLog(){ const [a,tag,mid,end,kind]=LINES[li%LINES.length]; li++;
+    const ts=new Date().toLocaleTimeString('en-GB'); const ln=document.createElement('div');
+    ln.innerHTML=`<span style="opacity:.5">${ts}</span> <span class="tag">${tag}</span> ${a} <span class="val">${mid}</span> → <span class="${kind==='ok'?'ok':'val'}">${end||'ok'}</span>`;
+    agentlog.appendChild(ln); while(agentlog.children.length>MAX) agentlog.removeChild(agentlog.firstChild);
+    [...agentlog.children].forEach((c,i,arr)=>c.style.opacity=(0.25+0.75*(i/(arr.length-1||1))).toFixed(2));
+  }
+  const cur=document.createElement('div'); cur.innerHTML=`<span style="opacity:.5">agent@sphere</span> $ <span class="cursor"></span>`;
+  function refresh(){agentlog.appendChild(cur);} setInterval(()=>{pushLog();refresh();},1400); pushLog();refresh();
+  addEventListener('resize',resize); resize();
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ draw(); } else draw();
+})();
+</script>
+</body>
+</html>
