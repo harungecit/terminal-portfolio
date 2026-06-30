@@ -190,7 +190,7 @@
       social: "github.com/harungecit · linkedin.com/in/harungecit · x.com/harungecit_",
       cv: "Download CV → canva.com (also in mail app under Channels).",
       whoami: "harun — builder of systems that build with LLMs.",
-      neofetch: "HarunOS v18.2 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Python·RAG | theme: phosphor-amber"
+      neofetch: "HarunOS v18.3 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Python·RAG | theme: phosphor-amber"
     };
     function line(h) { var d = document.createElement('div'); d.innerHTML = h; out.appendChild(d); }
     setTimeout(function () { if (!isMobile()) inp.focus(); }, 60);
@@ -446,7 +446,7 @@
   (function () {
     var boot = document.getElementById('boot'), log = document.getElementById('bootlog'), bar = document.getElementById('bootbar');
     var lines = [
-      'HarunOS v18.2 — phosphor build',
+      'HarunOS v18.3 — phosphor build',
       'BIOS check ................... <ok>OK</ok>',
       'CPU: human core @ 15 years ... <ok>OK</ok>',
       'loading kernel: engineer.sys . <ok>OK</ok>',
