@@ -183,7 +183,7 @@
       help: "commands: about · ai · projects · skills · career · contact · social · cv · whoami · neofetch · open <app> · clear",
       about: "Harun Geçit — Full Stack & AI Engineer. 15+ yrs software, 2+ yrs AI. Istanbul, TR.",
       ai: "RAG (pgvector) · multi-LLM orchestration · fine-tuning/PageIndex · AI-driven SDLC.",
-      projects: "RAG Knowledge Engine · Multi-Agent Toolkit · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
+      projects: "AI Infra Academy · RAG Knowledge Engine · Multi-Agent Toolkit · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
       skills: "PHP · JS · Go · Python · SQL · Laravel · Docker · K8s · PostgreSQL · RAG · pgvector.",
       career: "USTEK (AI Eng) · CatchPad (AI Advisor) · Gourmeturca · Sadıkoğulları · freelance.",
       contact: "info@harungecit.com · wa.me/908503033954 · harungecit.com",

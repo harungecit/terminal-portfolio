@@ -736,6 +736,9 @@ Expert in the \x1b[1;31mLaravel Ecosystem\x1b[0m, PHP, JavaScript, Go & Python.
 
 \x1b[1;32m[7] DevTools Platform\x1b[0m - Developer utilities and tools
     \x1b[1;33m→\x1b[0m https://devtools.harungecit.dev/
+
+\x1b[1;32m[8] AI Infra Academy\x1b[0m - Interactive AI Infrastructure Engineering learning app
+    \x1b[1;33m→\x1b[0m https://ai-lab.harungecit.dev/
 `,
 
             contact: (args) => {
