@@ -86,6 +86,11 @@ ul.plain li::before{content:'>';position:absolute;left:0;color:var(--amber-faint
 .tlx li{font-size:12.5px;color:var(--ink-dim);padding-left:14px;position:relative;margin-bottom:3px}
 .tlx li::before{content:'>';position:absolute;left:0;color:var(--amber-faint)}
 
+/* trash (desktop easter egg) */
+.trashlist li b{color:var(--ink);font-weight:600}
+.trashlist li .dim{color:var(--amber-faint)}
+.trashnote{margin-top:14px;font-size:12.5px;color:var(--amber-dim);border-top:1px solid var(--line-soft);padding-top:12px}
+
 /* contact */
 .conn .cr{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13px}
 .conn .cr:first-child{border-top:0}
@@ -100,6 +105,14 @@ ul.plain li::before{content:'>';position:absolute;left:0;color:var(--amber-faint
 .fg textarea{resize:vertical;min-height:74px}
 .checkbox-label{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--ink-dim);margin-bottom:14px}
 .checkbox-label input{margin-top:3px;accent-color:var(--amber)}
+.fg.err input,.fg.err select,.fg.err textarea{border-color:var(--red);box-shadow:0 0 0 1px rgba(255,92,92,.3)}
+.ferr{color:var(--red);font-size:11px;margin-top:4px;flex-basis:100%}
+.checkbox-label.err{color:var(--red)}
+.checkbox-label{flex-wrap:wrap}
+.form-note{margin-top:10px;font-size:12.5px;color:var(--amber-dim)}
+.form-note.ok2{color:var(--green);text-shadow:0 0 6px rgba(51,255,153,.4)}
+.form-note.bad{color:var(--red)}
+.btn:disabled{opacity:.55;cursor:wait}
 .btn{font-size:13px;text-transform:uppercase;letter-spacing:.06em;padding:11px 20px;border:1px solid var(--amber);
   background:var(--amber);color:#1a1200;font-weight:600;cursor:pointer;font-family:var(--mono);transition:background .15s}
 .btn:hover{background:var(--amber-soft)}
@@ -188,8 +201,16 @@ html.js #seo-content{display:none}
 .win-bar{display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--bar);border-bottom:1px solid var(--line);cursor:grab;user-select:none;touch-action:none}
 .win-bar.drag{cursor:grabbing}
 .win-bar .dots{display:flex;gap:7px}
-.win-bar .dots i{width:12px;height:12px;border-radius:50%;display:block;cursor:pointer}
+.win-bar .dots i{width:13px;height:13px;border-radius:50%;display:block;cursor:pointer;position:relative;transition:transform .1s}
+.win-bar .dots i:hover{transform:scale(1.15)}
+.win-bar .dots i::after{content:'';position:absolute;inset:-3px;border-radius:50%}   /* bigger tap target */
 .win-bar .dots .c{background:var(--red)}.win-bar .dots .m{background:var(--amber)}.win-bar .dots .x{background:var(--green)}
+.win-bar .dots .c::before{content:'×';position:absolute;left:50%;top:50%;transform:translate(-50%,-54%);
+  font:700 11px/1 var(--mono);font-style:normal;color:#1a1200;text-shadow:none}
+.win-bar .dots .m::before{content:'';position:absolute;left:50%;top:50%;width:5px;height:5px;
+  transform:translate(-50%,-50%);border:1.5px solid #1a1200}
+.win-bar .dots .x::before{content:'';position:absolute;left:50%;top:50%;width:7px;height:1.5px;
+  transform:translate(-50%,-50%);background:#1a1200}
 .win-bar .gl{font-family:var(--pixel);font-size:17px;color:var(--amber-dim)}
 .win-bar .ttl{font-size:12.5px;color:var(--amber);text-shadow:var(--glow);letter-spacing:.02em;flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .win-body{padding:18px 18px 22px;overflow:auto;flex:1;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
@@ -223,7 +244,9 @@ html.js #seo-content{display:none}
 .task .tg{font-family:var(--pixel);color:var(--amber-dim);font-size:15px}
 .tray{display:flex;align-items:center;gap:12px;padding-right:6px}
 .tbtn{background:none;border:1px solid var(--line);color:var(--amber-dim);width:30px;height:30px;cursor:pointer;font-size:14px;font-family:var(--mono)}
+.tbtn:hover{color:var(--amber);border-color:var(--amber-faint)}
 .tbtn.on{color:var(--amber);text-shadow:var(--glow);border-color:var(--amber-faint)}
+.tbtn.lang{width:34px;font-size:11px;font-weight:600;letter-spacing:.06em}
 .tray .stat{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.05em}
 .tray .stat .d{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2.2s ease-in-out infinite}
 .tray .clock{font-family:var(--pixel);font-size:22px;color:var(--amber);text-shadow:var(--glow);letter-spacing:.04em;min-width:70px;text-align:right}
@@ -262,7 +285,11 @@ html.js #seo-content{display:none}
   .win{inset:0 0 calc(var(--tb) + env(safe-area-inset-bottom,0px)) 0!important;width:auto!important;height:auto!important;min-width:0;animation:winup .16s ease-out}
   @keyframes winup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   .win-bar{padding:11px 13px}
-  .win-bar .dots i{width:16px;height:16px}
+  .win-bar .dots i{width:17px;height:17px}
+  .win-bar .dots i::after{inset:-5px}
+  .win-bar .dots .c::before{font-size:14px}
+  .win-bar .dots .m::before{width:6px;height:6px}
+  .win-bar .dots .x::before{width:8px;height:2px}
   .win-bar .dots .m{display:none}              /* maximize is meaningless on mobile */
   .icons{flex-direction:row;flex-wrap:wrap;top:10px;left:8px;right:8px;bottom:auto;gap:4px;justify-content:flex-start}
   .icon{width:25%;min-width:72px;flex:1 1 72px;max-width:96px;padding:10px 4px 8px}

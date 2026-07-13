@@ -34,6 +34,79 @@
     if (e.target.closest('.icon,.sm-item,.start-btn,.task,.tbtn,.btn,.soc,.win-bar .dots i,.win-resize,#poweron')) playSnd();
   }, true);
 
+  /* ---------- language (en default, tr supported) ---------- */
+  var LANG = 'en';
+  try { if (localStorage.getItem('harunos-lang') === 'tr') LANG = 'tr'; } catch (e) {}
+  try { var ql = new URLSearchParams(location.search).get('lang'); if (ql === 'tr' || ql === 'en') LANG = ql; } catch (e) {}
+  var TRDICT = window.HARUNOS_TR || {};
+  // strings rendered from JS (not present in the HTML markup)
+  var UI = {
+    en: {
+      dotClose: 'close', dotMax: 'maximize', dotMin: 'minimize',
+      termPh: 'type a command…', sound: 'Toggle sound', lang: 'Change language',
+      errName: 'please enter your name', errEmail: 'please enter a valid email address',
+      errPhone: 'please enter a valid phone number', errTopic: 'please select a topic',
+      errMsg: 'message must be at least 10 characters', errConsent: 'please accept the privacy policy',
+      fSending: 'sending…', fSent: 'message sent — thank you! I will get back to you soon.',
+      fFail: 'could not send — please email info@harungecit.com directly.',
+      boot: [
+        'HarunOS v18.5 — phosphor build',
+        'BIOS check ................... <ok>OK</ok>',
+        'CPU: human core @ 15 years ... <ok>OK</ok>',
+        'loading kernel: engineer.sys . <ok>OK</ok>',
+        'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
+        'mount /stack laravel·go·php·py <ok>OK</ok>',
+        'net: available for projects .. <ok>UP</ok>',
+        'starting desktop ............. <ok>OK</ok>'
+      ]
+    },
+    tr: {
+      dotClose: 'kapat', dotMax: 'büyüt', dotMin: 'küçült',
+      termPh: 'bir komut yaz…', sound: 'Sesi aç/kapat', lang: 'Dili değiştir',
+      errName: 'lütfen adınızı girin', errEmail: 'geçerli bir e-posta adresi girin',
+      errPhone: 'geçerli bir telefon numarası girin', errTopic: 'lütfen bir konu seçin',
+      errMsg: 'mesaj en az 10 karakter olmalı', errConsent: 'lütfen gizlilik politikasını onaylayın',
+      fSending: 'gönderiliyor…', fSent: 'mesajınız gönderildi — teşekkürler! En kısa sürede dönüş yapacağım.',
+      fFail: 'gönderilemedi — lütfen doğrudan info@harungecit.com adresine yazın.',
+      boot: [
+        'HarunOS v18.5 — phosphor build',
+        'BIOS kontrolü ................ <ok>OK</ok>',
+        'CPU: insan çekirdeği @ 15 yıl  <ok>OK</ok>',
+        'çekirdek: engineer.sys ....... <ok>OK</ok>',
+        'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
+        'mount /stack laravel·go·php·py <ok>OK</ok>',
+        'ağ: yeni projelere açık ...... <ok>UP</ok>',
+        'masaüstü başlatılıyor ........ <ok>OK</ok>'
+      ]
+    }
+  };
+  function t(k) { return UI[LANG][k] || UI.en[k]; }
+  var langBtn = document.getElementById('langbtn');
+  function applyLang() {
+    document.documentElement.lang = LANG;
+    // swap every tagged node (source sections AND already-open window clones)
+    document.querySelectorAll('[data-i18n]').forEach(function (n) {
+      var k = n.getAttribute('data-i18n');
+      if (!n.hasAttribute('data-en')) n.setAttribute('data-en', n.innerHTML);
+      n.innerHTML = (LANG === 'tr' && TRDICT[k]) ? TRDICT[k] : n.getAttribute('data-en');
+    });
+    document.querySelectorAll('.win-bar .dots i').forEach(function (d) {
+      var k = { close: 'dotClose', max: 'dotMax', min: 'dotMin' }[d.getAttribute('data-do')];
+      if (k) d.title = t(k);
+    });
+    var ti = document.getElementById('terminput'); if (ti) ti.placeholder = t('termPh');
+    if (soundBtn) soundBtn.title = t('sound');
+    if (langBtn) { langBtn.textContent = LANG.toUpperCase(); langBtn.title = t('lang'); }
+  }
+  if (langBtn) {
+    langBtn.addEventListener('click', function () {
+      LANG = LANG === 'tr' ? 'en' : 'tr';
+      try { localStorage.setItem('harunos-lang', LANG); } catch (e) {}
+      applyLang();
+    });
+  }
+  applyLang();
+
   /* ---------- terminal app meta ---------- */
   var TERM_META = { title: 'shell', gl: '&gt;_', w: 560, h: 380 };
   var TERM_BODY =
@@ -79,6 +152,8 @@
     wrap.innerHTML = clone.innerHTML;
     body.innerHTML = '';
     body.appendChild(wrap);
+    // JS validation (trim-aware, localized) replaces native bubbles in windows
+    body.querySelectorAll('form').forEach(function (fm) { fm.setAttribute('novalidate', ''); });
   }
 
   function openApp(id) {
@@ -97,11 +172,12 @@
     }
     w.innerHTML =
       '<div class="win-bar"><span class="gl">' + m.gl + '</span>' +
-      '<div class="dots"><i class="c" data-do="close" title="close"></i><i class="m" data-do="max" title="maximize"></i><i class="x" data-do="min" title="minimize"></i></div>' +
+      '<div class="dots"><i class="c" data-do="close" title="' + t('dotClose') + '"></i><i class="m" data-do="max" title="' + t('dotMax') + '"></i><i class="x" data-do="min" title="' + t('dotMin') + '"></i></div>' +
       '<span class="ttl">' + m.title + '</span><span style="width:34px;flex:none"></span></div>' +
       '<div class="win-body"></div><div class="win-resize" title="resize"></div>';
     fillBody(w.querySelector('.win-body'), id);
     desktop.appendChild(w);
+    animateGauges(w);
 
     var task = document.createElement('button');
     task.className = 'task';
@@ -125,6 +201,20 @@
     makeResizable(w);
     focusWin(id);
     if (id === 'terminal') initTerminal(w);
+  }
+
+  // fill the gauge bars from 0 to their target width when a window opens
+  function animateGauges(w) {
+    if (reduce) return;
+    w.querySelectorAll('.bar2 i').forEach(function (el, idx) {
+      var target = el.style.width;
+      el.style.transition = 'none';
+      el.style.width = '0%';
+      setTimeout(function () {
+        el.style.transition = 'width .9s cubic-bezier(.22,.7,.3,1)';
+        el.style.width = target;
+      }, 120 + idx * 90);
+    });
   }
 
   function closeApp(id) {
@@ -179,6 +269,7 @@
   function initTerminal(w) {
     var out = w.querySelector('#termout'), inp = w.querySelector('#terminput');
     if (!inp) return;
+    inp.placeholder = t('termPh');
     var R = {
       help: "commands: about · ai · projects · skills · career · contact · social · cv · whoami · neofetch · open <app> · clear",
       about: "Harun Geçit — Full Stack & AI Engineer. 15+ yrs software, 2+ yrs AI. Istanbul, TR.",
@@ -190,7 +281,7 @@
       social: "github.com/harungecit · linkedin.com/in/harungecit · x.com/harungecit_",
       cv: "Download CV → canva.com (also in mail app under Channels).",
       whoami: "harun — builder of systems that build with LLMs.",
-      neofetch: "HarunOS v18.3 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Python·RAG | theme: phosphor-amber"
+      neofetch: "HarunOS v18.5 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Python·RAG | theme: phosphor-amber"
     };
     function line(h) { var d = document.createElement('div'); d.innerHTML = h; out.appendChild(d); }
     setTimeout(function () { if (!isMobile()) inp.focus(); }, 60);
@@ -216,6 +307,59 @@
     });
   }
   function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+
+  /* ---------- contact form: honeypot + validation + Netlify AJAX ---------- */
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (!f.classList || !f.classList.contains('contact-form')) return;
+    e.preventDefault();
+
+    var hp = f.querySelector('[name="bot-field"]');
+    if (hp && hp.value.trim()) return;                 // honeypot filled → bot, drop silently
+
+    f.querySelectorAll('.ferr').forEach(function (n) { n.remove(); });
+    f.querySelectorAll('.err').forEach(function (n) { n.classList.remove('err'); });
+    var note = f.querySelector('.form-note');
+    if (!note) { note = document.createElement('div'); note.className = 'form-note'; f.appendChild(note); }
+    note.className = 'form-note'; note.textContent = '';
+
+    var firstBad = null;
+    function val(name) { var el = f.querySelector('[name="' + name + '"]'); return el ? el.value.trim() : ''; }
+    function bad(name, msg) {
+      var el = f.querySelector('[name="' + name + '"]');
+      var box = el && (el.closest('.fg') || el.closest('.checkbox-label'));
+      if (box) {
+        box.classList.add('err');
+        var d = document.createElement('div'); d.className = 'ferr'; d.textContent = msg; box.appendChild(d);
+      }
+      if (!firstBad) firstBad = el;
+    }
+    if (val('name').length < 2) bad('name', t('errName'));
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val('email'))) bad('email', t('errEmail'));
+    if (val('phone') && !/^[+\d][\d\s().-]{6,19}$/.test(val('phone'))) bad('phone', t('errPhone'));
+    if (!val('topic')) bad('topic', t('errTopic'));
+    if (val('message').length < 10) bad('message', t('errMsg'));
+    var consent = f.querySelector('[name="consent"]');
+    if (consent && !consent.checked) bad('consent', t('errConsent'));
+    if (firstBad) { firstBad.focus(); return; }
+
+    var btn = f.querySelector('[type="submit"]');
+    if (btn) btn.disabled = true;
+    note.textContent = t('fSending');
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(f)).toString()
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      note.textContent = t('fSent'); note.classList.add('ok2');
+      f.reset();
+      if (btn) btn.disabled = false;
+    }).catch(function () {
+      note.textContent = t('fFail'); note.classList.add('bad');
+      if (btn) btn.disabled = false;
+    });
+  });
 
   /* ---------- openers (icons, start menu, in-content buttons) ---------- */
   document.querySelectorAll('[data-app]').forEach(function (n) {
@@ -266,7 +410,7 @@
   function tickLock() {
     var d = new Date();
     lockClock.textContent = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
-    try { lockDate.textContent = d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' }); } catch (e) {}
+    try { lockDate.textContent = d.toLocaleDateString(LANG === 'tr' ? 'tr-TR' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' }); } catch (e) {}
   }
   function doUnlock() {
     if (!locked) return; locked = false;
@@ -445,16 +589,7 @@
   /* ---------- boot ---------- */
   (function () {
     var boot = document.getElementById('boot'), log = document.getElementById('bootlog'), bar = document.getElementById('bootbar');
-    var lines = [
-      'HarunOS v18.3 — phosphor build',
-      'BIOS check ................... <ok>OK</ok>',
-      'CPU: human core @ 15 years ... <ok>OK</ok>',
-      'loading kernel: engineer.sys . <ok>OK</ok>',
-      'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
-      'mount /stack laravel·go·php·py <ok>OK</ok>',
-      'net: available for projects .. <ok>UP</ok>',
-      'starting desktop ............. <ok>OK</ok>'
-    ];
+    var lines = UI[LANG].boot;
     var done = false;
     function finish() {
       if (done) return; done = true;

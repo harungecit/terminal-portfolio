@@ -24,7 +24,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/harunos.css?v=18.4">
+    <link rel="stylesheet" href="assets/css/harunos.css?v=18.5">
 
     <!-- Tell CSS that JS is available (progressive enhancement) -->
     <script>document.documentElement.className += ' js';</script>
@@ -55,99 +55,101 @@
 <!-- =======================================================================
      CONTENT (single source of truth) — also the no-JS / SEO fallback page.
      When JS is on, HarunOS clones these sections into draggable windows.
+     English is the default language; [data-i18n] keys map to the Turkish
+     dictionary in assets/js/harunos-i18n.js.
      ======================================================================= -->
 <main id="seo-content">
 
     <!-- HOME / HERO -->
     <section class="appsrc hero" id="sec-home" data-title="welcome.txt" data-gl="★" data-w="600" data-h="500">
-        <div class="status-badge"><span class="d"></span>online — available for new projects</div>
+        <div class="status-badge" data-i18n="hero.badge"><span class="d"></span>online — available for new projects</div>
         <h1 class="namebig">HARUN<span>GEÇIT</span></h1>
-        <p class="rolesline">Full Stack Developer <span class="amber">&amp;</span> AI Engineer</p>
+        <p class="rolesline" data-i18n="hero.roles">Full Stack Developer <span class="amber">&amp;</span> AI Engineer</p>
         <ul class="rolelist">
-            <li><span class="rn">01</span> Full Stack Developer</li>
-            <li><span class="rn">02</span> AI Engineer</li>
-            <li><span class="rn">03</span> DevOps &amp; Security</li>
-            <li><span class="rn">04</span> Laravel Ecosystem Expert</li>
+            <li data-i18n="hero.r1"><span class="rn">01</span> Full Stack Developer</li>
+            <li data-i18n="hero.r2"><span class="rn">02</span> AI Engineer</li>
+            <li data-i18n="hero.r3"><span class="rn">03</span> DevOps &amp; Security</li>
+            <li data-i18n="hero.r4"><span class="rn">04</span> Laravel Ecosystem Expert</li>
         </ul>
-        <p class="bd">I build production systems <b>with</b> large language models — RAG pipelines on
+        <p class="bd" data-i18n="hero.bd">I build production systems <b>with</b> large language models — RAG pipelines on
             PostgreSQL + pgvector, fine-tuning workflows and multi-agent orchestration. 15+ years in
             software, 2+ years deep in AI engineering, anchored in the Laravel ecosystem.</p>
         <div class="cta-row">
-            <button class="btn" data-open="projects">▸ view projects</button>
-            <button class="btn ghost" data-open="contact">$ get in touch</button>
+            <button class="btn" data-open="projects" data-i18n="hero.cta1">▸ view projects</button>
+            <button class="btn ghost" data-open="contact" data-i18n="hero.cta2">$ get in touch</button>
         </div>
         <div class="socs">
             <a class="soc" href="https://github.com/harungecit" target="_blank" rel="noopener">GitHub</a>
             <a class="soc" href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener">LinkedIn</a>
             <a class="soc" href="https://x.com/harungecit_" target="_blank" rel="noopener">X</a>
             <a class="soc" href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener">Instagram</a>
-            <a class="soc" href="https://bio.link/harungecit" target="_blank" rel="noopener">All Links</a>
+            <a class="soc" href="https://bio.link/harungecit" target="_blank" rel="noopener" data-i18n="soc.links">All Links</a>
         </div>
     </section>
 
     <!-- ABOUT -->
     <section class="appsrc" id="sec-about" data-title="about.txt" data-gl="≡" data-w="560" data-h="480">
-        <h2 class="t">About Me</h2>
-        <p class="sub">Full Stack Developer &amp; AI Engineer · Istanbul, Türkiye</p>
-        <p class="bd">I'm a <b>Full Stack Developer &amp; AI Engineer</b> who designs scalable systems and builds
+        <h2 class="t" data-i18n="ab.t">About Me</h2>
+        <p class="sub" data-i18n="ab.sub">Full Stack Developer &amp; AI Engineer · Istanbul, Türkiye</p>
+        <p class="bd" data-i18n="ab.p1">I'm a <b>Full Stack Developer &amp; AI Engineer</b> who designs scalable systems and builds
             with Large Language Models every day. With <b>15+ years in software</b> and <b>2+ years of hands-on AI
             engineering</b>, I also work as a DevOps Engineer, System Administrator, Cybersecurity Specialist and
             Software Advisor.</p>
-        <p class="bd">On the <b>AI</b> side I build production <b>RAG</b> pipelines on PostgreSQL + pgvector, design
+        <p class="bd" data-i18n="ab.p2">On the <b>AI</b> side I build production <b>RAG</b> pipelines on PostgreSQL + pgvector, design
             <b>fine-tuning</b> and PageIndex-based training workflows, and orchestrate <b>multiple LLMs</b> together —
             managing token budgets, system prompts, custom skills and web-search agents. My daily toolkit is LLM-driven:
             Claude Code, Codex, Gemini CLI, OpenCode, Commander.ai, Cursor, TRAE and VS Code AI agents.</p>
-        <p class="bd">I'm deeply passionate about the <b>Laravel Ecosystem</b> — Livewire, Inertia.js, Filament,
+        <p class="bd" data-i18n="ab.p3">I'm deeply passionate about the <b>Laravel Ecosystem</b> — Livewire, Inertia.js, Filament,
             Forge/Vapor. Backend expertise spans PHP, JavaScript, Go, SQL and Python. I run AI-driven development,
             testing, staging and production workflows, with <b>LLM-based code review</b> and <b>AI security scanning</b>
             wired into CI/CD on Docker, Kubernetes, Nginx and AWS/GCP.</p>
         <div class="gauge">
-            <div class="gr"><div class="gtop"><span>Years coding</span><b>15+</b></div><div class="bar2"><i style="width:98%"></i></div></div>
-            <div class="gr"><div class="gtop"><span>Years AI engineering</span><b>2+</b></div><div class="bar2"><i style="width:72%"></i></div></div>
-            <div class="gr"><div class="gtop"><span>AI tools in daily use</span><b>8+</b></div><div class="bar2"><i style="width:85%"></i></div></div>
-            <div class="gr"><div class="gtop"><span>Companies</span><b>5</b></div><div class="bar2"><i style="width:55%"></i></div></div>
-            <div class="gr"><div class="gtop"><span>Projects shipped</span><b>100+</b></div><div class="bar2"><i style="width:100%"></i></div></div>
+            <div class="gr"><div class="gtop"><span data-i18n="ab.g1">Years coding</span><b>15+</b></div><div class="bar2"><i style="width:98%"></i></div></div>
+            <div class="gr"><div class="gtop"><span data-i18n="ab.g2">Years AI engineering</span><b>2+</b></div><div class="bar2"><i style="width:72%"></i></div></div>
+            <div class="gr"><div class="gtop"><span data-i18n="ab.g3">AI tools in daily use</span><b>8+</b></div><div class="bar2"><i style="width:85%"></i></div></div>
+            <div class="gr"><div class="gtop"><span data-i18n="ab.g4">Companies</span><b>5</b></div><div class="bar2"><i style="width:55%"></i></div></div>
+            <div class="gr"><div class="gtop"><span data-i18n="ab.g5">Projects shipped</span><b>100+</b></div><div class="bar2"><i style="width:100%"></i></div></div>
         </div>
     </section>
 
     <!-- AI ENGINEERING -->
     <section class="appsrc" id="sec-ai" data-title="ai_engine" data-gl="✦" data-w="680" data-h="540">
-        <h2 class="t">AI Engineering</h2>
-        <p class="sub"><span class="pill">2+ years</span> building production AI — RAG, fine-tuning, multi-agent
+        <h2 class="t" data-i18n="ai.t">AI Engineering</h2>
+        <p class="sub" data-i18n="ai.sub"><span class="pill">2+ years</span> building production AI — RAG, fine-tuning, multi-agent
             orchestration &amp; an AI-driven software lifecycle. I build <em>with</em> LLMs, every day.</p>
 
         <div class="pipe">
-            <div class="pstep"><div class="pn">PHASE_01</div><h4>Development</h4><p>LLM pair-programming &amp; agents writing, refactoring and documenting code.</p></div>
-            <div class="pstep"><div class="pn">PHASE_02</div><h4>Test</h4><p>AI-generated test suites, coverage analysis &amp; automated bug triage.</p></div>
-            <div class="pstep"><div class="pn">PHASE_03</div><h4>Staging</h4><p>LLM-based code review, AI security scanning &amp; release-note generation.</p></div>
-            <div class="pstep"><div class="pn">PHASE_04</div><h4>Production</h4><p>AI-assisted CI/CD, anomaly detection &amp; intelligent incident response.</p></div>
+            <div class="pstep"><div class="pn">PHASE_01</div><h4 data-i18n="ai.s1t">Development</h4><p data-i18n="ai.s1p">LLM pair-programming &amp; agents writing, refactoring and documenting code.</p></div>
+            <div class="pstep"><div class="pn">PHASE_02</div><h4 data-i18n="ai.s2t">Test</h4><p data-i18n="ai.s2p">AI-generated test suites, coverage analysis &amp; automated bug triage.</p></div>
+            <div class="pstep"><div class="pn">PHASE_03</div><h4 data-i18n="ai.s3t">Staging</h4><p data-i18n="ai.s3p">LLM-based code review, AI security scanning &amp; release-note generation.</p></div>
+            <div class="pstep"><div class="pn">PHASE_04</div><h4 data-i18n="ai.s4t">Production</h4><p data-i18n="ai.s4p">AI-assisted CI/CD, anomaly detection &amp; intelligent incident response.</p></div>
         </div>
 
         <div class="cards">
-            <div class="card"><div class="mid">MOD_01</div><h3>AI-Assisted Development</h3><p>I develop primarily through LLM-based CLIs and coding agents — driving features end-to-end from the terminal, from scaffolding to refactor to docs.</p><div class="chips"><span class="chip">Claude Code</span><span class="chip">OpenAI Codex</span><span class="chip">Gemini CLI</span><span class="chip">OpenCode</span><span class="chip">Commander.ai</span></div></div>
-            <div class="card"><div class="mid">MOD_02</div><h3>AI IDEs &amp; Agents</h3><p>Heavy daily use of agentic IDEs and in-editor assistants — running autonomous agents for multi-file edits, reviews and repo-wide tasks.</p><div class="chips"><span class="chip">Cursor</span><span class="chip">TRAE</span><span class="chip">VS Code AI</span><span class="chip">GitHub Copilot</span><span class="chip">Custom Agents</span></div></div>
-            <div class="card"><div class="mid">MOD_03</div><h3>RAG &amp; Vector Search</h3><p>Production RAG on PostgreSQL + pgvector — embeddings, chunking, hybrid &amp; semantic search, reranking and PageIndex document indexing.</p><div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">PageIndex</span><span class="chip">Hybrid Search</span><span class="chip">Reranking</span><span class="chip">Chunking</span></div></div>
-            <div class="card"><div class="mid">MOD_04</div><h3>LLM Engineering</h3><p>Orchestrating multiple LLMs on a single task, designing system prompts, building custom skills, and accounting for tokens &amp; cost across providers.</p><div class="chips"><span class="chip">Multi-LLM Orchestration</span><span class="chip">LLM APIs</span><span class="chip">Token Accounting</span><span class="chip">Cost Optimization</span><span class="chip">System Prompts</span><span class="chip">Skill Development</span></div></div>
-            <div class="card"><div class="mid">MOD_05</div><h3>Web-Search Agents &amp; Tools</h3><p>Building web-search skills and autonomous research agents that expand an LLM's source count, fetch live context and ground answers in citations.</p><div class="chips"><span class="chip">Web Search Skills</span><span class="chip">Research Agents</span><span class="chip">Tool Use</span><span class="chip">Function Calling</span><span class="chip">Source Grounding</span></div></div>
-            <div class="card"><div class="mid">MOD_06</div><h3>Fine-Tuning &amp; Training</h3><p>Designing fine-tuning and PageIndex-based training pipelines — dataset curation, evaluation harnesses and shaping model behavior to a domain.</p><div class="chips"><span class="chip">Fine-Tuning</span><span class="chip">PageIndex</span><span class="chip">Dataset Curation</span><span class="chip">Evaluation</span><span class="chip">TensorFlow</span><span class="chip">Python</span></div></div>
-            <div class="card"><div class="mid">MOD_07</div><h3>AI-Powered Security</h3><p>Using LLM agents for automated code review, code security analysis, vulnerability detection and secure-by-default remediation across the codebase.</p><div class="chips"><span class="chip">AI Code Review</span><span class="chip">Code Security</span><span class="chip">Vulnerability Scan</span><span class="chip">SAST</span><span class="chip">Secure Remediation</span></div></div>
-            <div class="card"><div class="mid">MOD_08</div><h3>Reliability &amp; Optimization</h3><p>Defining LLM boundaries &amp; determinism, adding guardrails, and optimizing performance, resource consumption and stability of AI systems in production.</p><div class="chips"><span class="chip">Guardrails</span><span class="chip">Determinism</span><span class="chip">Performance Tuning</span><span class="chip">Resource Optimization</span><span class="chip">Stability</span></div></div>
-            <div class="card"><div class="mid">MOD_09</div><h3>AI-Driven CI/CD</h3><p>LLM-based automation across dev, test, staging and production — generating pipelines, reviewing diffs and triaging failures automatically.</p><div class="chips"><span class="chip">GitHub Actions</span><span class="chip">AI Automation</span><span class="chip">GitOps</span><span class="chip">Auto Triage</span><span class="chip">Release Notes</span></div></div>
+            <div class="card"><div class="mid">MOD_01</div><h3 data-i18n="ai.c1t">AI-Assisted Development</h3><p data-i18n="ai.c1p">I develop primarily through LLM-based CLIs and coding agents — driving features end-to-end from the terminal, from scaffolding to refactor to docs.</p><div class="chips"><span class="chip">Claude Code</span><span class="chip">OpenAI Codex</span><span class="chip">Gemini CLI</span><span class="chip">OpenCode</span><span class="chip">Commander.ai</span></div></div>
+            <div class="card"><div class="mid">MOD_02</div><h3 data-i18n="ai.c2t">AI IDEs &amp; Agents</h3><p data-i18n="ai.c2p">Heavy daily use of agentic IDEs and in-editor assistants — running autonomous agents for multi-file edits, reviews and repo-wide tasks.</p><div class="chips"><span class="chip">Cursor</span><span class="chip">TRAE</span><span class="chip">VS Code AI</span><span class="chip">GitHub Copilot</span><span class="chip">Custom Agents</span></div></div>
+            <div class="card"><div class="mid">MOD_03</div><h3 data-i18n="ai.c3t">RAG &amp; Vector Search</h3><p data-i18n="ai.c3p">Production RAG on PostgreSQL + pgvector — embeddings, chunking, hybrid &amp; semantic search, reranking and PageIndex document indexing.</p><div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">PageIndex</span><span class="chip">Hybrid Search</span><span class="chip">Reranking</span><span class="chip">Chunking</span></div></div>
+            <div class="card"><div class="mid">MOD_04</div><h3 data-i18n="ai.c4t">LLM Engineering</h3><p data-i18n="ai.c4p">Orchestrating multiple LLMs on a single task, designing system prompts, building custom skills, and accounting for tokens &amp; cost across providers.</p><div class="chips"><span class="chip">Multi-LLM Orchestration</span><span class="chip">LLM APIs</span><span class="chip">Token Accounting</span><span class="chip">Cost Optimization</span><span class="chip">System Prompts</span><span class="chip">Skill Development</span></div></div>
+            <div class="card"><div class="mid">MOD_05</div><h3 data-i18n="ai.c5t">Web-Search Agents &amp; Tools</h3><p data-i18n="ai.c5p">Building web-search skills and autonomous research agents that expand an LLM's source count, fetch live context and ground answers in citations.</p><div class="chips"><span class="chip">Web Search Skills</span><span class="chip">Research Agents</span><span class="chip">Tool Use</span><span class="chip">Function Calling</span><span class="chip">Source Grounding</span></div></div>
+            <div class="card"><div class="mid">MOD_06</div><h3 data-i18n="ai.c6t">Fine-Tuning &amp; Training</h3><p data-i18n="ai.c6p">Designing fine-tuning and PageIndex-based training pipelines — dataset curation, evaluation harnesses and shaping model behavior to a domain.</p><div class="chips"><span class="chip">Fine-Tuning</span><span class="chip">PageIndex</span><span class="chip">Dataset Curation</span><span class="chip">Evaluation</span><span class="chip">TensorFlow</span><span class="chip">Python</span></div></div>
+            <div class="card"><div class="mid">MOD_07</div><h3 data-i18n="ai.c7t">AI-Powered Security</h3><p data-i18n="ai.c7p">Using LLM agents for automated code review, code security analysis, vulnerability detection and secure-by-default remediation across the codebase.</p><div class="chips"><span class="chip">AI Code Review</span><span class="chip">Code Security</span><span class="chip">Vulnerability Scan</span><span class="chip">SAST</span><span class="chip">Secure Remediation</span></div></div>
+            <div class="card"><div class="mid">MOD_08</div><h3 data-i18n="ai.c8t">Reliability &amp; Optimization</h3><p data-i18n="ai.c8p">Defining LLM boundaries &amp; determinism, adding guardrails, and optimizing performance, resource consumption and stability of AI systems in production.</p><div class="chips"><span class="chip">Guardrails</span><span class="chip">Determinism</span><span class="chip">Performance Tuning</span><span class="chip">Resource Optimization</span><span class="chip">Stability</span></div></div>
+            <div class="card"><div class="mid">MOD_09</div><h3 data-i18n="ai.c9t">AI-Driven CI/CD</h3><p data-i18n="ai.c9p">LLM-based automation across dev, test, staging and production — generating pipelines, reviewing diffs and triaging failures automatically.</p><div class="chips"><span class="chip">GitHub Actions</span><span class="chip">AI Automation</span><span class="chip">GitOps</span><span class="chip">Auto Triage</span><span class="chip">Release Notes</span></div></div>
         </div>
     </section>
 
     <!-- SKILLS -->
     <section class="appsrc" id="sec-skills" data-title="skills.json" data-gl="⚙" data-w="640" data-h="540">
-        <h2 class="t">Technical Skills</h2>
-        <p class="sub">manifest — the full stack I build with</p>
+        <h2 class="t" data-i18n="sk.t">Technical Skills</h2>
+        <p class="sub" data-i18n="sk.sub">manifest — the full stack I build with</p>
 
         <div class="secn">AI &amp; LLM</div>
         <div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">PageIndex</span><span class="chip">Fine-Tuning</span><span class="chip">Prompt Engineering</span><span class="chip">Multi-LLM</span><span class="chip">LLM APIs</span><span class="chip">Token Accounting</span><span class="chip">AI Agents</span><span class="chip">Web Search Agents</span><span class="chip">Function Calling</span><span class="chip">TensorFlow</span><span class="chip">Python</span></div>
 
-        <div class="secn">AI Dev Tools</div>
+        <div class="secn" data-i18n="sk.h2">AI Dev Tools</div>
         <div class="chips"><span class="chip">Claude Code</span><span class="chip">OpenAI Codex</span><span class="chip">Gemini CLI</span><span class="chip">OpenCode</span><span class="chip">Commander.ai</span><span class="chip">Cursor</span><span class="chip">TRAE</span><span class="chip">VS Code AI</span><span class="chip">GitHub Copilot</span></div>
 
-        <div class="secn">Languages</div>
+        <div class="secn" data-i18n="sk.h3">Languages</div>
         <div class="gauge">
             <div class="gr"><div class="gtop"><span>PHP</span><b>95%</b></div><div class="bar2"><i style="width:95%"></i></div></div>
             <div class="gr"><div class="gtop"><span>JavaScript</span><b>90%</b></div><div class="bar2"><i style="width:90%"></i></div></div>
@@ -156,150 +158,165 @@
             <div class="gr"><div class="gtop"><span>Go</span><b>75%</b></div><div class="bar2"><i style="width:75%"></i></div></div>
         </div>
 
-        <div class="secn">Laravel Ecosystem</div>
+        <div class="secn" data-i18n="sk.h4">Laravel Ecosystem</div>
         <div class="chips"><span class="chip">Laravel</span><span class="chip">Livewire</span><span class="chip">Inertia.js</span><span class="chip">Filament</span><span class="chip">Nova</span><span class="chip">Forge</span><span class="chip">Vapor</span><span class="chip">Horizon</span><span class="chip">Sanctum</span><span class="chip">Passport</span></div>
 
-        <div class="secn">Backend Frameworks</div>
+        <div class="secn" data-i18n="sk.h5">Backend Frameworks</div>
         <div class="chips"><span class="chip">CodeIgniter</span><span class="chip">Zend</span><span class="chip">Node.js</span><span class="chip">Express</span><span class="chip">Gin (Go)</span></div>
 
         <div class="secn">Frontend</div>
         <div class="chips"><span class="chip">React.js</span><span class="chip">Alpine.js</span><span class="chip">Inertia.js</span><span class="chip">Livewire</span><span class="chip">jQuery</span><span class="chip">Tailwind CSS</span><span class="chip">Bootstrap</span></div>
 
-        <div class="secn">Databases &amp; Data</div>
+        <div class="secn" data-i18n="sk.h7">Databases &amp; Data</div>
         <div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">MariaDB</span><span class="chip">MongoDB</span><span class="chip">Redis</span><span class="chip">SQLite</span><span class="chip">Elasticsearch</span><span class="chip">Firebase</span><span class="chip">Supabase</span></div>
 
-        <div class="secn">DevOps &amp; Cloud</div>
+        <div class="secn" data-i18n="sk.h8">DevOps &amp; Cloud</div>
         <div class="chips"><span class="chip">Docker</span><span class="chip">Podman</span><span class="chip">Kubernetes</span><span class="chip">Portainer</span><span class="chip">Coolify</span><span class="chip">Dokploy</span><span class="chip">Nginx</span><span class="chip">Traefik</span><span class="chip">FrankenPHP</span><span class="chip">Caddy</span><span class="chip">AWS</span><span class="chip">GCP</span><span class="chip">Git</span><span class="chip">GitHub Actions</span><span class="chip">GitOps</span></div>
 
-        <div class="secn">APIs &amp; Protocols</div>
+        <div class="secn" data-i18n="sk.h9">APIs &amp; Protocols</div>
         <div class="chips"><span class="chip">REST API</span><span class="chip">RESTful</span><span class="chip">GraphQL</span><span class="chip">WebSockets</span><span class="chip">SOAP</span><span class="chip">XML</span><span class="chip">JSON</span></div>
 
-        <div class="secn">Security</div>
+        <div class="secn" data-i18n="sk.h10">Security</div>
         <div class="chips"><span class="chip">OAuth 2.0</span><span class="chip">JWT</span><span class="chip">Firewall</span><span class="chip">Proxy</span><span class="chip">Cloudflare</span></div>
 
-        <div class="secn">Message Queues</div>
+        <div class="secn" data-i18n="sk.h11">Message Queues</div>
         <div class="chips"><span class="chip">Redis</span><span class="chip">RabbitMQ</span><span class="chip">Memcached</span></div>
 
-        <div class="secn">Systems &amp; Servers</div>
+        <div class="secn" data-i18n="sk.h12">Systems &amp; Servers</div>
         <div class="chips"><span class="chip">Debian</span><span class="chip">Ubuntu</span><span class="chip">CentOS</span><span class="chip">AlmaLinux</span><span class="chip">SSH</span><span class="chip">Linux</span></div>
 
-        <div class="secn">Notifications &amp; Services</div>
+        <div class="secn" data-i18n="sk.h13">Notifications &amp; Services</div>
         <div class="chips"><span class="chip">OneSignal</span><span class="chip">Firebase</span><span class="chip">Twilio</span><span class="chip">SendGrid</span><span class="chip">Telegram</span><span class="chip">Slack</span><span class="chip">Discord</span></div>
 
-        <div class="secn">Tools &amp; IDEs</div>
+        <div class="secn" data-i18n="sk.h14">Tools &amp; IDEs</div>
         <div class="chips"><span class="chip">PhpStorm</span><span class="chip">VS Code</span><span class="chip">Claude Code</span><span class="chip">GitHub Copilot</span><span class="chip">Gemini</span><span class="chip">Navicat</span><span class="chip">DBeaver</span><span class="chip">Composer</span><span class="chip">NPM</span><span class="chip">Yarn</span><span class="chip">AAPanel</span></div>
 
-        <div class="secn">Project Management</div>
+        <div class="secn" data-i18n="sk.h15">Project Management</div>
         <div class="chips"><span class="chip">Asana</span><span class="chip">Trello</span><span class="chip">ClickUp</span></div>
 
-        <div class="secn">Design &amp; Multimedia</div>
+        <div class="secn" data-i18n="sk.h16">Design &amp; Multimedia</div>
         <div class="chips"><span class="chip">Canva</span><span class="chip">Photoshop</span><span class="chip">Premiere Pro</span><span class="chip">CapCut</span></div>
     </section>
 
     <!-- EXPERIENCE -->
     <section class="appsrc" id="sec-career" data-title="career.log" data-gl="≣" data-w="600" data-h="520">
-        <h2 class="t">Work Experience</h2>
+        <h2 class="t" data-i18n="car.t">Work Experience</h2>
         <p class="sub">tail -f career.log</p>
         <div class="tl">
-            <div class="tlx"><div class="when">July 2022 — Present</div><h3>Full Stack Developer &amp; AI Engineer</h3><div class="co">USTEK RFID Elektronik Yazılım A.Ş.</div>
-                <ul><li>Developing with Zend Framework, Laravel, NodeJS and ExpressJS</li><li>RFID technologies for textile tracking, inventory management and HR</li><li>Building RAG pipelines on PostgreSQL + pgvector and integrating LLM features</li><li>AI-driven development, LLM-based code review and AI security scanning in CI/CD</li></ul>
+            <div class="tlx"><div class="when" data-i18n="car.w1">July 2022 — Present</div><h3 data-i18n="car.j1t">Full Stack Developer &amp; AI Engineer</h3><div class="co">USTEK RFID Elektronik Yazılım A.Ş.</div>
+                <ul><li data-i18n="car.j1b1">Developing with Zend Framework, Laravel, NodeJS and ExpressJS</li><li data-i18n="car.j1b2">RFID technologies for textile tracking, inventory management and HR</li><li data-i18n="car.j1b3">Building RAG pipelines on PostgreSQL + pgvector and integrating LLM features</li><li data-i18n="car.j1b4">AI-driven development, LLM-based code review and AI security scanning in CI/CD</li></ul>
                 <div class="chips"><span class="chip">Laravel</span><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">LLM APIs</span><span class="chip">PostgreSQL</span></div></div>
-            <div class="tlx"><div class="when">Apr 2022 — Present</div><h3>Software Advisor &amp; AI Engineer</h3><div class="co">CatchPad Smart Training Platform</div>
-                <ul><li>Developing with Laravel, Python, TensorFlow, NodeJS and Alpine</li><li>AI-supported exercise technologies and LLM-powered features</li><li>Fine-tuning &amp; PageIndex training workflows and multi-LLM orchestration</li><li>Web-search agents and custom skills with token &amp; cost optimization</li></ul>
+            <div class="tlx"><div class="when" data-i18n="car.w2">Apr 2022 — Present</div><h3 data-i18n="car.j2t">Software Advisor &amp; AI Engineer</h3><div class="co">CatchPad Smart Training Platform</div>
+                <ul><li data-i18n="car.j2b1">Developing with Laravel, Python, TensorFlow, NodeJS and Alpine</li><li data-i18n="car.j2b2">AI-supported exercise technologies and LLM-powered features</li><li data-i18n="car.j2b3">Fine-tuning &amp; PageIndex training workflows and multi-LLM orchestration</li><li data-i18n="car.j2b4">Web-search agents and custom skills with token &amp; cost optimization</li></ul>
                 <div class="chips"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">Fine-Tuning</span><span class="chip">Multi-LLM</span><span class="chip">AI Agents</span></div></div>
-            <div class="tlx"><div class="when">March 2021 — July 2022</div><h3>Full Stack Developer</h3><div class="co">Gourmeturca.com</div>
-                <ul><li>Cargo company integrations (DHL, FedEx, UPS)</li><li>API integrations to Oracle Netsuite ERP</li><li>Reward and referral programs; React Native webview apps</li><li>Stock system live update and export service</li></ul>
+            <div class="tlx"><div class="when" data-i18n="car.w3">March 2021 — July 2022</div><h3 data-i18n="car.fsd">Full Stack Developer</h3><div class="co">Gourmeturca.com</div>
+                <ul><li data-i18n="car.j3b1">Cargo company integrations (DHL, FedEx, UPS)</li><li data-i18n="car.j3b2">API integrations to Oracle Netsuite ERP</li><li data-i18n="car.j3b3">Reward and referral programs; React Native webview apps</li><li data-i18n="car.j3b4">Stock system live update and export service</li></ul>
                 <div class="chips"><span class="chip">Laravel</span><span class="chip">React Native</span><span class="chip">Oracle Netsuite</span><span class="chip">REST API</span></div></div>
-            <div class="tlx"><div class="when">May 2020 — Jan 2021</div><h3>Full Stack Developer</h3><div class="co">Sadıkoğulları Teknoloji İletişim Yazılım</div>
-                <ul><li>Sentiment analysis applications for schools</li><li>Docker environment for server installation</li><li>Corporate web solutions and e-commerces</li></ul>
+            <div class="tlx"><div class="when" data-i18n="car.w4">May 2020 — Jan 2021</div><h3 data-i18n="car.fsd">Full Stack Developer</h3><div class="co">Sadıkoğulları Teknoloji İletişim Yazılım</div>
+                <ul><li data-i18n="car.j4b1">Sentiment analysis applications for schools</li><li data-i18n="car.j4b2">Docker environment for server installation</li><li data-i18n="car.j4b3">Corporate web solutions and e-commerces</li></ul>
                 <div class="chips"><span class="chip">PHP</span><span class="chip">Docker</span><span class="chip">E-commerce</span></div></div>
-            <div class="tlx"><div class="when">Jan 2011 — Aug 2019</div><h3>Full Stack Developer / Freelance</h3><div class="co">Self-Employed</div>
-                <ul><li>Corporate websites and e-commerce sites</li><li>Templates and plugins for WordPress, Opencart, Jitsi, Drupal</li><li>Server setup, DNS, network configuration and virtualization</li></ul>
+            <div class="tlx"><div class="when" data-i18n="car.w5">Jan 2011 — Aug 2019</div><h3 data-i18n="car.j5t">Full Stack Developer / Freelance</h3><div class="co">Self-Employed</div>
+                <ul><li data-i18n="car.j5b1">Corporate websites and e-commerce sites</li><li data-i18n="car.j5b2">Templates and plugins for WordPress, Opencart, Jitsi, Drupal</li><li data-i18n="car.j5b3">Server setup, DNS, network configuration and virtualization</li></ul>
                 <div class="chips"><span class="chip">PHP</span><span class="chip">WordPress</span><span class="chip">Server Admin</span></div></div>
         </div>
     </section>
 
     <!-- PROJECTS -->
     <section class="appsrc" id="sec-projects" data-title="Projects" data-gl="▤" data-w="680" data-h="560">
-        <h2 class="t">Featured Projects</h2>
+        <h2 class="t" data-i18n="prj.t">Featured Projects</h2>
         <p class="sub">~/projects · ls -la</p>
         <div class="cards">
-            <div class="card"><div class="mid">React · 2025–Present</div><h3>AI Infra Academy</h3><p>Interactive bilingual (TR/EN) learning app for AI Infrastructure Engineering — GPU memory, inference optimization and distributed serving taught through a live Engineering Lab with VRAM, latency, batching and cost modeling.</p><div class="chips"><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Tailwind</span></div><div class="links"><a href="https://ai-lab.harungecit.dev/" target="_blank" rel="noopener">Visit Project ↗</a><a href="https://github.com/harungecit/ai-infra-academy" target="_blank" rel="noopener">GitHub</a></div></div>
-            <div class="card"><div class="mid">RAG · 2024–Present</div><h3>RAG Knowledge Engine</h3><p>Retrieval-Augmented Generation over private docs using PostgreSQL + pgvector, embeddings, hybrid search, reranking and PageIndex — grounded, cited answers from multiple LLMs.</p><div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">LLM</span></div></div>
-            <div class="card"><div class="mid">Multi-LLM · 2024–Present</div><h3>Multi-Agent AI Toolkit</h3><p>LLM orchestration layer that routes tasks across multiple models with custom skills, web-search agents, token accounting and cost optimization — powering an AI-driven workflow.</p><div class="chips"><span class="chip">Multi-LLM</span><span class="chip">AI Agents</span><span class="chip">Web Search</span><span class="chip">Token Mgmt</span></div></div>
-            <div class="card"><div class="mid">RFID · 2022–Present</div><h3>RFID Tracking System</h3><p>Enterprise RFID solution for textile tracking, inventory management and personnel identification with HR integration capabilities.</p><div class="chips"><span class="chip">Laravel</span><span class="chip">PostgreSQL</span><span class="chip">RFID</span><span class="chip">IoT</span></div></div>
-            <div class="card"><div class="mid">AI/ML · 2022–Present</div><h3>AI Training Platform</h3><p>Smart training platform with AI-supported exercises, detailed analytics and cross-platform compatibility (web, mobile, hardware).</p><div class="chips"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">Laravel</span><span class="chip">AI/ML</span></div></div>
-            <div class="card"><div class="mid">Web Tools · 2024–Present</div><h3>DevTools Platform</h3><p>Comprehensive developer tools platform — formatters, converters, generators and productivity utilities.</p><div class="chips"><span class="chip">Web Tools</span><span class="chip">Utilities</span></div><div class="links"><a href="https://devtools.harungecit.dev/" target="_blank" rel="noopener">Visit Project ↗</a></div></div>
-            <div class="card"><div class="mid">TypeScript · OSS</div><h3>Smart Changelists</h3><p>VS Code extension bringing JetBrains-style changelist functionality — save file snapshots, manage versions and selectively commit changes.</p><div class="chips"><span class="chip">TypeScript</span><span class="chip">VS Code API</span><span class="chip">Git</span></div><div class="links"><a href="https://github.com/harungecit/smart-changelists" target="_blank" rel="noopener">GitHub</a><a href="https://marketplace.visualstudio.com/items?itemName=harungecit.smart-changelists" target="_blank" rel="noopener">VS Marketplace</a><a href="https://open-vsx.org/extension/harungecit/smart-changelists" target="_blank" rel="noopener">OpenVSX</a></div></div>
-            <div class="card"><div class="mid">PHP · OSS</div><h3>PHP Email Validator</h3><p>Comprehensive PHP library for email validation — format checking, disposable email detection (4,900+ domains) and MX record verification.</p><div class="chips"><span class="chip">PHP</span><span class="chip">Composer</span><span class="chip">DNS/MX</span></div><div class="links"><a href="https://github.com/harungecit/php-email-validator" target="_blank" rel="noopener">GitHub</a><a href="https://packagist.org/packages/harungecit/php-email-validator" target="_blank" rel="noopener">Packagist</a></div></div>
-            <div class="card"><div class="mid">Go · OSS</div><h3>Vigilon</h3><p>Multi-platform service monitoring and alerting system with real-time status updates, Telegram notifications and role-based access control.</p><div class="chips"><span class="chip">Go</span><span class="chip">SQLite</span><span class="chip">Docker</span><span class="chip">SSE</span></div><div class="links"><a href="https://github.com/harungecit/vigilon" target="_blank" rel="noopener">View on GitHub</a></div></div>
-            <div class="card"><div class="mid">JavaScript · OSS</div><h3>UBL Viewer</h3><p>Browser extension to view e-Invoice, e-Waybill and UBL XML documents. Supports Turkish GİB, UBL 2.1, Peppol BIS and EN16931 formats.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Extension</span><span class="chip">XSLT</span></div><div class="links"><a href="https://chromewebstore.google.com/detail/mccmnolbachccdccdcidgkoligcalgpm" target="_blank" rel="noopener">Chrome</a><a href="https://addons.mozilla.org/en-US/firefox/addon/ubl-viewer/" target="_blank" rel="noopener">Firefox</a></div></div>
-            <div class="card"><div class="mid">E-commerce · 2021–2022</div><h3>E-commerce Platform</h3><p>Full-featured e-commerce platform with cargo integrations (DHL, FedEx, UPS), stock management, barcode system and Oracle Netsuite ERP integration.</p><div class="chips"><span class="chip">Laravel</span><span class="chip">React Native</span><span class="chip">Oracle API</span></div></div>
-            <div class="card"><div class="mid">PWA · April 2019</div><h3>BRAISLATOR</h3><p>Instant translation of Turkish texts into Braille for visually impaired individuals, with real-time speech-to-text translation support.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Speech-to-Text</span><span class="chip">Braille</span><span class="chip">PWA</span></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m1">React · 2025–Present</div><h3>AI Infra Academy</h3><p data-i18n="prj.p1">Interactive bilingual (TR/EN) learning app for AI Infrastructure Engineering — GPU memory, inference optimization and distributed serving taught through a live Engineering Lab with VRAM, latency, batching and cost modeling.</p><div class="chips"><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">Vite</span><span class="chip">Tailwind</span></div><div class="links"><a href="https://ai-lab.harungecit.dev/" target="_blank" rel="noopener" data-i18n="prj.visit">Visit Project ↗</a><a href="https://github.com/harungecit/ai-infra-academy" target="_blank" rel="noopener">GitHub</a></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m2">RAG · 2024–Present</div><h3>RAG Knowledge Engine</h3><p data-i18n="prj.p2">Retrieval-Augmented Generation over private docs using PostgreSQL + pgvector, embeddings, hybrid search, reranking and PageIndex — grounded, cited answers from multiple LLMs.</p><div class="chips"><span class="chip">RAG</span><span class="chip">pgvector</span><span class="chip">Embeddings</span><span class="chip">LLM</span></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m3">Multi-LLM · 2024–Present</div><h3>Multi-Agent AI Toolkit</h3><p data-i18n="prj.p3">LLM orchestration layer that routes tasks across multiple models with custom skills, web-search agents, token accounting and cost optimization — powering an AI-driven workflow.</p><div class="chips"><span class="chip">Multi-LLM</span><span class="chip">AI Agents</span><span class="chip">Web Search</span><span class="chip">Token Mgmt</span></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m4">RFID · 2022–Present</div><h3>RFID Tracking System</h3><p data-i18n="prj.p4">Enterprise RFID solution for textile tracking, inventory management and personnel identification with HR integration capabilities.</p><div class="chips"><span class="chip">Laravel</span><span class="chip">PostgreSQL</span><span class="chip">RFID</span><span class="chip">IoT</span></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m5">AI/ML · 2022–Present</div><h3>AI Training Platform</h3><p data-i18n="prj.p5">Smart training platform with AI-supported exercises, detailed analytics and cross-platform compatibility (web, mobile, hardware).</p><div class="chips"><span class="chip">Python</span><span class="chip">TensorFlow</span><span class="chip">Laravel</span><span class="chip">AI/ML</span></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m6">Web Tools · 2024–Present</div><h3>DevTools Platform</h3><p data-i18n="prj.p6">Comprehensive developer tools platform — formatters, converters, generators and productivity utilities.</p><div class="chips"><span class="chip">Web Tools</span><span class="chip">Utilities</span></div><div class="links"><a href="https://devtools.harungecit.dev/" target="_blank" rel="noopener" data-i18n="prj.visit">Visit Project ↗</a></div></div>
+            <div class="card"><div class="mid">TypeScript · OSS</div><h3>Smart Changelists</h3><p data-i18n="prj.p7">VS Code extension bringing JetBrains-style changelist functionality — save file snapshots, manage versions and selectively commit changes.</p><div class="chips"><span class="chip">TypeScript</span><span class="chip">VS Code API</span><span class="chip">Git</span></div><div class="links"><a href="https://github.com/harungecit/smart-changelists" target="_blank" rel="noopener">GitHub</a><a href="https://marketplace.visualstudio.com/items?itemName=harungecit.smart-changelists" target="_blank" rel="noopener">VS Marketplace</a><a href="https://open-vsx.org/extension/harungecit/smart-changelists" target="_blank" rel="noopener">OpenVSX</a></div></div>
+            <div class="card"><div class="mid">PHP · OSS</div><h3>PHP Email Validator</h3><p data-i18n="prj.p8">Comprehensive PHP library for email validation — format checking, disposable email detection (4,900+ domains) and MX record verification.</p><div class="chips"><span class="chip">PHP</span><span class="chip">Composer</span><span class="chip">DNS/MX</span></div><div class="links"><a href="https://github.com/harungecit/php-email-validator" target="_blank" rel="noopener">GitHub</a><a href="https://packagist.org/packages/harungecit/php-email-validator" target="_blank" rel="noopener">Packagist</a></div></div>
+            <div class="card"><div class="mid">Go · OSS</div><h3>Vigilon</h3><p data-i18n="prj.p9">Multi-platform service monitoring and alerting system with real-time status updates, Telegram notifications and role-based access control.</p><div class="chips"><span class="chip">Go</span><span class="chip">SQLite</span><span class="chip">Docker</span><span class="chip">SSE</span></div><div class="links"><a href="https://github.com/harungecit/vigilon" target="_blank" rel="noopener" data-i18n="prj.gh">View on GitHub</a></div></div>
+            <div class="card"><div class="mid">JavaScript · OSS</div><h3>UBL Viewer</h3><p data-i18n="prj.p10">Browser extension to view e-Invoice, e-Waybill and UBL XML documents. Supports Turkish GİB, UBL 2.1, Peppol BIS and EN16931 formats.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Extension</span><span class="chip">XSLT</span></div><div class="links"><a href="https://chromewebstore.google.com/detail/mccmnolbachccdccdcidgkoligcalgpm" target="_blank" rel="noopener">Chrome</a><a href="https://addons.mozilla.org/en-US/firefox/addon/ubl-viewer/" target="_blank" rel="noopener">Firefox</a></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m11">E-commerce · 2021–2022</div><h3>E-commerce Platform</h3><p data-i18n="prj.p11">Full-featured e-commerce platform with cargo integrations (DHL, FedEx, UPS), stock management, barcode system and Oracle Netsuite ERP integration.</p><div class="chips"><span class="chip">Laravel</span><span class="chip">React Native</span><span class="chip">Oracle API</span></div></div>
+            <div class="card"><div class="mid" data-i18n="prj.m12">PWA · April 2019</div><h3>BRAISLATOR</h3><p data-i18n="prj.p12">Instant translation of Turkish texts into Braille for visually impaired individuals, with real-time speech-to-text translation support.</p><div class="chips"><span class="chip">JavaScript</span><span class="chip">Speech-to-Text</span><span class="chip">Braille</span><span class="chip">PWA</span></div></div>
         </div>
     </section>
 
     <!-- CONTACT -->
     <section class="appsrc" id="sec-contact" data-title="mail" data-gl="✉" data-w="600" data-h="560">
-        <h2 class="t">Get In Touch</h2>
-        <p class="sub">Feel free to reach out for collaborations or just a friendly chat.</p>
+        <h2 class="t" data-i18n="ct.t">Get In Touch</h2>
+        <p class="sub" data-i18n="ct.sub">Feel free to reach out for collaborations or just a friendly chat.</p>
         <div class="conn">
-            <div class="cr"><span class="k">location</span><span>Istanbul, Türkiye</span></div>
-            <div class="cr"><span class="k">email</span><a href="mailto:info@harungecit.com">info@harungecit.com</a></div>
+            <div class="cr"><span class="k" data-i18n="ct.k1">location</span><span data-i18n="ct.v1">Istanbul, Türkiye</span></div>
+            <div class="cr"><span class="k" data-i18n="ct.k2">email</span><a href="mailto:info@harungecit.com">info@harungecit.com</a></div>
             <div class="cr"><span class="k">whatsapp</span><a href="https://wa.me/908503033954" target="_blank" rel="noopener">0850 303 39 54</a></div>
-            <div class="cr"><span class="k">website</span><a href="https://harungecit.com" target="_blank" rel="noopener">harungecit.com</a></div>
+            <div class="cr"><span class="k" data-i18n="ct.k4">website</span><a href="https://harungecit.com" target="_blank" rel="noopener">harungecit.com</a></div>
         </div>
 
         <form class="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
             <input type="hidden" name="form-name" value="contact" />
             <p class="hp"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
-            <div class="fg"><label for="name">Name</label><input type="text" id="name" name="name" required></div>
-            <div class="fg"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
-            <div class="fg"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" placeholder="+90 5XX XXX XX XX"></div>
-            <div class="fg"><label for="topic">Topic</label><select id="topic" name="topic" required>
-                <option value="">Select a topic…</option>
-                <option value="project">Project Collaboration</option>
-                <option value="job">Job Opportunity</option>
-                <option value="consultation">Consultation</option>
-                <option value="support">Technical Support</option>
-                <option value="other">Other</option>
+            <div class="fg"><label for="name" data-i18n="ct.lname">Name</label><input type="text" id="name" name="name" required></div>
+            <div class="fg"><label for="email" data-i18n="ct.lemail">Email</label><input type="email" id="email" name="email" required></div>
+            <div class="fg"><label for="phone" data-i18n="ct.lphone">Phone</label><input type="tel" id="phone" name="phone" placeholder="+90 5XX XXX XX XX"></div>
+            <div class="fg"><label for="topic" data-i18n="ct.ltopic">Topic</label><select id="topic" name="topic" required>
+                <option value="" data-i18n="ct.o0">Select a topic…</option>
+                <option value="project" data-i18n="ct.o1">Project Collaboration</option>
+                <option value="job" data-i18n="ct.o2">Job Opportunity</option>
+                <option value="consultation" data-i18n="ct.o3">Consultation</option>
+                <option value="support" data-i18n="ct.o4">Technical Support</option>
+                <option value="other" data-i18n="ct.o5">Other</option>
             </select></div>
-            <div class="fg"><label for="message">Message</label><textarea id="message" name="message" rows="3" required></textarea></div>
+            <div class="fg"><label for="message" data-i18n="ct.lmsg">Message</label><textarea id="message" name="message" rows="3" required></textarea></div>
             <label class="checkbox-label"><input type="checkbox" name="consent" required>
-                <span>I agree to the processing of my personal data per KVKK/GDPR. <a href="#" data-open="privacy">Privacy Policy</a></span></label>
-            <button type="submit" class="btn">▸ Send Message</button>
+                <span data-i18n="ct.consent">I agree to the processing of my personal data per KVKK/GDPR. <a href="#" data-open="privacy">Privacy Policy</a></span></label>
+            <button type="submit" class="btn" data-i18n="ct.send">▸ Send Message</button>
         </form>
 
-        <div class="secn">Channels</div>
+        <div class="secn" data-i18n="ct.channels">Channels</div>
         <div class="socs">
             <a class="soc" href="https://github.com/harungecit" target="_blank" rel="noopener">GitHub</a>
             <a class="soc" href="https://linkedin.com/in/harungecit" target="_blank" rel="noopener">LinkedIn</a>
             <a class="soc" href="https://x.com/harungecit_" target="_blank" rel="noopener">X</a>
             <a class="soc" href="https://instagram.com/harungecit.dev" target="_blank" rel="noopener">Instagram</a>
             <a class="soc" href="https://echo.harungecit.dev/" target="_blank" rel="noopener">Blog</a>
-            <a class="soc" href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit" target="_blank" rel="noopener">Download CV</a>
-            <a class="soc" href="https://bio.link/harungecit" target="_blank" rel="noopener">All Links</a>
+            <a class="soc" href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit" target="_blank" rel="noopener" data-i18n="soc.cv">Download CV</a>
+            <a class="soc" href="https://bio.link/harungecit" target="_blank" rel="noopener" data-i18n="soc.links">All Links</a>
         </div>
     </section>
 
     <!-- PRIVACY -->
     <section class="appsrc" id="sec-privacy" data-title="privacy.txt" data-gl="§" data-w="560" data-h="500">
-        <h2 class="t">Privacy Policy</h2>
-        <p class="sub">KVKK / GDPR Compliance · Gizlilik Politikası</p>
-        <p class="bd">This website collects personal data through the contact form for the purpose of responding to your inquiries. The data collected includes name, email address, phone number (optional), message content, and IP/location data (for security).</p>
-        <div class="secn">Data Usage</div>
-        <ul class="plain"><li>Responding to your inquiries</li><li>Communication regarding collaborations or job opportunities</li><li>Security and fraud prevention</li></ul>
-        <div class="secn">Data Retention</div>
-        <p class="bd">Your data is retained only as long as necessary to fulfill the purposes above, or as required by law.</p>
-        <div class="secn">Your Rights (KVKK &amp; GDPR)</div>
-        <ul class="plain"><li>Access your personal data</li><li>Request correction of inaccurate data</li><li>Request deletion of your data</li><li>Object to processing</li><li>Data portability</li></ul>
-        <div class="secn">Contact</div>
-        <p class="bd">For privacy-related inquiries: <a href="mailto:info@harungecit.com">info@harungecit.com</a></p>
+        <h2 class="t" data-i18n="pv.t">Privacy Policy</h2>
+        <p class="sub" data-i18n="pv.sub">KVKK / GDPR Compliance · Gizlilik Politikası</p>
+        <p class="bd" data-i18n="pv.p1">This website collects personal data through the contact form for the purpose of responding to your inquiries. The data collected includes name, email address, phone number (optional), message content, and IP/location data (for security).</p>
+        <div class="secn" data-i18n="pv.h1">Data Usage</div>
+        <ul class="plain"><li data-i18n="pv.u1">Responding to your inquiries</li><li data-i18n="pv.u2">Communication regarding collaborations or job opportunities</li><li data-i18n="pv.u3">Security and fraud prevention</li></ul>
+        <div class="secn" data-i18n="pv.h2">Data Retention</div>
+        <p class="bd" data-i18n="pv.p2">Your data is retained only as long as necessary to fulfill the purposes above, or as required by law.</p>
+        <div class="secn" data-i18n="pv.h3">Your Rights (KVKK &amp; GDPR)</div>
+        <ul class="plain"><li data-i18n="pv.r1">Access your personal data</li><li data-i18n="pv.r2">Request correction of inaccurate data</li><li data-i18n="pv.r3">Request deletion of your data</li><li data-i18n="pv.r4">Object to processing</li><li data-i18n="pv.r5">Data portability</li></ul>
+        <div class="secn" data-i18n="pv.h4">Contact</div>
+        <p class="bd" data-i18n="pv.p3">For privacy-related inquiries: <a href="mailto:info@harungecit.com">info@harungecit.com</a></p>
+    </section>
+
+    <!-- TRASH (desktop easter egg) -->
+    <section class="appsrc" id="sec-trash" data-title="trash" data-gl="⊘" data-w="500" data-h="440">
+        <h2 class="t" data-i18n="tsh.t">Recycle Bin</h2>
+        <p class="sub" data-i18n="tsh.sub">deleted — but never forgotten</p>
+        <ul class="plain trashlist">
+            <li data-i18n="tsh.i1"><b>jquery-1.4.min.js</b> <span class="dim">— it served faithfully (2010–2016)</span></li>
+            <li data-i18n="tsh.i2"><b>flash_intro.swf</b> <span class="dim">— 100% loaded, nobody ever watched it through</span></li>
+            <li data-i18n="tsh.i3"><b>table_layout.html</b> <span class="dim">— the dark ages of CSS</span></li>
+            <li data-i18n="tsh.i4"><b>ie6_hacks.css</b> <span class="dim">— 4,000 lines of pain</span></li>
+            <li data-i18n="tsh.i5"><b>todo_2019.txt</b> <span class="dim">— still not done</span></li>
+            <li data-i18n="tsh.i6"><b>my_first_website_2009.zip</b> <span class="dim">— do not open</span></li>
+        </ul>
+        <p class="bd trashnote" data-i18n="tsh.note">Empty recycle bin? Some things deserve to stay here.</p>
     </section>
 
     <footer class="fb-footer">
         <p>&copy; <span id="year">2026</span> Harun Geçit. All rights reserved.</p>
-        <p>HarunOS v18.4 — phosphor build</p>
+        <p>HarunOS v18.5 — phosphor build</p>
     </footer>
 </main>
 
@@ -310,7 +327,7 @@
     <div class="boot-logo">Harun<span>OS</span></div>
     <div class="boot-log" id="bootlog"></div>
     <div class="boot-bar"><i id="bootbar"></i></div>
-    <div class="boot-skip">tap anywhere to skip ▸</div>
+    <div class="boot-skip" data-i18n="boot.skip">tap anywhere to skip ▸</div>
 </div>
 
 <div id="desktop" aria-hidden="true">
@@ -325,22 +342,26 @@
         <button class="icon" data-app="terminal"><span class="gl shell">&gt;_</span><span class="nm">shell</span></button>
         <button class="icon" data-app="contact"><span class="gl">✉</span><span class="nm">mail</span></button>
         <button class="icon" data-href="https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit"><span class="gl">⤓</span><span class="nm">resume.pdf</span></button>
+        <button class="icon" data-href="https://echo.harungecit.dev/"><span class="gl">✎</span><span class="nm">blog</span></button>
+        <button class="icon" data-href="https://ai-lab.harungecit.dev/"><span class="gl">λ</span><span class="nm">ai_lab</span></button>
+        <button class="icon" data-app="trash"><span class="gl">⊘</span><span class="nm" data-i18n="ic.trash">trash</span></button>
     </div>
-    <div class="hintbar">double-click / tap an icon · drag windows · chase the bots</div>
+    <div class="hintbar" data-i18n="hint.bar">double-click / tap an icon · drag windows · chase the bots</div>
 </div>
 
 <div id="taskbar" aria-hidden="true">
-    <button class="start-btn" id="startbtn"><span class="gl">≡</span><span class="lbl">start</span></button>
+    <button class="start-btn" id="startbtn"><span class="gl">≡</span><span class="lbl" data-i18n="tb.start">start</span></button>
     <div class="tasks" id="tasks"></div>
     <div class="tray">
+        <button class="tbtn lang" id="langbtn" title="Change language" aria-label="Change language">EN</button>
         <button class="tbtn" id="soundbtn" title="Toggle sound" aria-label="Toggle sound">♪</button>
-        <span class="stat"><span class="d"></span>available</span>
+        <span class="stat"><span class="d"></span><span data-i18n="tb.stat">available</span></span>
         <span class="clock" id="clock">00:00</span>
     </div>
 </div>
 
 <nav id="startmenu" aria-hidden="true">
-    <div class="sm-head"><div class="nm">Harun Geçit</div><div class="rl">Full Stack &amp; AI Engineer</div></div>
+    <div class="sm-head"><div class="nm">Harun Geçit</div><div class="rl" data-i18n="sm.role">Full Stack &amp; AI Engineer</div></div>
     <div class="sm-list">
         <button class="sm-item" data-app="about"><span class="gl">≡</span> about.txt</button>
         <button class="sm-item" data-app="ai"><span class="gl">✦</span> ai_engine</button>
@@ -350,14 +371,14 @@
         <button class="sm-item" data-app="terminal"><span class="gl shell">&gt;_</span> shell</button>
         <button class="sm-item" data-app="contact"><span class="gl">✉</span> mail</button>
         <button class="sm-item" data-app="privacy"><span class="gl">§</span> privacy.txt</button>
-        <button class="sm-item" data-action="lock" id="lockbtn"><span class="gl gl-lock"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> lock</button>
-        <button class="sm-item power" id="powerbtn"><span class="gl">⏻</span> shut down</button>
+        <button class="sm-item" data-action="lock" id="lockbtn"><span class="gl gl-lock"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="1"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> <span data-i18n="sm.lock">lock</span></button>
+        <button class="sm-item power" id="powerbtn"><span class="gl">⏻</span> <span data-i18n="sm.power">shut down</span></button>
     </div>
 </nav>
 
 <div id="shutdown" aria-hidden="true">
-    <div class="msg">It's now safe to turn off<br>your portfolio.</div>
-    <button class="pw" id="poweron">▸ power on</button>
+    <div class="msg" data-i18n="shut.msg">It's now safe to turn off<br>your portfolio.</div>
+    <button class="pw" id="poweron" data-i18n="shut.on">▸ power on</button>
 </div>
 
 <div id="lockscreen" aria-hidden="true">
@@ -366,12 +387,13 @@
         <div class="lock-clock" id="lockclock">00:00</div>
         <div class="lock-date" id="lockdate"></div>
         <div class="lock-name">Harun Geçit</div>
-        <div class="lock-hint">click or press any key to unlock</div>
+        <div class="lock-hint" data-i18n="lock.hint">click or press any key to unlock</div>
     </div>
 </div>
 
 <audio id="ui-sound" src="assets/sounds/button.mp3" preload="auto"></audio>
 
-<script src="assets/js/harunos.js?v=18.4"></script>
+<script src="assets/js/harunos-i18n.js?v=18.5"></script>
+<script src="assets/js/harunos.js?v=18.5"></script>
 </body>
 </html>
