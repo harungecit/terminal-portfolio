@@ -26,6 +26,12 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# CV PDF must always be served fresh (updated from the private cv repo)
+[[headers]]
+  for = "/cv.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Handle SPA routing (if needed in future)
 [[redirects]]
   from = "/*"
