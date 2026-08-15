@@ -32,6 +32,11 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+[[headers]]
+  for = "/cv-ats.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 # Handle SPA routing (if needed in future)
 [[redirects]]
   from = "/*"
