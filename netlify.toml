@@ -38,6 +38,31 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 # Handle SPA routing (if needed in future)
+# Short paths → project intake form (basvuru.harungecit.dev) and panel
+[[redirects]]
+  from = "/basvuru"
+  to = "https://basvuru.harungecit.dev"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/hire"
+  to = "https://basvuru.harungecit.dev"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/apply"
+  to = "https://basvuru.harungecit.dev"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/panel"
+  to = "https://panel.harungecit.dev"
+  status = 302
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

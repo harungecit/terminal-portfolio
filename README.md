@@ -1,265 +1,86 @@
-# 🚀 Terminal Portfolio - Harun Geçit
+# HarunOS — Portfolio of Harun Geçit
 
-Portfolio website for **Harun Geçit — Full Stack Developer & AI Engineer**, featuring a modern AI/SaaS dark design (glassmorphism, violet→cyan gradients, aurora glow), an interactive neural-network particle background, a functional terminal emulator, AI chat integration, a dedicated AI Engineering showcase (RAG, fine-tuning, multi-agent orchestration), and smooth animations.
+Personal website of **Harun Geçit — Senior Full Stack Developer & AI Engineer**, live at
+[harungecit.com](https://harungecit.com) / [harungecit.dev](https://harungecit.dev).
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://harungecit.com)
-[![Version](https://img.shields.io/badge/version-17.2-blue)]()
-[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)]()
+The site is **HarunOS**: a retro phosphor-amber "desktop OS" that runs in the browser — draggable
+windows, a start menu, a shell, a lock screen, roaming ASCII bots — built with **zero dependencies**
+(plain HTML + CSS + vanilla JS, no bundler, no framework). Without JavaScript it degrades to a plain,
+fully indexable single page (`<main id="seo-content">`).
 
-## ✨ Features
+[![Live](https://img.shields.io/badge/live-harungecit.com-ffb000?style=flat-square)](https://harungecit.com)
+[![Version](https://img.shields.io/badge/HarunOS-v18.6-ffb000?style=flat-square)]()
+[![Deploy](https://img.shields.io/badge/deploy-Netlify-00c7b7?style=flat-square)](https://www.netlify.com/)
 
-- **🧠 Neural Network Background**: Interactive particle network (Canvas API) that reacts to the cursor — an AI metaphor replacing the old Matrix rain
-- **💎 Modern AI/SaaS Design**: Dark glassmorphism UI with violet→cyan gradient accents, aurora ambient glow, Space Grotesk + Inter typography
-- **💻 Interactive Terminal**: Fully functional Linux-style terminal emulator powered by XTerm.js
-- **🧠 AI Engineering Section**: Dedicated showcase of RAG (pgvector), fine-tuning/PageIndex, multi-LLM orchestration, web-search agents, AI-driven SDLC and AI security
-- **🤖 AI Chat**: Multi-model chat (Claude Sonnet 4.6 · Gemini 3.1 · GPT-5.4) via Puter.js with automatic fallback
-- **🪄 Harry Potter Spells**: Magic commands including Lumos (light mode), Nox (dark mode), Accio, and more
-- **🎮 Games**: Built-in Snake game playable in terminal
-- **📊 System Monitor**: Simulated `top` command with process information
-- **🌤️ Weather**: Real-time weather information via wttr.in
-- **🎨 Theme Support**: Light/Dark mode with smooth transitions (lumos/nox terminal spells)
-- **📱 Responsive Design**: Mobile-first approach with touch support
-- **🎯 Smooth Animations**: Intersection Observer API for scroll-triggered animations
-- **📝 Contact Form**: Enhanced validation with visitor tracking (IP, location via ip.guide)
-- **🔒 Privacy Policy**: KVKK/GDPR compliant modal
-- **🎠 Project Carousel**: Swiper.js powered project showcase
+## What's inside
 
-## 🛠️ Technologies
+| Window / app | Content |
+| :-- | :-- |
+| `welcome.txt` | Hero, roles, CTAs (view projects · get in touch · **start a project ↗**) |
+| `about.txt` | Bio + gauges (years coding, AI engineering, tools, projects) |
+| `ai_engine` | AI-driven SDLC pipeline + 9 capability modules (RAG, multi-LLM, agents, fine-tuning, AI security…) |
+| `Projects` | Featured projects — Atlas PM, AI Infra Academy, RAG Knowledge Engine, OSS (Smart Changelists, PHP Email Validator, Vigilon, UBL Viewer)… |
+| `skills.json` | Stack manifest — AI/LLM, Edge & Serverless (Next.js on Cloudflare Workers, D1/R2/KV), Laravel, Go, DevOps, security… |
+| `career.log` | Experience timeline |
+| `shell` | Mini terminal: `help about ai projects skills career contact social cv hire whoami neofetch open <app> clear` |
+| `mail` | Contact details + Netlify Forms contact form (KVKK/GDPR consent), channels, CV links |
+| `privacy.txt` | Privacy policy |
+| desktop icons | `resume.pdf` → `/cv.pdf`, `hire_me` → basvuru.harungecit.dev, `blog` → echo.harungecit.dev, `ai_lab` → ai-lab.harungecit.dev, `trash` (easter egg) |
 
-### Frontend Stack
-- **HTML5**: Semantic markup
-- **CSS3**: Custom properties, Grid, Flexbox, animations
-- **JavaScript (ES6+)**: Vanilla JavaScript for interactions
+Language toggle **EN / TR** in the taskbar (`?lang=tr` or `localStorage['harunos-lang']`).
 
-### Libraries & APIs
-| Library/API | Purpose | Version |
-|-------------|---------|---------|
-| [XTerm.js](https://xtermjs.org/) | Terminal emulator | 5.3.0 |
-| [XTerm Fit Addon](https://github.com/xtermjs/xterm.js) | Terminal responsive sizing | 0.8.0 |
-| [Swiper.js](https://swiperjs.com/) | Touch slider/carousel | 11.x |
-| [Puter.js](https://puter.com/) | AI Chat (Claude / Gemini / GPT, multi-model) | v2 |
-| [Font Awesome](https://fontawesome.com/) | Icon library | 6.5.1 |
-| [Google Fonts](https://fonts.google.com/) | Fira Code, Share Tech Mono | - |
-| [wttr.in](https://wttr.in/) | Weather API | - |
-| [ip.guide](https://ip.guide/) | Visitor IP/Location info | - |
+## Related services
 
-## 💻 Terminal Commands
+| URL | What |
+| :-- | :-- |
+| [basvuru.harungecit.dev](https://basvuru.harungecit.dev) | **Project intake form** — anyone who wants to commission a project fills this in; it lands in the panel below. `harungecit.com/basvuru`, `/hire`, `/apply` redirect here. |
+| [panel.harungecit.dev](https://panel.harungecit.dev) | Atlas PM — private CRM / project-management panel (Next.js 15 on Cloudflare Workers, D1, R2, KV) |
+| [echo.harungecit.dev](https://echo.harungecit.dev) | Blog |
+| [ai-lab.harungecit.dev](https://ai-lab.harungecit.dev) | AI Infra Academy |
+| `/cv.pdf` · `/cv-ats.pdf` | Designed CV · ATS-friendly CV (published from the `cv` repo via `build.ps1 -Publish`) |
 
-### Basic Commands
-| Command | Description |
-|---------|-------------|
-| `help` | Display all available commands |
-| `about` | Learn more about me |
-| `ai` | View my AI engineering stack (RAG, LLM, agents) |
-| `skills` | View technical skills |
-| `experience` | Show work experience |
-| `projects` | List featured projects |
-| `contact [type]` | Get contact info or open directly |
-| `social [platform]` | View/open social media links |
-| `whoami` | Who am I? |
-| `date` | Display current date and time |
-| `history` | Show command history |
-| `clear` | Clear terminal screen |
-
-### File System Commands
-| Command | Description |
-|---------|-------------|
-| `ls` | List directory contents |
-| `cd [dir]` | Change directory |
-| `pwd` | Print working directory |
-| `cat [file]` | Read file content |
-
-### Network Commands
-| Command | Description |
-|---------|-------------|
-| `ip` | Display your IP address |
-| `ping [host]` | Ping a host (simulated) |
-| `weather [city]` | Check weather forecast |
-
-### Interactive Features
-| Command | Description |
-|---------|-------------|
-| `chat` | Start AI Chat (Claude · Gemini · GPT via Puter.js) |
-| `snake` | Play Snake game |
-| `top` | System monitor |
-
-### 🪄 Harry Potter Spells
-| Command | Description |
-|---------|-------------|
-| `lumos` | Activate light mode |
-| `nox` | Activate dark mode |
-| `accio [section]` | Scroll to page section |
-| `expecto patronum` | Conjure a protective charm |
-| `riddikulus` | Banish fears with laughter |
-
-### Fun Commands
-| Command | Description |
-|---------|-------------|
-| `hack [target]` | Hollywood-style hacking simulation |
-| `matrix` | Enter the Matrix |
-| `coffee` | Brew some coffee |
-| `sudo` | Try it and see what happens |
-
-### Hidden Easter Eggs
-| Command | Description |
-|---------|-------------|
-| `xyzzy` | Classic adventure game reference |
-| `konami` | Konami code tribute |
-| `starwars` | Star Wars scroll |
-
-### Keyboard Shortcuts
-- **Arrow Up/Down**: Navigate command history
-- **Tab**: Auto-complete commands
-- **Ctrl+C**: Cancel current input
-- **Ctrl+L**: Clear screen
-- **q**: Exit games/monitors
-
-## 📁 Project Structure
+## Project structure
 
 ```
-terminal-portfolio/
-├── index.html                 # Main HTML file
-├── README.md                  # Project documentation
-├── .gitignore                 # Git ignore rules
-└── assets/
-    ├── css/
-    │   └── styles.css         # All styles
-    │                          # - Design tokens & themes (violet→cyan)
-    │                          # - Glassmorphism components
-    │                          # - Terminal styling
-    │                          # - Responsive breakpoints
-    │                          # - Modal styles
-    │                          # - Form validation styles
-    │                          # - Custom scrollbar
-    ├── js/
-    │   ├── script.js          # Main JavaScript
-    │   │                      # - Neural network particle background
-    │   │                      # - Navigation & hamburger menu
-    │   │                      # - Typing animation
-    │   │                      # - Stats counter
-    │   │                      # - Scroll animations
-    │   │                      # - Contact form handler
-    │   │                      # - Form validation (email, phone)
-    │   │                      # - Privacy modal
-    │   │                      # - Swiper carousel init
-    │   │                      # - ip.guide integration
-    │   └── terminal.js        # Terminal emulator (1400+ lines)
-    │                          # - XTerm.js configuration
-    │                          # - Command processing
-    │                          # - File system simulation
-    │                          # - Snake game
-    │                          # - System monitor (top)
-    │                          # - AI Chat (Puter.js)
-    │                          # - Weather integration
-    │                          # - Harry Potter spells
-    │                          # - Easter eggs
-    └── images/                # Image assets
+index.html                 # single source of truth: all content (EN) + HarunOS shell markup
+assets/css/harunos.css     # theme (phosphor-amber), windows, desktop, responsive rules
+assets/js/harunos.js       # window manager, terminal, i18n switch, contact form, lock screen, bots
+assets/js/harunos-i18n.js  # Turkish dictionary (window.HARUNOS_TR) keyed by data-i18n
+assets/sounds/button.mp3   # UI click
+cv.pdf, cv-ats.pdf         # CVs (generated elsewhere, copied here on publish)
+netlify.toml               # headers (no-cache for CVs, immutable for assets), redirects
+robots.txt, sitemap.xml
+screensaver-*.html, lifecycle-*.html, hire-section.html   # design prototypes (not linked from the site)
+assets/css/styles.css, assets/js/script.js, assets/js/terminal.js   # legacy (pre-HarunOS) — unused
 ```
 
-## 🎨 Theming
+## Editing content
 
-### Dark Mode (Default)
-```css
-:root {
-    --bg: #07070d;
-    --violet: #8b5cf6;
-    --cyan: #22d3ee;
-    --emerald: #34d399;
-    --grad: linear-gradient(135deg, var(--violet), var(--cyan));
-}
-```
+- **English text lives in `index.html`** inside `<section class="appsrc" id="sec-…">` blocks. HarunOS clones these into windows.
+- **Turkish text lives in `assets/js/harunos-i18n.js`**; every translatable node carries a `data-i18n="key"`.
+- New window: add a `<section class="appsrc" id="sec-xyz" data-title="…" data-gl="…" data-w="…" data-h="…">`,
+  a desktop icon (`<button class="icon" data-app="xyz">`) and a start-menu item (`<button class="sm-item" data-app="xyz">`).
+  External links use `data-href="https://…"` instead of `data-app`.
+- After changing CSS/JS bump the `?v=` query string on the three asset tags in `index.html` (and the version strings in `harunos.js` boot log / `neofetch`).
 
-### Light Mode (Lumos)
-```css
-body.light-mode {
-    --bg: #fafafa;
-    --violet: #7c3aed;
-    --cyan: #0891b2;
-    --emerald: #059669;
-}
-```
+## Run locally
 
-Toggle between modes using:
-- Terminal command: `lumos` / `nox`
-- Persists in localStorage
+No build step.
 
-## 📝 Contact Form Features
-
-- **Fields**: Name, Email, Phone (optional), Topic, Message
-- **Validation**:
-  - Email: RFC 5322 compliant, length checks, domain validation
-  - Phone: International format, 7-15 digits
-  - Real-time validation on blur
-- **Visitor Tracking**: Appends IP, country, city, timezone via ip.guide
-- **KVKK/GDPR**: Privacy policy modal with consent checkbox
-- **Netlify Forms**: Backend integration
-
-## 🚀 Deployment
-
-### Netlify (Recommended)
-- Auto-deploys from GitHub
-- Form handling built-in
-- Custom domain support
-
-### GitHub Pages
 ```bash
-# Settings → Pages → Source: main branch
-# Live at: https://username.github.io/terminal-portfolio
+npx http-server -p 8080     # or just open index.html
+node --check assets/js/harunos.js assets/js/harunos-i18n.js   # syntax check
 ```
 
-## 🌐 Browser Support
+## Deployment
 
-| Browser | Status |
-|---------|--------|
-| Chrome/Edge | ✅ Full Support |
-| Firefox | ✅ Full Support |
-| Safari | ✅ Full Support |
-| Opera | ✅ Full Support |
+Netlify, branch `harungecit.com`, `publish = "."`, no build command. Custom headers and redirects are in `netlify.toml`
+(`/cv.pdf` and `/cv-ats.pdf` are served with `max-age=0, must-revalidate`; `/basvuru`, `/hire`, `/apply` → basvuru.harungecit.dev; `/panel` → panel.harungecit.dev).
 
-## 📊 Performance
+## Author
 
-- **60fps** Matrix rain using `requestAnimationFrame`
-- **Intersection Observer** for scroll animations
-- **Lazy loading** for Puter.js (loads only when chat is opened)
-- **Custom scrollbars** styled to match theme
-- **Optimized CSS** with GPU-accelerated transforms
+**Harun Geçit** — [harungecit.com](https://harungecit.com) · [github.com/harungecit](https://github.com/harungecit) · [linkedin.com/in/harungecit](https://linkedin.com/in/harungecit) · [echo.harungecit.dev](https://echo.harungecit.dev) · [bio.link/harungecit](https://bio.link/harungecit) · info@harungecit.com
 
-## 🔄 Recent Updates (v15.4)
+## License
 
-- ✅ Puter.js AI Chat integration (multi-model with fallback)
-- ✅ Dynamic Puter.js loading (prevents 401 on page load)
-- ✅ Turkish character support in chat
-- ✅ Phone field in contact form
-- ✅ Enhanced email/phone validation
-- ✅ Visitor info tracking (ip.guide)
-- ✅ Privacy policy modal
-- ✅ Site-wide custom scrollbar
-- ✅ Contact form layout improvements
-- ✅ Swiper.js project carousel
-
-## 👨‍💻 Author
-
-**Harun Geçit** - Full Stack Developer & AI Engineer
-
-- 🌐 Website: [harungecit.com](https://harungecit.com)
-- 📧 Email: [info@harungecit.com](mailto:info@harungecit.com)
-- 💼 LinkedIn: [@harungecit](https://linkedin.com/in/harungecit)
-- 🐙 GitHub: [@harungecit](https://github.com/harungecit)
-- 📷 Instagram: [@harungecit.dev](https://instagram.com/harungecit.dev)
-- 🐦 X (Twitter): [@harungecit_](https://x.com/harungecit_)
-- 📝 Blog: [echo.harungecit.dev](https://echo.harungecit.dev)
-- 🔗 All Links: [bio.link/harungecit](https://bio.link/harungecit)
-
-## 📄 License
-
-Copyright © 2025 **Harun Geçit**. All rights reserved.
-
----
-
-<div align="center">
-
-**⭐ Star this repo if you like it!**
-
-Built with 💚 and ☕ by [Harun Geçit](https://harungecit.com)
-
-</div>
+© 2026 Harun Geçit. All rights reserved. Content and design may not be reused without permission.

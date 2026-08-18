@@ -116,6 +116,7 @@ ul.plain li::before{content:'>';position:absolute;left:0;color:var(--amber-faint
 .btn{font-size:13px;text-transform:uppercase;letter-spacing:.06em;padding:11px 20px;border:1px solid var(--amber);
   background:var(--amber);color:#1a1200;font-weight:600;cursor:pointer;font-family:var(--mono);transition:background .15s}
 .btn:hover{background:var(--amber-soft)}
+a.btn{display:inline-block;text-decoration:none;line-height:normal}
 .btn.ghost{background:none;color:var(--ink);border-color:var(--amber-faint)}
 .btn.ghost:hover{border-color:var(--amber);color:var(--amber);text-shadow:var(--glow);background:rgba(255,176,0,.06)}
 .socs{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
@@ -172,10 +173,10 @@ html.js #seo-content{display:none}
 .wordmark{position:absolute;right:24px;bottom:18px;font-family:var(--pixel);font-size:clamp(60px,14vw,150px);
   color:rgba(255,176,0,.05);line-height:.8;pointer-events:none;user-select:none;z-index:1}
 .icons{position:absolute;top:16px;left:12px;bottom:16px;display:flex;flex-direction:column;flex-wrap:wrap;align-content:flex-start;gap:4px 10px;z-index:5}
-.icon{width:96px;padding:12px 6px 9px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;
+.icon{width:96px;padding:9px 6px 7px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
   border:1px solid transparent;border-radius:4px;text-align:center;user-select:none;background:none;color:var(--ink);font-family:var(--mono)}
 .icon:hover,.icon:focus-visible{background:rgba(255,176,0,.06);border-color:var(--line)}
-.icon .gl{font-family:var(--pixel);font-size:34px;color:var(--amber);text-shadow:var(--glow);line-height:1}
+.icon .gl{font-family:var(--pixel);font-size:32px;color:var(--amber);text-shadow:var(--glow);line-height:1}
 .icon .nm{font-size:11px;color:var(--ink);letter-spacing:.02em}
 .hintbar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--amber-faint);
   text-transform:uppercase;letter-spacing:.08em;z-index:3;text-align:center;width:90%}

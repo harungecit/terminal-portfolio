@@ -50,12 +50,12 @@
       fSending: 'sending…', fSent: 'message sent — thank you! I will get back to you soon.',
       fFail: 'could not send — please email info@harungecit.com directly.',
       boot: [
-        'HarunOS v18.5 — phosphor build',
+        'HarunOS v18.6 — phosphor build',
         'BIOS check ................... <ok>OK</ok>',
         'CPU: human core @ 15 years ... <ok>OK</ok>',
         'loading kernel: engineer.sys . <ok>OK</ok>',
         'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
-        'mount /stack laravel·go·php·py <ok>OK</ok>',
+        'mount /stack laravel·go·next·cf <ok>OK</ok>',
         'net: available for projects .. <ok>UP</ok>',
         'starting desktop ............. <ok>OK</ok>'
       ]
@@ -69,12 +69,12 @@
       fSending: 'gönderiliyor…', fSent: 'mesajınız gönderildi — teşekkürler! En kısa sürede dönüş yapacağım.',
       fFail: 'gönderilemedi — lütfen doğrudan info@harungecit.com adresine yazın.',
       boot: [
-        'HarunOS v18.5 — phosphor build',
+        'HarunOS v18.6 — phosphor build',
         'BIOS kontrolü ................ <ok>OK</ok>',
         'CPU: insan çekirdeği @ 15 yıl  <ok>OK</ok>',
         'çekirdek: engineer.sys ....... <ok>OK</ok>',
         'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
-        'mount /stack laravel·go·php·py <ok>OK</ok>',
+        'mount /stack laravel·go·next·cf <ok>OK</ok>',
         'ağ: yeni projelere açık ...... <ok>UP</ok>',
         'masaüstü başlatılıyor ........ <ok>OK</ok>'
       ]
@@ -165,7 +165,9 @@
     if (!isMobile()) {
       var vw = Math.min(window.innerWidth - 16, m.w);
       var vh = Math.min(window.innerHeight - window._tb - 16, m.h);
-      var left = Math.max(8, Math.min(window.innerWidth - vw - 8, 130 + casc * 26));
+      // if the icon column wrapped (short viewport), start windows right of the 2nd column
+      var ic = document.getElementById('icons'), base = (ic && ic.offsetWidth > 150) ? 236 : 130;
+      var left = Math.max(8, Math.min(window.innerWidth - vw - 8, base + casc * 26));
       var top = Math.max(8, Math.min(window.innerHeight - window._tb - vh - 8, 30 + casc * 24));
       casc = (casc + 1) % 6;
       w.style.left = left + 'px'; w.style.top = top + 'px'; w.style.width = vw + 'px'; w.style.height = vh + 'px';
@@ -271,17 +273,18 @@
     if (!inp) return;
     inp.placeholder = t('termPh');
     var R = {
-      help: "commands: about · ai · projects · skills · career · contact · social · cv · whoami · neofetch · open <app> · clear",
+      help: "commands: about · ai · projects · skills · career · contact · social · cv · hire · whoami · neofetch · open <app> · clear",
       about: "Harun Geçit — Full Stack & AI Engineer. 15+ yrs software, 2+ yrs AI. Istanbul, TR.",
       ai: "RAG (pgvector) · multi-LLM orchestration · fine-tuning/PageIndex · AI-driven SDLC.",
-      projects: "AI Infra Academy · RAG Knowledge Engine · Multi-Agent Toolkit · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
-      skills: "PHP · JS · Go · Python · SQL · Laravel · Docker · K8s · PostgreSQL · RAG · pgvector.",
+      projects: "Atlas PM (Next.js on Cloudflare Workers) · AI Infra Academy · RAG Knowledge Engine · Multi-Agent Toolkit · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
+      skills: "PHP · JS/TS · Go · Python · SQL · Laravel · Next.js · Cloudflare Workers/D1 · Docker · K8s · PostgreSQL · RAG · pgvector.",
       career: "USTEK (AI Eng) · CatchPad (AI Advisor) · Gourmeturca · Sadıkoğulları · freelance.",
       contact: "info@harungecit.com · wa.me/908503033954 · harungecit.com",
       social: "github.com/harungecit · linkedin.com/in/harungecit · x.com/harungecit_",
-      cv: "Download CV → canva.com (also in mail app under Channels).",
+      cv: "Download CV → <a href=\"/cv.pdf\" target=\"_blank\" rel=\"noopener\">/cv.pdf</a> · ATS version → <a href=\"/cv-ats.pdf\" target=\"_blank\" rel=\"noopener\">/cv-ats.pdf</a>",
+      hire: "Want to commission a project? → <a href=\"https://basvuru.harungecit.dev\" target=\"_blank\" rel=\"noopener\">basvuru.harungecit.dev</a> (intake form, lands straight in my pipeline)",
       whoami: "harun — builder of systems that build with LLMs.",
-      neofetch: "HarunOS v18.5 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Python·RAG | theme: phosphor-amber"
+      neofetch: "HarunOS v18.6 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Next.js·Cloudflare·RAG | theme: phosphor-amber"
     };
     function line(h) { var d = document.createElement('div'); d.innerHTML = h; out.appendChild(d); }
     setTimeout(function () { if (!isMobile()) inp.focus(); }, 60);
@@ -291,14 +294,15 @@
       line('<span class="pp">harun@os:~$</span> ' + esc(c));
       var lc = c.toLowerCase();
       if (lc === 'clear') { out.innerHTML = ''; return; }
-      if (lc === 'ls') { line('<span class="dim">about.txt  ai_engine  Projects  skills.json  career.log  mail  resume.pdf</span>'); }
+      if (lc === 'ls') { line('<span class="dim">about.txt  ai_engine  Projects  skills.json  career.log  mail  resume.pdf  hire_me</span>'); }
       else if (lc === 'date') { line('<span class="hl">' + new Date().toString() + '</span>'); }
       else if (lc.indexOf('echo ') === 0) { line('<span class="hl">' + esc(c.slice(5)) + '</span>'); }
       else if (lc.indexOf('sudo') === 0) { line('<span class="dim">nice try — you are not in the sudoers file. This incident will be reported. :)</span>'); }
       else if (lc.indexOf('open ') === 0) {
         var ap = lc.slice(5).trim().replace('.txt', '').replace('.json', '').replace('.log', '');
         if (ap === 'mail') ap = 'contact'; if (ap === 'shell') ap = 'terminal';
-        if (ap === 'resume') { line('<span class="hl">opening CV…</span>'); window.open('https://www.canva.com/design/DAF-ign591s/cE0M190EM1PhiHiWGcAuow/edit', '_blank'); }
+        if (ap === 'resume' || ap === 'cv') { line('<span class="hl">opening CV…</span>'); window.open('/cv.pdf', '_blank', 'noopener'); }
+        else if (ap === 'hire_me' || ap === 'hire' || ap === 'basvuru') { line('<span class="hl">opening project intake form…</span>'); window.open('https://basvuru.harungecit.dev', '_blank', 'noopener'); }
         else if (metaFor(ap)) { line('<span class="hl">opening ' + ap + '…</span>'); openApp(ap); }
         else line('<span class="dim">no such app: ' + esc(ap) + '</span>');
       }
@@ -375,7 +379,7 @@
     });
   });
   document.querySelectorAll('[data-href]').forEach(function (n) {
-    n.addEventListener('click', function () { window.open(n.getAttribute('data-href'), '_blank', 'noopener'); });
+    n.addEventListener('click', function () { window.open(n.getAttribute('data-href'), '_blank', 'noopener'); if (n.classList.contains('sm-item')) closeStart(); });
     n.addEventListener('dblclick', function () { window.open(n.getAttribute('data-href'), '_blank', 'noopener'); });
   });
   // delegated: any element with data-open (hero CTAs, privacy link in cloned content)

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /screensaver-
+Disallow: /lifecycle-
+Disallow: /hire-section.html
+
+Sitemap: https://harungecit.com/sitemap.xml

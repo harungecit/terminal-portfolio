@@ -27,15 +27,20 @@ window.HARUNOS_TR = {
   'hero.bd': 'Büyük dil modelleri <b>ile</b> üretim sistemleri kuruyorum — PostgreSQL + pgvector üzerinde RAG hatları, fine-tuning iş akışları ve çoklu-ajan orkestrasyonu. Yazılımda 15+ yıl, AI mühendisliğinde 2+ yıl; Laravel ekosistemi merkezde.',
   'hero.cta1': '▸ projeleri gör',
   'hero.cta2': '$ iletişime geç',
+  'hero.cta3': '✎ proje başlat ↗',
   'soc.links': 'Tüm Bağlantılar',
   'soc.cv': 'CV İndir',
+  'soc.cvats': 'CV (ATS)',
+  'soc.hire': 'Proje Başlat ↗',
+  'ic.hire': 'proje_başlat',
+  'sm.hire': 'proje başlat ↗',
 
   /* ---- about ---- */
   'ab.t': 'Hakkımda',
   'ab.sub': 'Full Stack Geliştirici &amp; AI Mühendisi · İstanbul, Türkiye',
   'ab.p1': 'Ölçeklenebilir sistemler tasarlayan ve her gün Büyük Dil Modelleriyle üretim yapan bir <b>Full Stack Geliştirici &amp; AI Mühendisi</b>yim. <b>Yazılımda 15+ yıl</b> ve <b>2+ yıl uygulamalı AI mühendisliği</b> deneyimimle DevOps Mühendisi, Sistem Yöneticisi, Siber Güvenlik Uzmanı ve Yazılım Danışmanı olarak da çalışıyorum.',
   'ab.p2': '<b>AI</b> tarafında PostgreSQL + pgvector üzerinde üretim <b>RAG</b> hatları kuruyor, <b>fine-tuning</b> ve PageIndex tabanlı eğitim iş akışları tasarlıyor ve <b>birden fazla LLM’i</b> birlikte orkestre ediyorum — token bütçeleri, sistem prompt’ları, özel skill’ler ve web arama ajanlarını yönetiyorum. Günlük araç setim LLM odaklı: Claude Code, Codex, Gemini CLI, OpenCode, Commander.ai, Cursor, TRAE ve VS Code AI ajanları.',
-  'ab.p3': '<b>Laravel Ekosistemi</b>’ne derin bir tutkuyla bağlıyım — Livewire, Inertia.js, Filament, Forge/Vapor. Backend uzmanlığım PHP, JavaScript, Go, SQL ve Python’ı kapsıyor. Docker, Kubernetes, Nginx ve AWS/GCP üzerinde CI/CD’ye entegre <b>LLM tabanlı kod inceleme</b> ve <b>AI güvenlik taraması</b> ile AI odaklı geliştirme, test, staging ve üretim iş akışları yürütüyorum.',
+  'ab.p3': '<b>Laravel Ekosistemi</b>’ne derin bir tutkuyla bağlıyım — Livewire, Inertia.js, Filament, Forge/Vapor. Backend uzmanlığım PHP, JavaScript, Go, SQL ve Python’ı kapsıyor. Docker, Kubernetes, Nginx ve AWS/GCP üzerinde CI/CD’ye entegre <b>LLM tabanlı kod inceleme</b> ve <b>AI güvenlik taraması</b> ile AI odaklı geliştirme, test, staging ve üretim iş akışları yürütüyorum — ve <b>Cloudflare Workers üzerinde Next.js</b> (D1, R2, KV) ile edge-native ürünler yayınlıyorum.',
   'ab.g1': 'Kodlama yılı',
   'ab.g2': 'AI mühendisliği yılı',
   'ab.g3': 'Günlük AI aracı',
@@ -76,6 +81,7 @@ window.HARUNOS_TR = {
   'sk.h14': 'Araçlar &amp; IDE’ler',
   'sk.h15': 'Proje Yönetimi',
   'sk.h16': 'Tasarım &amp; Multimedya',
+  'sk.h17': 'Edge &amp; Serverless',
 
   /* ---- career ---- */
   'car.t': 'İş Deneyimi',
@@ -109,6 +115,10 @@ window.HARUNOS_TR = {
 
   /* ---- projects ---- */
   'prj.t': 'Öne Çıkan Projeler',
+  'prj.m13': 'Next.js · Cloudflare · 2026–Halen',
+  'prj.p13': 'Freelance CRM / proje yönetim paneli ve public ön başvuru formu (<b>basvuru.harungecit.dev</b>) — müşteriler, projeler, teklifler, satışlar, faturalar, kısa linkler, lisans API’si — <b>4 alan adına hizmet veren tek bir Cloudflare Worker</b> olarak yayında: OpenNext ile Next.js 15, D1 + Drizzle (34 tablo), R2, KV, cron; sıfır bağımlılıkla yazılmış scrypt/TOTP kimlik doğrulama ve 11 katmanlı spam savunması.',
+  'prj.apply': 'Proje Başlat ↗',
+  'prj.panel': 'Panel (özel)',
   'prj.m1': 'React · 2025–Halen',
   'prj.p1': 'AI Altyapı Mühendisliği için etkileşimli iki dilli (TR/EN) öğrenme uygulaması — GPU bellek, çıkarım optimizasyonu ve dağıtık sunum; VRAM, gecikme, batching ve maliyet modellemeli canlı Mühendislik Laboratuvarı ile.',
   'prj.m2': 'RAG · 2024–Halen',
@@ -134,11 +144,12 @@ window.HARUNOS_TR = {
 
   /* ---- contact ---- */
   'ct.t': 'İletişime Geç',
-  'ct.sub': 'İş birliği için ya da sadece sohbet etmek için çekinmeden ulaşın.',
+  'ct.sub': 'İş birliği için ya da sadece sohbet etmek için çekinmeden ulaşın. Bir proje yaptırmak mı istiyorsunuz? <a href="https://basvuru.harungecit.dev" target="_blank" rel="noopener">Ön başvuru formunu</a> doldurun — doğrudan iş akışıma düşer.',
   'ct.k1': 'konum',
   'ct.v1': 'İstanbul, Türkiye',
   'ct.k2': 'e-posta',
   'ct.k4': 'web sitesi',
+  'ct.k5': 'yeni proje',
   'ct.lname': 'Ad Soyad',
   'ct.lemail': 'E-posta',
   'ct.lphone': 'Telefon',
