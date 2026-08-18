@@ -34,7 +34,7 @@ Language toggle **EN / TR** in the taskbar (`?lang=tr` or `localStorage['harunos
 | URL | What |
 | :-- | :-- |
 | [basvuru.harungecit.dev](https://basvuru.harungecit.dev) | **Project intake form** — anyone who wants to commission a project fills this in; it lands in the panel below. `harungecit.com/basvuru`, `/hire`, `/apply` redirect here. |
-| [panel.harungecit.dev](https://panel.harungecit.dev) | Atlas PM — private CRM / project-management panel (Next.js 15 on Cloudflare Workers, D1, R2, KV) |
+| panel.harungecit.dev | Atlas PM — private CRM / project-management panel behind the intake form (Next.js 15 on Cloudflare Workers, D1, R2, KV); not public |
 | [echo.harungecit.dev](https://echo.harungecit.dev) | Blog |
 | [ai-lab.harungecit.dev](https://ai-lab.harungecit.dev) | AI Infra Academy |
 | `/cv.pdf` · `/cv-ats.pdf` | Designed CV · ATS-friendly CV (published from the `cv` repo via `build.ps1 -Publish`) |

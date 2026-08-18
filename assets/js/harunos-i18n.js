@@ -118,7 +118,6 @@ window.HARUNOS_TR = {
   'prj.m13': 'Next.js · Cloudflare · 2026–Halen',
   'prj.p13': 'Freelance CRM / proje yönetim paneli ve public ön başvuru formu (<b>basvuru.harungecit.dev</b>) — müşteriler, projeler, teklifler, satışlar, faturalar, kısa linkler, lisans API’si — <b>4 alan adına hizmet veren tek bir Cloudflare Worker</b> olarak yayında: OpenNext ile Next.js 15, D1 + Drizzle (34 tablo), R2, KV, cron; sıfır bağımlılıkla yazılmış scrypt/TOTP kimlik doğrulama ve 11 katmanlı spam savunması.',
   'prj.apply': 'Proje Başlat ↗',
-  'prj.panel': 'Panel (özel)',
   'prj.m1': 'React · 2025–Halen',
   'prj.p1': 'AI Altyapı Mühendisliği için etkileşimli iki dilli (TR/EN) öğrenme uygulaması — GPU bellek, çıkarım optimizasyonu ve dağıtık sunum; VRAM, gecikme, batching ve maliyet modellemeli canlı Mühendislik Laboratuvarı ile.',
   'prj.m2': 'RAG · 2024–Halen',
