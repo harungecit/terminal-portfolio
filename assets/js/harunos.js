@@ -180,6 +180,8 @@
     fillBody(w.querySelector('.win-body'), id);
     desktop.appendChild(w);
     animateGauges(w);
+    // opened by a user gesture, so playback with sound is allowed
+    if (!reduce) w.querySelectorAll('video').forEach(function (v) { var p = v.play(); if (p) p.catch(function () {}); });
 
     var task = document.createElement('button');
     task.className = 'task';
@@ -189,13 +191,14 @@
 
     var bar = w.querySelector('.win-bar');
     bar.querySelector('[data-do="close"]').addEventListener('click', function (e) { e.stopPropagation(); closeApp(id); });
-    bar.querySelector('[data-do="min"]').addEventListener('click', function (e) { e.stopPropagation(); w.classList.add('min'); task.classList.remove('active'); });
+    function pauseMedia() { w.querySelectorAll('video').forEach(function (v) { v.pause(); }); }
+    bar.querySelector('[data-do="min"]').addEventListener('click', function (e) { e.stopPropagation(); w.classList.add('min'); task.classList.remove('active'); pauseMedia(); });
     bar.querySelector('[data-do="max"]').addEventListener('click', function (e) { e.stopPropagation(); w.classList.toggle('max'); });
     bar.addEventListener('dblclick', function (e) { if (!e.target.closest('.dots')) w.classList.toggle('max'); });
     w.addEventListener('pointerdown', function () { focusWin(id); });
     task.addEventListener('click', function () {
       if (w.classList.contains('min')) { w.classList.remove('min'); focusWin(id); }
-      else if (w.classList.contains('focused')) { w.classList.add('min'); task.classList.remove('active'); }
+      else if (w.classList.contains('focused')) { w.classList.add('min'); task.classList.remove('active'); pauseMedia(); }
       else focusWin(id);
     });
 
@@ -273,7 +276,7 @@
     if (!inp) return;
     inp.placeholder = t('termPh');
     var R = {
-      help: "commands: about · ai · projects · skills · career · contact · social · cv · hire · whoami · neofetch · open <app> · clear",
+      help: "commands: about · ai · projects · skills · career · contact · social · cv · reel · hire · whoami · neofetch · open <app> · clear",
       about: "Harun Geçit — Full Stack & AI Engineer. 15+ yrs software, 2+ yrs AI. Istanbul, TR.",
       ai: "RAG (pgvector) · multi-LLM orchestration · fine-tuning/PageIndex · AI-driven SDLC.",
       projects: "Atlas PM (Next.js on Cloudflare Workers) · AI Infra Academy · RAG Knowledge Engine · Multi-Agent Toolkit · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
@@ -294,13 +297,14 @@
       line('<span class="pp">harun@os:~$</span> ' + esc(c));
       var lc = c.toLowerCase();
       if (lc === 'clear') { out.innerHTML = ''; return; }
-      if (lc === 'ls') { line('<span class="dim">about.txt  ai_engine  Projects  skills.json  career.log  mail  resume.pdf  hire_me</span>'); }
+      if (lc === 'ls') { line('<span class="dim">about.txt  ai_engine  Projects  skills.json  career.log  mail  resume.pdf  cv_reel.mp4  hire_me</span>'); }
+      else if (lc === 'reel' || lc === 'play reel') { line('<span class="hl">playing cv_reel.mp4 — 15s, sound on ♪</span>'); openApp('reel'); }
       else if (lc === 'date') { line('<span class="hl">' + new Date().toString() + '</span>'); }
       else if (lc.indexOf('echo ') === 0) { line('<span class="hl">' + esc(c.slice(5)) + '</span>'); }
       else if (lc.indexOf('sudo') === 0) { line('<span class="dim">nice try — you are not in the sudoers file. This incident will be reported. :)</span>'); }
       else if (lc.indexOf('open ') === 0) {
-        var ap = lc.slice(5).trim().replace('.txt', '').replace('.json', '').replace('.log', '');
-        if (ap === 'mail') ap = 'contact'; if (ap === 'shell') ap = 'terminal';
+        var ap = lc.slice(5).trim().replace('.txt', '').replace('.json', '').replace('.log', '').replace('.mp4', '');
+        if (ap === 'mail') ap = 'contact'; if (ap === 'shell') ap = 'terminal'; if (ap === 'cv_reel' || ap === 'video') ap = 'reel';
         if (ap === 'resume' || ap === 'cv') { line('<span class="hl">opening CV…</span>'); window.open('/cv.pdf', '_blank', 'noopener'); }
         else if (ap === 'hire_me' || ap === 'hire' || ap === 'basvuru') { line('<span class="hl">opening project intake form…</span>'); window.open('https://basvuru.harungecit.dev', '_blank', 'noopener'); }
         else if (metaFor(ap)) { line('<span class="hl">opening ' + ap + '…</span>'); openApp(ap); }

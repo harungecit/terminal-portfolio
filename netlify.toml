@@ -37,6 +37,12 @@
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
 
+# CV reel video + poster (re-rendered from the cv repo; keep caching short)
+[[headers]]
+  for = "/media/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
 # Handle SPA routing (if needed in future)
 # Short paths → project intake form (basvuru.harungecit.dev) and panel
 [[redirects]]

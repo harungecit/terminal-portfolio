@@ -22,7 +22,8 @@ fully indexable single page (`<main id="seo-content">`).
 | `Projects` | Featured projects — Atlas PM, AI Infra Academy, RAG Knowledge Engine, OSS (Smart Changelists, PHP Email Validator, Vigilon, UBL Viewer)… |
 | `skills.json` | Stack manifest — AI/LLM, Edge & Serverless (Next.js on Cloudflare Workers, D1/R2/KV), Laravel, Go, DevOps, security… |
 | `career.log` | Experience timeline |
-| `shell` | Mini terminal: `help about ai projects skills career contact social cv hire whoami neofetch open <app> clear` |
+| `cv_reel.mp4` | 15s motion-graphics CV reel (`/media/cv-reel.mp4`, autoplays on open, pauses on minimize) — rendered from the `cv` repo's `video/` folder |
+| `shell` | Mini terminal: `help about ai projects skills career contact social cv reel hire whoami neofetch open <app> clear` |
 | `mail` | Contact details + Netlify Forms contact form (KVKK/GDPR consent), channels, CV links |
 | `privacy.txt` | Privacy policy |
 | desktop icons | `resume.pdf` → `/cv.pdf`, `hire_me` → basvuru.harungecit.dev, `blog` → echo.harungecit.dev, `ai_lab` → ai-lab.harungecit.dev, `trash` (easter egg) |

@@ -25,7 +25,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=VT323&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="assets/css/harunos.css?v=18.6">
+    <link rel="stylesheet" href="assets/css/harunos.css?v=18.6.1">
 
     <!-- Tell CSS that JS is available (progressive enhancement) -->
     <script>document.documentElement.className += ' js';</script>
@@ -81,6 +81,7 @@
             <button class="btn" data-open="projects" data-i18n="hero.cta1">▸ view projects</button>
             <button class="btn ghost" data-open="contact" data-i18n="hero.cta2">$ get in touch</button>
             <a class="btn ghost" href="https://basvuru.harungecit.dev" target="_blank" rel="noopener" data-i18n="hero.cta3">✎ start a project ↗</a>
+            <button class="btn ghost" data-open="reel" data-i18n="hero.cta4">▶ watch 15s reel</button>
         </div>
         <div class="socs">
             <a class="soc" href="https://github.com/harungecit" target="_blank" rel="noopener">GitHub</a>
@@ -251,6 +252,22 @@
         </div>
     </section>
 
+    <!-- CV REEL (15s motion-graphics résumé; source lives in the cv repo under video/) -->
+    <section class="appsrc" id="sec-reel" data-title="cv_reel.mp4" data-gl="▶" data-w="780" data-h="600">
+        <h2 class="t" data-i18n="rl.t">CV Reel</h2>
+        <p class="sub" data-i18n="rl.sub">15 seconds · 15 years — the résumé as motion graphics. Sound on ♪</p>
+        <div class="reel">
+            <video controls playsinline preload="none" poster="/media/cv-reel-poster.jpg" width="1920" height="1080">
+                <source src="/media/cv-reel.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="reel-meta">
+            <span>1920×1080 · 60 fps · 0:15</span>
+            <a href="/media/cv-reel.mp4" download="harun-gecit-cv-reel.mp4" data-i18n="rl.dl">⤓ download mp4</a>
+            <a href="/cv.pdf" target="_blank" rel="noopener">resume.pdf ↗</a>
+        </div>
+    </section>
+
     <!-- CONTACT -->
     <section class="appsrc" id="sec-contact" data-title="mail" data-gl="✉" data-w="600" data-h="560">
         <h2 class="t" data-i18n="ct.t">Get In Touch</h2>
@@ -355,6 +372,7 @@
         <button class="icon" data-app="terminal"><span class="gl shell">&gt;_</span><span class="nm">shell</span></button>
         <button class="icon" data-app="contact"><span class="gl">✉</span><span class="nm">mail</span></button>
         <button class="icon" data-href="/cv.pdf"><span class="gl">⤓</span><span class="nm">resume.pdf</span></button>
+        <button class="icon" data-app="reel"><span class="gl">▶</span><span class="nm">cv_reel.mp4</span></button>
         <button class="icon" data-href="https://basvuru.harungecit.dev"><span class="gl">✎</span><span class="nm" data-i18n="ic.hire">hire_me</span></button>
         <button class="icon" data-href="https://echo.harungecit.dev/"><span class="gl">✎</span><span class="nm">blog</span></button>
         <button class="icon" data-href="https://ai-lab.harungecit.dev/"><span class="gl">λ</span><span class="nm">ai_lab</span></button>
@@ -382,6 +400,7 @@
         <button class="sm-item" data-app="projects"><span class="gl">▤</span> Projects</button>
         <button class="sm-item" data-app="skills"><span class="gl">⚙</span> skills.json</button>
         <button class="sm-item" data-app="career"><span class="gl">≣</span> career.log</button>
+        <button class="sm-item" data-app="reel"><span class="gl">▶</span> cv_reel.mp4</button>
         <button class="sm-item" data-app="terminal"><span class="gl shell">&gt;_</span> shell</button>
         <button class="sm-item" data-app="contact"><span class="gl">✉</span> mail</button>
         <button class="sm-item" data-href="https://basvuru.harungecit.dev"><span class="gl">✎</span> <span data-i18n="sm.hire">start a project ↗</span></button>
@@ -408,7 +427,7 @@
 
 <audio id="ui-sound" src="assets/sounds/button.mp3" preload="auto"></audio>
 
-<script src="assets/js/harunos-i18n.js?v=18.6"></script>
-<script src="assets/js/harunos.js?v=18.6"></script>
+<script src="assets/js/harunos-i18n.js?v=18.6.1"></script>
+<script src="assets/js/harunos.js?v=18.6.1"></script>
 </body>
 </html>
