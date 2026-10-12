@@ -1,6 +1,6 @@
 # HarunOS — Portfolio of Harun Geçit
 
-Personal website of **Harun Geçit — Senior Full Stack Developer & AI Engineer**, live at
+Personal website of **Harun Geçit — Senior AI Engineer & Full Stack Developer**, live at
 [harungecit.com](https://harungecit.com) / [harungecit.dev](https://harungecit.dev).
 
 The site is **HarunOS**: a retro phosphor-amber "desktop OS" that runs in the browser — draggable
@@ -9,18 +9,18 @@ windows, a start menu, a shell, a lock screen, roaming ASCII bots — built with
 fully indexable single page (`<main id="seo-content">`).
 
 [![Live](https://img.shields.io/badge/live-harungecit.com-ffb000?style=flat-square)](https://harungecit.com)
-[![Version](https://img.shields.io/badge/HarunOS-v18.6-ffb000?style=flat-square)]()
+[![Version](https://img.shields.io/badge/HarunOS-v18.7-ffb000?style=flat-square)]()
 [![Deploy](https://img.shields.io/badge/deploy-Netlify-00c7b7?style=flat-square)](https://www.netlify.com/)
 
 ## What's inside
 
 | Window / app | Content |
 | :-- | :-- |
-| `welcome.txt` | Hero, roles, CTAs (view projects · get in touch · **start a project ↗**) |
-| `about.txt` | Bio + gauges (years coding, AI engineering, tools, projects) |
-| `ai_engine` | AI-driven SDLC pipeline + 9 capability modules (RAG, multi-LLM, agents, fine-tuning, AI security…) |
-| `Projects` | Featured projects — Atlas PM, AI Infra Academy, RAG Knowledge Engine, OSS (Smart Changelists, PHP Email Validator, Vigilon, UBL Viewer)… |
-| `skills.json` | Stack manifest — AI/LLM, Edge & Serverless (Next.js on Cloudflare Workers, D1/R2/KV), Laravel, Go, DevOps, security… |
+| `welcome.txt` | Hero: Senior AI Engineer & Full Stack Developer, roles (AI Engineer · LLM Agents, Forward-Deployed AI Engineer, Full Stack · Python · Go · PHP · Node.js, DevOps & Security), CTAs (view projects · get in touch · **start a project ↗**) |
+| `about.txt` | Bio (forward-deployed AI work, polyglot backend) + gauges (years coding, AI engineering, AI systems shipped, companies, projects) |
+| `ai_engine` | Forward-deployed method (Discover → Design → Build → Operate) + 9 modules: agents & tool calling, RAG & PageIndex, guardrails, multi-provider routing & cost, conversation/persona/decision design, self-hosted LLMs, MCP & integrations, workflow automation, AI-driven engineering |
+| `Projects` | Featured projects — Atlas PM, DevBox, Turkish Payment Gateways AI Agent Docs, AI Infra Academy, OSS (Smart Changelists, PHP Email Validator, Vigilon, UBL Viewer)… |
+| `skills.json` | Stack manifest — AI/LLM, models & platforms (Claude, Gemini, OpenRouter, Groq, NVIDIA NIM, llama.cpp, MCP), languages incl. Python & Node.js, Edge & Serverless, Laravel, Go, DevOps, security… |
 | `career.log` | Experience timeline |
 | `cv_reel.mp4` | 15s motion-graphics CV reel (`/media/cv-reel.mp4`, autoplays on open, pauses on minimize) — rendered from the `cv` repo's `video/` folder |
 | `shell` | Mini terminal: `help about ai projects skills career contact social cv reel hire whoami neofetch open <app> clear` |

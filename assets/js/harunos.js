@@ -50,12 +50,12 @@
       fSending: 'sending…', fSent: 'message sent — thank you! I will get back to you soon.',
       fFail: 'could not send — please email info@harungecit.com directly.',
       boot: [
-        'HarunOS v18.6 — phosphor build',
+        'HarunOS v18.7 — phosphor build',
         'BIOS check ................... <ok>OK</ok>',
         'CPU: human core @ 15 years ... <ok>OK</ok>',
         'loading kernel: engineer.sys . <ok>OK</ok>',
-        'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
-        'mount /stack laravel·go·next·cf <ok>OK</ok>',
+        'mount /ai  agents·tools·rag·mcp <ok>OK</ok>',
+        'mount /stack py·go·php·node·cf  <ok>OK</ok>',
         'net: available for projects .. <ok>UP</ok>',
         'starting desktop ............. <ok>OK</ok>'
       ]
@@ -69,12 +69,12 @@
       fSending: 'gönderiliyor…', fSent: 'mesajınız gönderildi — teşekkürler! En kısa sürede dönüş yapacağım.',
       fFail: 'gönderilemedi — lütfen doğrudan info@harungecit.com adresine yazın.',
       boot: [
-        'HarunOS v18.6 — phosphor build',
+        'HarunOS v18.7 — phosphor build',
         'BIOS kontrolü ................ <ok>OK</ok>',
         'CPU: insan çekirdeği @ 15 yıl  <ok>OK</ok>',
         'çekirdek: engineer.sys ....... <ok>OK</ok>',
-        'mount /ai  rag·multi-llm·agents <ok>OK</ok>',
-        'mount /stack laravel·go·next·cf <ok>OK</ok>',
+        'mount /ai  agents·tools·rag·mcp <ok>OK</ok>',
+        'mount /stack py·go·php·node·cf  <ok>OK</ok>',
         'ağ: yeni projelere açık ...... <ok>UP</ok>',
         'masaüstü başlatılıyor ........ <ok>OK</ok>'
       ]
@@ -277,17 +277,17 @@
     inp.placeholder = t('termPh');
     var R = {
       help: "commands: about · ai · projects · skills · career · contact · social · cv · reel · hire · whoami · neofetch · open <app> · clear",
-      about: "Harun Geçit — Full Stack & AI Engineer. 15+ yrs software, 2+ yrs AI. Istanbul, TR.",
-      ai: "RAG (pgvector) · multi-LLM orchestration · fine-tuning/PageIndex · AI-driven SDLC.",
-      projects: "Atlas PM (Next.js on Cloudflare Workers) · AI Infra Academy · RAG Knowledge Engine · Multi-Agent Toolkit · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
-      skills: "PHP · JS/TS · Go · Python · SQL · Laravel · Next.js · Cloudflare Workers/D1 · Docker · K8s · PostgreSQL · RAG · pgvector.",
-      career: "USTEK (AI Eng) · CatchPad (AI Advisor) · Gourmeturca · Sadıkoğulları · freelance.",
+      about: "Harun Geçit — Senior AI Engineer & Full Stack Developer. Forward-deployed: LLM agents for real workflows. 15+ yrs software, 2+ yrs shipping LLM systems. Istanbul, TR.",
+      ai: "tool-calling agents · PageIndex RAG · guardrails · multi-provider failover (Claude, Gemini, OpenRouter, Groq, NIM, llama.cpp) · MCP servers · workflow automation.",
+      projects: "Atlas PM (Next.js on Cloudflare Workers) · DevBox · Turkish Payment Gateways AI Docs · AI Infra Academy · Vigilon · Smart Changelists · UBL Viewer · BRAISLATOR.",
+      skills: "Python · Go · PHP · Node.js · TS · SQL · Laravel AI SDK · MCP · RAG/PageIndex · Next.js · Cloudflare Workers/D1 · Docker · K8s · PostgreSQL.",
+      career: "CatchPad (Software Architect & AI Eng) · USTEK (Sr Full Stack & AI Eng) · Gourmeturca · Sadıkoğulları · freelance.",
       contact: "info@harungecit.com · wa.me/908503033954 · harungecit.com",
       social: "github.com/harungecit · linkedin.com/in/harungecit · x.com/harungecit_",
       cv: "Download CV → <a href=\"/cv.pdf\" target=\"_blank\" rel=\"noopener\">/cv.pdf</a> · ATS version → <a href=\"/cv-ats.pdf\" target=\"_blank\" rel=\"noopener\">/cv-ats.pdf</a>",
       hire: "Want to commission a project? → <a href=\"https://basvuru.harungecit.dev\" target=\"_blank\" rel=\"noopener\">basvuru.harungecit.dev</a> (intake form, lands straight in my pipeline)",
       whoami: "harun — builder of systems that build with LLMs.",
-      neofetch: "HarunOS v18.6 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Laravel·Go·Next.js·Cloudflare·RAG | theme: phosphor-amber"
+      neofetch: "HarunOS v18.7 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Python·Go·PHP·Node·LLM agents·Cloudflare | theme: phosphor-amber"
     };
     function line(h) { var d = document.createElement('div'); d.innerHTML = h; out.appendChild(d); }
     setTimeout(function () { if (!isMobile()) inp.focus(); }, 60);
@@ -554,7 +554,7 @@
       { f: '(•◡•)', idle: ["Laravel is life", "shipping it"], flee: ["catch me!", "too slow!"] },
       { f: '(¬‿¬)', idle: ["I optimize RAG", "prompts ready"], flee: ["404 not caught", "nice try"] },
       { f: '(o_o)', idle: ["docker up -d", "ci/cd green"], flee: ["sudo escape!", "rm -rf? no"] },
-      { f: '(·_·)', idle: ["on pgvector", "reranking…"], flee: ["ping? ghost", "catch a vector?"] },
+      { f: '(·_·)', idle: ["calling tools…", "guardrails on"], flee: ["ping? ghost", "catch a token?"] },
       { f: '(^‿^)', idle: ["fluent in Go", "goroutine free"], flee: ["race you!", "concurrency!"] }
     ];
     var count = isMobile() ? 3 : DATA.length;
