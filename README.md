@@ -9,7 +9,7 @@ windows, a start menu, a shell, a lock screen, roaming ASCII bots — built with
 fully indexable single page (`<main id="seo-content">`).
 
 [![Live](https://img.shields.io/badge/live-harungecit.com-ffb000?style=flat-square)](https://harungecit.com)
-[![Version](https://img.shields.io/badge/HarunOS-v18.7-ffb000?style=flat-square)]()
+[![Version](https://img.shields.io/badge/HarunOS-v18.8-ffb000?style=flat-square)]()
 [![Deploy](https://img.shields.io/badge/deploy-Netlify-00c7b7?style=flat-square)](https://www.netlify.com/)
 
 ## What's inside
@@ -23,19 +23,23 @@ fully indexable single page (`<main id="seo-content">`).
 | `skills.json` | Stack manifest — AI/LLM, models & platforms (Claude, Gemini, OpenRouter, Groq, NVIDIA NIM, llama.cpp, MCP), languages incl. Python & Node.js, Edge & Serverless, Laravel, Go, DevOps, security… |
 | `career.log` | Experience timeline |
 | `cv_reel.mp4` | 15s motion-graphics CV reel (`/media/cv-reel.mp4`, autoplays on open, pauses on minimize) — rendered from the `cv` repo's `video/` folder |
-| `shell` | Mini terminal: `help about ai projects skills career contact social cv reel hire whoami neofetch open <app> clear` |
+| `shell` | Mini terminal (answers in EN or TR): `help about ai projects skills career contact social cv reel hire whoami neofetch open <app> clear` |
 | `mail` | Contact details + Netlify Forms contact form (KVKK/GDPR consent), channels, CV links |
 | `privacy.txt` | Privacy policy |
 | desktop icons | `resume.pdf` → `/cv.pdf`, `hire_me` → basvuru.harungecit.dev, `blog` → echo.harungecit.dev, `ai_lab` → ai-lab.harungecit.dev, `trash` (easter egg) |
 
-Language toggle **EN / TR** in the taskbar (`?lang=tr` or `localStorage['harunos-lang']`).
+Language toggle **EN / TR** in the taskbar (`?lang=tr` or `localStorage['harunos-lang']`). `/?lang=tr` is declared as the Turkish
+variant with `hreflang` (in `<head>` and `sitemap.xml`) and becomes self-canonical at runtime.
+
+Accessibility: once JS runs, the shell is exposed to assistive tech (`aria-hidden` removed, windows are
+`role="dialog"`), desktop icons open with **Enter / Space**, window controls are real buttons, the start menu
+reports `aria-expanded`, and **Esc** closes the focused window and returns focus to what opened it.
 
 ## Related services
 
 | URL | What |
 | :-- | :-- |
 | [basvuru.harungecit.dev](https://basvuru.harungecit.dev) | **Project intake form** — anyone who wants to commission a project fills this in; it lands in the panel below. `harungecit.com/basvuru`, `/hire`, `/apply` redirect here. |
-| panel.harungecit.dev | Atlas PM — private CRM / project-management panel behind the intake form (Next.js 15 on Cloudflare Workers, D1, R2, KV); not public |
 | [echo.harungecit.dev](https://echo.harungecit.dev) | Blog |
 | [ai-lab.harungecit.dev](https://ai-lab.harungecit.dev) | AI Infra Academy |
 | `/cv.pdf` · `/cv-ats.pdf` | Designed CV · ATS-friendly CV (published from the `cv` repo via `build.ps1 -Publish`) |
@@ -44,15 +48,17 @@ Language toggle **EN / TR** in the taskbar (`?lang=tr` or `localStorage['harunos
 
 ```
 index.html                 # single source of truth: all content (EN) + HarunOS shell markup
-assets/css/harunos.css     # theme (phosphor-amber), windows, desktop, responsive rules
+assets/css/harunos.css     # theme (phosphor-amber), @font-face, windows, desktop, responsive rules
+assets/fonts/*.woff2       # self-hosted IBM Plex Mono + VT323 (latin + latin-ext, SIL OFL) — no Google Fonts requests
 assets/js/harunos.js       # window manager, terminal, i18n switch, contact form, lock screen, bots
 assets/js/harunos-i18n.js  # Turkish dictionary (window.HARUNOS_TR) keyed by data-i18n
 assets/sounds/button.mp3   # UI click
+media/og-image.png         # 1200×630 social preview (source: prototypes/og-image.html)
+404.html                   # real 404 page (no SPA catch-all)
 cv.pdf, cv-ats.pdf         # CVs (generated elsewhere, copied here on publish)
 netlify.toml               # headers (no-cache for CVs, immutable for assets), redirects
 robots.txt, sitemap.xml
-screensaver-*.html, lifecycle-*.html, hire-section.html   # design prototypes (not linked from the site)
-assets/css/styles.css, assets/js/script.js, assets/js/terminal.js   # legacy (pre-HarunOS) — unused
+prototypes/                # design prototypes + og-image source — kept in the repo, served as 404
 ```
 
 ## Editing content
@@ -62,7 +68,9 @@ assets/css/styles.css, assets/js/script.js, assets/js/terminal.js   # legacy (pr
 - New window: add a `<section class="appsrc" id="sec-xyz" data-title="…" data-gl="…" data-w="…" data-h="…">`,
   a desktop icon (`<button class="icon" data-app="xyz">`) and a start-menu item (`<button class="sm-item" data-app="xyz">`).
   External links use `data-href="https://…"` instead of `data-app`.
-- After changing CSS/JS bump the `?v=` query string on the three asset tags in `index.html` (and the version strings in `harunos.js` boot log / `neofetch`).
+- After changing CSS/JS bump the `?v=` query string on the asset tags in `index.html` and `404.html` (and the version strings in `harunos.js` boot log / `neofetch`).
+- Social image: edit `prototypes/og-image.html`, then
+  `chrome --headless=new --hide-scrollbars --window-size=1200,630 --screenshot=media/og-image.png prototypes/og-image.html`.
 
 ## Run locally
 
@@ -76,7 +84,18 @@ node --check assets/js/harunos.js assets/js/harunos-i18n.js   # syntax check
 ## Deployment
 
 Netlify, branch `harungecit.com`, `publish = "."`, no build command. Custom headers and redirects are in `netlify.toml`
-(`/cv.pdf` and `/cv-ats.pdf` are served with `max-age=0, must-revalidate`; `/basvuru`, `/hire`, `/apply` → basvuru.harungecit.dev; `/panel` → panel.harungecit.dev).
+(`/cv.pdf` and `/cv-ats.pdf` are served with `max-age=0, must-revalidate`; `/basvuru`, `/hire`, `/apply` → basvuru.harungecit.dev;
+`/prototypes/*`, `/README.md`, `/package.json` → 404). There is no SPA catch-all, so unknown paths return a real 404.
+
+### Security headers
+
+All paths: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`
+(HSTS comes from Netlify). The HTML page also gets a strict **Content-Security-Policy** (`script-src 'self'` + the hash of the one
+inline script). If you change that inline `<script>` in `index.html`, recompute the hash and update both CSP entries in `netlify.toml`:
+
+```bash
+node -e "const h=require('fs').readFileSync('index.html','utf8');const s=/<script>([\s\S]*?)<\/script>/.exec(h)[1];console.log('sha256-'+require('crypto').createHash('sha256').update(s).digest('base64'))"
+```
 
 ## Author
 

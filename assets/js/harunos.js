@@ -11,6 +11,10 @@
   var desktop = document.getElementById('desktop');
   var tasks = document.getElementById('tasks');
   var taskbar = document.getElementById('taskbar');
+  // the shell ships aria-hidden (no-JS fallback); once JS runs it IS the page for assistive tech
+  if (desktop) { desktop.removeAttribute('aria-hidden'); desktop.setAttribute('role', 'main'); }
+  if (taskbar) { taskbar.removeAttribute('aria-hidden'); taskbar.setAttribute('role', 'navigation'); }
+  if (tasks) tasks.setAttribute('aria-label', 'open windows');
   window._tb = 46;
   function syncTb() { window._tb = (taskbar ? taskbar.offsetHeight : 46); }
 
@@ -31,13 +35,15 @@
   }
   // soft click on interactive UI elements
   document.addEventListener('pointerdown', function (e) {
-    if (e.target.closest('.icon,.sm-item,.start-btn,.task,.tbtn,.btn,.soc,.win-bar .dots i,.win-resize,#poweron')) playSnd();
+    if (e.target.closest('.icon,.sm-item,.start-btn,.task,.tbtn,.btn,.soc,.win-bar .dots button,.win-resize,#poweron')) playSnd();
   }, true);
 
   /* ---------- language (en default, tr supported) ---------- */
   var LANG = 'en';
   try { if (localStorage.getItem('harunos-lang') === 'tr') LANG = 'tr'; } catch (e) {}
   try { var ql = new URLSearchParams(location.search).get('lang'); if (ql === 'tr' || ql === 'en') LANG = ql; } catch (e) {}
+  // ?lang=tr is the Turkish variant declared via hreflang — make it self-canonical
+  if (ql === 'tr') { var canon = document.querySelector('link[rel="canonical"]'); if (canon) canon.href = 'https://harungecit.com/?lang=tr'; }
   var TRDICT = window.HARUNOS_TR || {};
   // strings rendered from JS (not present in the HTML markup)
   var UI = {
@@ -50,7 +56,7 @@
       fSending: 'sending…', fSent: 'message sent — thank you! I will get back to you soon.',
       fFail: 'could not send — please email info@harungecit.com directly.',
       boot: [
-        'HarunOS v18.7 — phosphor build',
+        'HarunOS v18.8 — phosphor build',
         'BIOS check ................... <ok>OK</ok>',
         'CPU: human core @ 15 years ... <ok>OK</ok>',
         'loading kernel: engineer.sys . <ok>OK</ok>',
@@ -69,7 +75,7 @@
       fSending: 'gönderiliyor…', fSent: 'mesajınız gönderildi — teşekkürler! En kısa sürede dönüş yapacağım.',
       fFail: 'gönderilemedi — lütfen doğrudan info@harungecit.com adresine yazın.',
       boot: [
-        'HarunOS v18.7 — phosphor build',
+        'HarunOS v18.8 — phosphor build',
         'BIOS kontrolü ................ <ok>OK</ok>',
         'CPU: insan çekirdeği @ 15 yıl  <ok>OK</ok>',
         'çekirdek: engineer.sys ....... <ok>OK</ok>',
@@ -90,9 +96,9 @@
       if (!n.hasAttribute('data-en')) n.setAttribute('data-en', n.innerHTML);
       n.innerHTML = (LANG === 'tr' && TRDICT[k]) ? TRDICT[k] : n.getAttribute('data-en');
     });
-    document.querySelectorAll('.win-bar .dots i').forEach(function (d) {
+    document.querySelectorAll('.win-bar .dots button').forEach(function (d) {
       var k = { close: 'dotClose', max: 'dotMax', min: 'dotMin' }[d.getAttribute('data-do')];
-      if (k) d.title = t(k);
+      if (k) { d.title = t(k); d.setAttribute('aria-label', t(k)); }
     });
     var ti = document.getElementById('terminput'); if (ti) ti.placeholder = t('termPh');
     if (soundBtn) soundBtn.title = t('sound');
@@ -109,12 +115,12 @@
 
   /* ---------- terminal app meta ---------- */
   var TERM_META = { title: 'shell', gl: '&gt;_', w: 560, h: 380 };
-  var TERM_BODY =
+  function termBody() { return (
     '<div class="term-out" id="termout">' +
     '<div><span class="pp">harun@os:~$</span> welcome</div>' +
-    '<div class="hl">HarunOS shell — type \'help\' for commands.</div></div>' +
+    '<div class="hl">' + (LANG === 'tr' ? 'HarunOS kabuğu — komutlar için \'help\' yaz.' : 'HarunOS shell — type \'help\' for commands.') + '</div></div>' +
     '<div class="term-in"><span class="ps">harun@os:~$</span>' +
-    '<input id="terminput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type a command…"></div>';
+    '<input id="terminput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type a command…" aria-label="shell command"></div>'); }
 
   /* ---------- window manager ---------- */
   var open = {}, zTop = 10, casc = 0;
@@ -140,7 +146,7 @@
   }
 
   function fillBody(body, id) {
-    if (id === 'terminal') { body.innerHTML = TERM_BODY; return; }
+    if (id === 'terminal') { body.innerHTML = termBody(); return; }
     var sec = document.getElementById('sec-' + id);
     var clone = sec.cloneNode(true);
     // remap ids/for so the hidden source page keeps unique ids
@@ -172,11 +178,15 @@
       casc = (casc + 1) % 6;
       w.style.left = left + 'px'; w.style.top = top + 'px'; w.style.width = vw + 'px'; w.style.height = vh + 'px';
     }
+    w.setAttribute('role', 'dialog');
+    w.setAttribute('aria-label', m.title);
+    w.tabIndex = -1;
+    function dot(cls, act, key) { return '<button type="button" class="' + cls + '" data-do="' + act + '" title="' + t(key) + '" aria-label="' + t(key) + '"></button>'; }
     w.innerHTML =
-      '<div class="win-bar"><span class="gl">' + m.gl + '</span>' +
-      '<div class="dots"><i class="c" data-do="close" title="' + t('dotClose') + '"></i><i class="m" data-do="max" title="' + t('dotMax') + '"></i><i class="x" data-do="min" title="' + t('dotMin') + '"></i></div>' +
+      '<div class="win-bar"><span class="gl" aria-hidden="true">' + m.gl + '</span>' +
+      '<div class="dots">' + dot('c', 'close', 'dotClose') + dot('m', 'max', 'dotMax') + dot('x', 'min', 'dotMin') + '</div>' +
       '<span class="ttl">' + m.title + '</span><span style="width:34px;flex:none"></span></div>' +
-      '<div class="win-body"></div><div class="win-resize" title="resize"></div>';
+      '<div class="win-body"></div><div class="win-resize" title="resize" aria-hidden="true"></div>';
     fillBody(w.querySelector('.win-body'), id);
     desktop.appendChild(w);
     animateGauges(w);
@@ -185,9 +195,11 @@
 
     var task = document.createElement('button');
     task.className = 'task';
-    task.innerHTML = '<span class="tg">' + m.gl + '</span> ' + m.title;
+    task.innerHTML = '<span class="tg" aria-hidden="true">' + m.gl + '</span> ' + m.title;
     tasks.appendChild(task);
-    open[id] = { el: w, task: task };
+    // remember what opened the window so keyboard focus can return there on close
+    var opener = document.activeElement && document.activeElement !== document.body ? document.activeElement : null;
+    open[id] = { el: w, task: task, opener: opener };
 
     var bar = w.querySelector('.win-bar');
     bar.querySelector('[data-do="close"]').addEventListener('click', function (e) { e.stopPropagation(); closeApp(id); });
@@ -206,6 +218,7 @@
     makeResizable(w);
     focusWin(id);
     if (id === 'terminal') initTerminal(w);
+    else { try { w.focus({ preventScroll: true }); } catch (e) { w.focus(); } }
   }
 
   // fill the gauge bars from 0 to their target width when a window opens
@@ -224,7 +237,10 @@
 
   function closeApp(id) {
     if (!open[id]) return;
+    var back = open[id].opener;
+    var hadFocus = open[id].el.contains(document.activeElement);
     open[id].el.remove(); open[id].task.remove(); delete open[id];
+    if (hadFocus && back && document.contains(back)) { try { back.focus({ preventScroll: true }); } catch (e) {} }
   }
 
   function makeDraggable(w, bar) {
@@ -275,7 +291,8 @@
     var out = w.querySelector('#termout'), inp = w.querySelector('#terminput');
     if (!inp) return;
     inp.placeholder = t('termPh');
-    var R = {
+    var TERM_R = {};
+    TERM_R.en = {
       help: "commands: about · ai · projects · skills · career · contact · social · cv · reel · hire · whoami · neofetch · open <app> · clear",
       about: "Harun Geçit — Senior AI Engineer & Full Stack Developer. Forward-deployed: LLM agents for real workflows. 15+ yrs software, 2+ yrs shipping LLM systems. Istanbul, TR.",
       ai: "tool-calling agents · PageIndex RAG · guardrails · multi-provider failover (Claude, Gemini, OpenRouter, Groq, NIM, llama.cpp) · MCP servers · workflow automation.",
@@ -287,7 +304,27 @@
       cv: "Download CV → <a href=\"/cv.pdf\" target=\"_blank\" rel=\"noopener\">/cv.pdf</a> · ATS version → <a href=\"/cv-ats.pdf\" target=\"_blank\" rel=\"noopener\">/cv-ats.pdf</a>",
       hire: "Want to commission a project? → <a href=\"https://basvuru.harungecit.dev\" target=\"_blank\" rel=\"noopener\">basvuru.harungecit.dev</a> (intake form, lands straight in my pipeline)",
       whoami: "harun — builder of systems that build with LLMs.",
-      neofetch: "HarunOS v18.7 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Python·Go·PHP·Node·LLM agents·Cloudflare | theme: phosphor-amber"
+      neofetch: "HarunOS v18.8 | shell: bash | wm: HarunWM\nhost: harungecit.com | uptime: 15y\nstack: Python·Go·PHP·Node·LLM agents·Cloudflare | theme: phosphor-amber"
+    };
+    TERM_R.tr = {
+      help: "komutlar: about · ai · projects · skills · career · contact · social · cv · reel · hire · whoami · neofetch · open <uygulama> · clear",
+      about: "Harun Geçit — Kıdemli Yapay Zekâ Mühendisi & Full Stack Geliştirici. Sahada çalışan (forward-deployed): gerçek iş akışları için LLM ajanları. 15+ yıl yazılım, 2+ yıl canlıda LLM sistemleri. İstanbul.",
+      ai: "araç çağıran ajanlar · PageIndex RAG · guardrail'ler · çoklu sağlayıcı yedekleme (Claude, Gemini, OpenRouter, Groq, NIM, llama.cpp) · MCP sunucuları · iş akışı otomasyonu.",
+      projects: TERM_R.en.projects,
+      skills: TERM_R.en.skills,
+      career: "CatchPad (Yazılım Mimarı & YZ Mühendisi) · USTEK (Kıdemli Full Stack & YZ Mühendisi) · Gourmeturca · Sadıkoğulları · serbest çalışma.",
+      contact: TERM_R.en.contact,
+      social: TERM_R.en.social,
+      cv: "Özgeçmişi indir → <a href=\"/cv.pdf\" target=\"_blank\" rel=\"noopener\">/cv.pdf</a> · ATS sürümü → <a href=\"/cv-ats.pdf\" target=\"_blank\" rel=\"noopener\">/cv-ats.pdf</a>",
+      hire: "Proje mi yaptırmak istiyorsunuz? → <a href=\"https://basvuru.harungecit.dev\" target=\"_blank\" rel=\"noopener\">basvuru.harungecit.dev</a> (başvuru formu, doğrudan iş akışıma düşer)",
+      whoami: "harun — LLM'lerle üreten sistemleri inşa eden kişi.",
+      neofetch: TERM_R.en.neofetch
+    };
+    var TM = {
+      en: { reel: 'playing cv_reel.mp4 — 15s, sound on ♪', sudo: 'nice try — you are not in the sudoers file. This incident will be reported. :)',
+        cv: 'opening CV…', hire: 'opening project intake form…', opening: 'opening ', noapp: 'no such app: ', nf: 'command not found: ', tryHelp: " — try 'help'" },
+      tr: { reel: 'cv_reel.mp4 oynatılıyor — 15 sn, ses açık ♪', sudo: 'güzel deneme — sudoers dosyasında değilsin. Bu olay raporlanacak. :)',
+        cv: 'özgeçmiş açılıyor…', hire: 'proje başvuru formu açılıyor…', opening: 'açılıyor: ', noapp: 'böyle bir uygulama yok: ', nf: 'komut bulunamadı: ', tryHelp: " — 'help' yazmayı dene" }
     };
     function line(h) { var d = document.createElement('div'); d.innerHTML = h; out.appendChild(d); }
     setTimeout(function () { if (!isMobile()) inp.focus(); }, 60);
@@ -296,21 +333,23 @@
       var c = inp.value.trim(); inp.value = ''; if (!c) return;
       line('<span class="pp">harun@os:~$</span> ' + esc(c));
       var lc = c.toLowerCase();
+      var R = TERM_R[LANG] || TERM_R.en, M = TM[LANG] || TM.en;
       if (lc === 'clear') { out.innerHTML = ''; return; }
       if (lc === 'ls') { line('<span class="dim">about.txt  ai_engine  Projects  skills.json  career.log  mail  resume.pdf  cv_reel.mp4  hire_me</span>'); }
-      else if (lc === 'reel' || lc === 'play reel') { line('<span class="hl">playing cv_reel.mp4 — 15s, sound on ♪</span>'); openApp('reel'); }
+      else if (lc === 'reel' || lc === 'play reel') { line('<span class="hl">' + M.reel + '</span>'); openApp('reel'); }
       else if (lc === 'date') { line('<span class="hl">' + new Date().toString() + '</span>'); }
       else if (lc.indexOf('echo ') === 0) { line('<span class="hl">' + esc(c.slice(5)) + '</span>'); }
-      else if (lc.indexOf('sudo') === 0) { line('<span class="dim">nice try — you are not in the sudoers file. This incident will be reported. :)</span>'); }
+      else if (lc.indexOf('sudo') === 0) { line('<span class="dim">' + M.sudo + '</span>'); }
       else if (lc.indexOf('open ') === 0) {
         var ap = lc.slice(5).trim().replace('.txt', '').replace('.json', '').replace('.log', '').replace('.mp4', '');
         if (ap === 'mail') ap = 'contact'; if (ap === 'shell') ap = 'terminal'; if (ap === 'cv_reel' || ap === 'video') ap = 'reel';
-        if (ap === 'resume' || ap === 'cv') { line('<span class="hl">opening CV…</span>'); window.open('/cv.pdf', '_blank', 'noopener'); }
-        else if (ap === 'hire_me' || ap === 'hire' || ap === 'basvuru') { line('<span class="hl">opening project intake form…</span>'); window.open('https://basvuru.harungecit.dev', '_blank', 'noopener'); }
-        else if (metaFor(ap)) { line('<span class="hl">opening ' + ap + '…</span>'); openApp(ap); }
-        else line('<span class="dim">no such app: ' + esc(ap) + '</span>');
+        if (ap === 'resume' || ap === 'cv') { line('<span class="hl">' + M.cv + '</span>'); window.open('/cv.pdf', '_blank', 'noopener'); }
+        else if (ap === 'hire_me' || ap === 'hire' || ap === 'basvuru') { line('<span class="hl">' + M.hire + '</span>'); window.open('https://basvuru.harungecit.dev', '_blank', 'noopener'); }
+        else if (metaFor(ap)) { line('<span class="hl">' + M.opening + esc(ap) + '…</span>'); openApp(ap); }
+        else line('<span class="dim">' + M.noapp + esc(ap) + '</span>');
       }
-      else line('<span class="' + (R[lc] ? 'hl' : 'dim') + '">' + (R[lc] || ("command not found: " + esc(c) + " — try 'help'")) + '</span>');
+      else if (Object.prototype.hasOwnProperty.call(R, lc)) line('<span class="hl">' + R[lc] + '</span>');
+      else line('<span class="dim">' + M.nf + esc(c) + M.tryHelp + '</span>');
       var body = w.querySelector('.win-body'); body.scrollTop = body.scrollHeight;
     });
   }
@@ -374,11 +413,12 @@
     var app = n.getAttribute('data-app');
     n.addEventListener('dblclick', function () { openApp(app); });
     var last = 0;
-    n.addEventListener('click', function () {
-      if (n.classList.contains('sm-item')) { openApp(app); closeStart(); return; }
-      // single tap on touch / focus-enter opens (icons rely on dblclick on desktop)
+    n.addEventListener('click', function (e) {
+      if (n.classList.contains('sm-item')) { closeStart(); openApp(app); return; }
+      // single tap on touch, or Enter/Space on a focused icon (click with detail 0), opens;
+      // mouse users on desktop still double-click
       var now = Date.now();
-      if ('ontouchstart' in window || isMobile()) { openApp(app); }
+      if (e.detail === 0 || 'ontouchstart' in window || isMobile()) { openApp(app); }
       else if (now - last < 400) { /* handled by dblclick */ } last = now;
     });
   });
@@ -394,9 +434,22 @@
 
   /* ---------- start menu / clock / shutdown ---------- */
   var startbtn = document.getElementById('startbtn'), startmenu = document.getElementById('startmenu');
-  function closeStart() { startmenu.classList.remove('open'); startbtn.classList.remove('on'); }
+  startbtn.setAttribute('aria-haspopup', 'true');
+  startbtn.setAttribute('aria-expanded', 'false');
+  startbtn.setAttribute('aria-controls', 'startmenu');
+  function setStart(on) {
+    startmenu.classList.toggle('open', on); startbtn.classList.toggle('on', on);
+    startmenu.setAttribute('aria-hidden', on ? 'false' : 'true');
+    startbtn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (on) { var first = startmenu.querySelector('.sm-item'); if (first) first.focus({ preventScroll: true }); }
+  }
+  function closeStart() {
+    var had = startmenu.contains(document.activeElement);
+    setStart(false);
+    if (had) startbtn.focus({ preventScroll: true });
+  }
   startbtn.addEventListener('click', function (e) {
-    e.stopPropagation(); startmenu.classList.toggle('open'); startbtn.classList.toggle('on');
+    e.stopPropagation(); setStart(!startmenu.classList.contains('open'));
   });
   document.addEventListener('click', function (e) {
     if (!startmenu.contains(e.target) && e.target !== startbtn && !startbtn.contains(e.target)) closeStart();
@@ -406,7 +459,12 @@
   function tickClock() { var d = new Date(); clock.textContent = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
   tickClock(); setInterval(tickClock, 15000);
 
-  document.getElementById('powerbtn').addEventListener('click', function () { closeStart(); document.getElementById('shutdown').classList.add('show'); });
+  document.getElementById('powerbtn').addEventListener('click', function () {
+    closeStart();
+    var sd = document.getElementById('shutdown');
+    sd.classList.add('show'); sd.setAttribute('aria-hidden', 'false');
+    document.getElementById('poweron').focus({ preventScroll: true });
+  });
   document.getElementById('poweron').addEventListener('click', function () { location.reload(); });
 
   /* ---------- lock screen ---------- */
@@ -422,7 +480,7 @@
   }
   function doUnlock() {
     if (!locked) return; locked = false;
-    lockEl.classList.remove('show');
+    lockEl.classList.remove('show'); lockEl.setAttribute('aria-hidden', 'true');
     clearInterval(lockTimer);
     if (ssStop) { ssStop(); ssStop = null; }
     document.removeEventListener('keydown', doUnlock);
@@ -430,8 +488,8 @@
   function lockScreen() {
     if (locked) return; locked = true;
     tickLock(); lockTimer = setInterval(tickLock, 15000);
-    lockEl.classList.add('show');
-    ssStop = Screensaver.start(document.getElementById('ss-canvas'));
+    lockEl.classList.add('show'); lockEl.setAttribute('aria-hidden', 'false');
+    ssStop =Screensaver.start(document.getElementById('ss-canvas'));
     // arm unlock after a beat so the opening click doesn't dismiss it
     setTimeout(function () {
       if (!locked) return;

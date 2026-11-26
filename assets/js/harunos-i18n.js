@@ -11,7 +11,7 @@ window.HARUNOS_TR = {
   'sm.role': 'Kıdemli AI &amp; Full Stack Mühendisi',
   'sm.lock': 'kilitle',
   'sm.power': 'kapat',
-  'hint.bar': 'simgeye çift tıkla / dokun · pencereleri sürükle · botları yakala',
+  'hint.bar': 'simgeye çift tıkla / dokun / enter · pencereleri sürükle · botları yakala',
   'boot.skip': 'geçmek için dokun ▸',
   'shut.msg': 'Portfolyonuzu kapatmak<br>artık güvenli.',
   'shut.on': '▸ gücü aç',
@@ -197,6 +197,8 @@ window.HARUNOS_TR = {
   'pv.r3': 'Verilerinizin silinmesini isteme',
   'pv.r4': 'İşlemeye itiraz etme',
   'pv.r5': 'Veri taşınabilirliği',
+  'pv.h5': 'Barındırma, Çerezler ve Üçüncü Taraflar',
+  'pv.p4': 'Site Netlify üzerinde barındırılır; Netlify standart sunucu kayıtlarını (IP adresi, tarayıcı, istek zamanı) işler ve iletişim formu gönderimlerini benim adıma saklar. Analiz, reklam veya takip çerezi kullanılmaz; yazı tipleri bu siteden sunulur, gezinirken üçüncü taraflara istek gönderilmez. Dil tercihiniz yalnızca tarayıcınızın yerel depolamasında tutulur.',
   'pv.h4': 'İletişim',
   'pv.p3': 'Gizlilikle ilgili sorular için: <a href="mailto:info@harungecit.com">info@harungecit.com</a>'
 };

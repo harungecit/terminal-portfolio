@@ -1,11 +1,11 @@
 {
-  "name": "terminal-portfolio",
-  "version": "1.0.1",
-  "description": "Interactive terminal-style portfolio website with Matrix rain effects",
+  "name": "harunos",
+  "version": "18.8.0",
+  "description": "HarunOS — retro phosphor-amber desktop-OS portfolio of Harun Geçit (Senior AI Engineer & Full Stack Developer). Zero-dependency HTML/CSS/JS.",
   "main": "index.html",
   "scripts": {
     "build": "echo 'No build required - this is a static HTML site' && exit 0",
-    "start": "echo 'Opening index.html...' && open index.html",
+    "start": "npx http-server -p 8080",
     "serve": "npx http-server -p 8080"
   },
   "repository": {
@@ -14,10 +14,12 @@
   },
   "keywords": [
     "portfolio",
-    "terminal",
-    "matrix",
+    "harunos",
+    "retro",
+    "desktop-os",
     "static-site",
-    "xterm"
+    "vanilla-js",
+    "ai-engineer"
   ],
   "author": "Harun Geçit <info@harungecit.com>",
   "license": "SEE LICENSE IN README.md",
